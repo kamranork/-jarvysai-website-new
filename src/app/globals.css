@@ -1,0 +1,1043 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.animate-fadein {
+  animation: fadeIn 1s ease both;
+}
+.animate-fadein.delay-200 {
+  animation-delay: 0.2s;
+}
+.animate-fadein.delay-300 {
+  animation-delay: 0.3s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
+.glow-btn {
+  box-shadow: 0 0 16px 2px #00e6fe80, 0 2px 8px #00e6fe40;
+}
+
+@keyframes borderGlow {
+  0% { box-shadow: 0 0 0 0 #00e6fe80, 0 0 0 0 #7f5af080; }
+  50% { box-shadow: 0 0 16px 4px #00e6fe80, 0 0 32px 8px #7f5af080; }
+  100% { box-shadow: 0 0 0 0 #00e6fe80, 0 0 0 0 #7f5af080; }
+}
+.group-hover\:animate-border-glow:hover {
+  animation: borderGlow 1.2s infinite;
+  border-radius: 1rem;
+}
+
+/* Remove any custom cursor styles */
+.techy-cursor {
+  cursor: auto !important;
+}
+.techy-cursor::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  background: radial-gradient(circle at 50% 50%, #00e6fe 70%, #7f5af0 100%);
+  box-shadow: 0 0 24px 8px #00e6fe80, 0 0 48px 16px #7f5af040;
+  opacity: 0.85;
+  transition: transform 0.08s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
+  animation: cursorPulse 1.2s infinite alternate;
+}
+@keyframes cursorPulse {
+  0% { transform: scale(1); opacity: 0.85; }
+  100% { transform: scale(1.18); opacity: 1; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(20px) rotate(10deg); }
+}
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+/* Moving star animations - slow and natural like real stars */
+@keyframes star-group-1 {
+  0% { transform: translateX(-100%) translateY(0); }
+  50% { transform: translateX(50vw) translateY(5px); }
+  100% { transform: translateX(100vw) translateY(0); }
+}
+.animate-star-group-1 {
+  animation: star-group-1 120s ease-in-out infinite;
+}
+
+@keyframes star-group-2 {
+  0% { transform: translateX(-100%) translateY(10px); }
+  50% { transform: translateX(50vw) translateY(15px); }
+  100% { transform: translateX(100vw) translateY(10px); }
+}
+.animate-star-group-2 {
+  animation: star-group-2 180s ease-in-out infinite;
+  animation-delay: 30s;
+}
+
+@keyframes star-group-3 {
+  0% { transform: translateX(100%) translateY(5px); }
+  50% { transform: translateX(50vw) translateY(0); }
+  100% { transform: translateX(-100vw) translateY(5px); }
+}
+.animate-star-group-3 {
+  animation: star-group-3 150s ease-in-out infinite;
+  animation-delay: 60s;
+}
+
+@keyframes star-group-4 {
+  0% { transform: translateX(-100%) translateY(-5px); }
+  50% { transform: translateX(50vw) translateY(0); }
+  100% { transform: translateX(100vw) translateY(-5px); }
+}
+.animate-star-group-4 {
+  animation: star-group-4 200s ease-in-out infinite;
+  animation-delay: 90s;
+}
+
+/* Data stream animations */
+@keyframes data-stream-1 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-data-stream-1 {
+  animation: data-stream-1 8s linear infinite;
+}
+
+@keyframes data-stream-2 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-data-stream-2 {
+  animation: data-stream-2 12s linear infinite;
+  animation-delay: 2s;
+}
+
+@keyframes data-stream-3 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-data-stream-3 {
+  animation: data-stream-3 10s linear infinite;
+  animation-delay: 4s;
+}
+
+@keyframes data-stream-4 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-data-stream-4 {
+  animation: data-stream-4 15s linear infinite;
+  animation-delay: 6s;
+}
+
+/* Slow spin animations */
+@keyframes spin-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+.animate-spin-slow-reverse {
+  animation: spin-slow-reverse 80s linear infinite;
+}
+
+/* Scanning line animation */
+@keyframes scan-line {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-scan-line {
+  animation: scan-line 6s linear infinite;
+}
+
+/* IoT Data Flow animations */
+@keyframes data-flow-1 {
+  0% { opacity: 0; transform: scaleX(0); }
+  50% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+.animate-data-flow-1 {
+  animation: data-flow-1 4s ease-in-out infinite;
+}
+
+@keyframes data-flow-2 {
+  0% { opacity: 0; transform: scaleX(0); }
+  50% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+.animate-data-flow-2 {
+  animation: data-flow-2 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes data-flow-3 {
+  0% { opacity: 0; transform: scaleX(0); }
+  50% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+.animate-data-flow-3 {
+  animation: data-flow-3 5s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* IoT Wave animations */
+@keyframes wave-1 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-wave-1 {
+  animation: wave-1 8s linear infinite;
+}
+
+@keyframes wave-2 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-wave-2 {
+  animation: wave-2 12s linear infinite;
+  animation-delay: 4s;
+}
+
+@keyframes wave-3 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-wave-3 {
+  animation: wave-3 10s linear infinite;
+  animation-delay: 6s;
+}
+
+/* API Connection animations */
+@keyframes api-connect-1 {
+  0% { opacity: 0; transform: scaleX(0); }
+  50% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+.animate-api-connect-1 {
+  animation: api-connect-1 3s ease-in-out infinite;
+}
+
+@keyframes api-connect-2 {
+  0% { opacity: 0; transform: scaleX(0); }
+  50% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+.animate-api-connect-2 {
+  animation: api-connect-2 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes api-connect-3 {
+  0% { opacity: 0; transform: scaleX(0); }
+  50% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(0); }
+}
+.animate-api-connect-3 {
+  animation: api-connect-3 5s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Data flow down animation */
+@keyframes data-flow-down {
+  0% { opacity: 0; transform: scaleY(0); }
+  50% { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(0); }
+}
+.animate-data-flow-down {
+  animation: data-flow-down 2s ease-in-out infinite;
+}
+
+/* Satellite movements */
+@keyframes satellite-move-1 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-satellite-move-1 {
+  animation: satellite-move-1 25s linear infinite;
+}
+
+@keyframes satellite-move-2 {
+  0% { transform: translateX(100vw); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(-100%); opacity: 0; }
+}
+.animate-satellite-move-2 {
+  animation: satellite-move-2 30s linear infinite;
+  animation-delay: 10s;
+}
+
+@keyframes satellite-move-3 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-satellite-move-3 {
+  animation: satellite-move-3 35s linear infinite;
+  animation-delay: 20s;
+}
+
+/* Starlink train */
+@keyframes starlink-train {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-starlink-train {
+  animation: starlink-train 20s linear infinite;
+}
+
+/* Neural network pulses */
+@keyframes neural-pulse {
+  0% { opacity: 0.1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.1; }
+}
+.animate-neural-pulse {
+  animation: neural-pulse 3s ease-in-out infinite;
+}
+
+/* Data packet movements */
+@keyframes data-packet-1 {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100px); opacity: 0; }
+}
+.animate-data-packet-1 {
+  animation: data-packet-1 4s ease-in-out infinite;
+}
+
+@keyframes data-packet-2 {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100px); opacity: 0; }
+}
+.animate-data-packet-2 {
+  animation: data-packet-2 5s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes data-packet-3 {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100px); opacity: 0; }
+}
+.animate-data-packet-3 {
+  animation: data-packet-3 6s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* Robotic arm movement */
+@keyframes robotic-arm {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(15deg); }
+  100% { transform: rotate(0deg); }
+}
+.animate-robotic-arm {
+  animation: robotic-arm 8s ease-in-out infinite;
+}
+
+/* Data streams */
+@keyframes data-stream-1 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-data-stream-1 {
+  animation: data-stream-1 12s linear infinite;
+}
+
+@keyframes data-stream-2 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-data-stream-2 {
+  animation: data-stream-2 15s linear infinite;
+  animation-delay: 5s;
+}
+
+@keyframes data-stream-3 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-data-stream-3 {
+  animation: data-stream-3 18s linear infinite;
+  animation-delay: 10s;
+}
+
+/* Starlink train movements */
+@keyframes starlink-train-1 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-starlink-train-1 {
+  animation: starlink-train-1 20s linear infinite;
+}
+
+@keyframes starlink-train-2 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-starlink-train-2 {
+  animation: starlink-train-2 25s linear infinite;
+  animation-delay: 5s;
+}
+
+@keyframes starlink-train-3 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-starlink-train-3 {
+  animation: starlink-train-3 30s linear infinite;
+  animation-delay: 10s;
+}
+
+@keyframes starlink-train-4 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-starlink-train-4 {
+  animation: starlink-train-4 35s linear infinite;
+  animation-delay: 15s;
+}
+
+@keyframes starlink-train-5 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-starlink-train-5 {
+  animation: starlink-train-5 40s linear infinite;
+  animation-delay: 20s;
+}
+
+/* Individual satellite movements */
+@keyframes satellite-1 {
+  0% { transform: translateX(-50px) translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(50px) translateY(-20px); opacity: 0; }
+}
+.animate-satellite-1 {
+  animation: satellite-1 15s ease-in-out infinite;
+}
+
+@keyframes satellite-2 {
+  0% { transform: translateX(50px) translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(-50px) translateY(-15px); opacity: 0; }
+}
+.animate-satellite-2 {
+  animation: satellite-2 18s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+@keyframes satellite-3 {
+  0% { transform: translateX(-30px) translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(30px) translateY(-25px); opacity: 0; }
+}
+.animate-satellite-3 {
+  animation: satellite-3 20s ease-in-out infinite;
+  animation-delay: 6s;
+}
+
+@keyframes satellite-4 {
+  0% { transform: translateX(40px) translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(-40px) translateY(-30px); opacity: 0; }
+}
+.animate-satellite-4 {
+  animation: satellite-4 22s ease-in-out infinite;
+  animation-delay: 9s;
+}
+
+@keyframes satellite-5 {
+  0% { transform: translateX(-60px) translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(60px) translateY(-35px); opacity: 0; }
+}
+.animate-satellite-5 {
+  animation: satellite-5 25s ease-in-out infinite;
+  animation-delay: 12s;
+}
+
+/* Orbital rings */
+@keyframes orbit-slow {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.animate-orbit-slow {
+  animation: orbit-slow 60s linear infinite;
+}
+
+@keyframes orbit-medium {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+.animate-orbit-medium {
+  animation: orbit-medium 45s linear infinite;
+}
+
+@keyframes orbit-fast {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.animate-orbit-fast {
+  animation: orbit-fast 30s linear infinite;
+}
+
+/* Communication beams */
+@keyframes beam-1 {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+.animate-beam-1 {
+  animation: beam-1 4s ease-in-out infinite;
+}
+
+@keyframes beam-2 {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+.animate-beam-2 {
+  animation: beam-2 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes beam-3 {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+.animate-beam-3 {
+  animation: beam-3 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes beam-4 {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.6; }
+}
+.animate-beam-4 {
+  animation: beam-4 7s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Data transmission lines */
+@keyframes data-transmission-1 {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+.animate-data-transmission-1 {
+  animation: data-transmission-1 3s ease-in-out infinite;
+}
+
+@keyframes data-transmission-2 {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+.animate-data-transmission-2 {
+  animation: data-transmission-2 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes data-transmission-3 {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+.animate-data-transmission-3 {
+  animation: data-transmission-3 5s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes data-transmission-4 {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+.animate-data-transmission-4 {
+  animation: data-transmission-4 6s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Signal pulses */
+@keyframes signal-pulse-1 {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.5); }
+}
+.animate-signal-pulse-1 {
+  animation: signal-pulse-1 4s ease-in-out infinite;
+}
+
+@keyframes signal-pulse-2 {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.3); }
+}
+.animate-signal-pulse-2 {
+  animation: signal-pulse-2 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes signal-pulse-3 {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.8); }
+}
+.animate-signal-pulse-3 {
+  animation: signal-pulse-3 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes signal-pulse-4 {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+.animate-signal-pulse-4 {
+  animation: signal-pulse-4 7s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Atmospheric waves */
+@keyframes atmospheric-wave-1 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 0.1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-atmospheric-wave-1 {
+  animation: atmospheric-wave-1 15s linear infinite;
+}
+
+@keyframes atmospheric-wave-2 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 0.1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-atmospheric-wave-2 {
+  animation: atmospheric-wave-2 20s linear infinite;
+  animation-delay: 5s;
+}
+
+@keyframes atmospheric-wave-3 {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 0.1; }
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+.animate-atmospheric-wave-3 {
+  animation: atmospheric-wave-3 25s linear infinite;
+  animation-delay: 10s;
+}
+
+/* Realistic star shapes with glow */
+.star-shape-1 {
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  box-shadow: 
+    0 0 2px #ffffff,
+    0 0 4px #ffffff,
+    0 0 6px #ffffff,
+    0 0 8px #ffffff,
+    0 0 10px #ffffff,
+    0 0 12px #ffffff,
+    0 0 14px #ffffff,
+    0 0 16px #ffffff;
+  filter: blur(0.3px);
+}
+
+.star-shape-2 {
+  width: 6px;
+  height: 6px;
+  background: #ffffff;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  box-shadow: 
+    0 0 1px #ffffff,
+    0 0 2px #ffffff,
+    0 0 3px #ffffff,
+    0 0 4px #ffffff,
+    0 0 5px #ffffff,
+    0 0 6px #ffffff,
+    0 0 7px #ffffff,
+    0 0 8px #ffffff;
+  filter: blur(0.2px);
+}
+
+.star-shape-3 {
+  width: 4px;
+  height: 4px;
+  background: #ffffff;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  box-shadow: 
+    0 0 1px #ffffff,
+    0 0 2px #ffffff,
+    0 0 3px #ffffff,
+    0 0 4px #ffffff,
+    0 0 5px #ffffff;
+  filter: blur(0.1px);
+}
+
+/* JS required: Move .techy-cursor::after to follow mouse */
+
+/* AI-Generated Neural Network Animations */
+@keyframes neural-pulse-1 {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.2); }
+}
+.animate-neural-pulse-1 {
+  animation: neural-pulse-1 3s ease-in-out infinite;
+}
+
+@keyframes neural-pulse-2 {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.15); }
+}
+.animate-neural-pulse-2 {
+  animation: neural-pulse-2 4s ease-in-out infinite;
+}
+
+@keyframes neural-pulse-3 {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.25); }
+}
+.animate-neural-pulse-3 {
+  animation: neural-pulse-3 3.5s ease-in-out infinite;
+}
+
+@keyframes neural-pulse-4 {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(1.1); }
+}
+.animate-neural-pulse-4 {
+  animation: neural-pulse-4 4.5s ease-in-out infinite;
+}
+
+@keyframes neural-pulse-5 {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.18); }
+}
+.animate-neural-pulse-5 {
+  animation: neural-pulse-5 3.8s ease-in-out infinite;
+}
+
+@keyframes neural-pulse-6 {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.12); }
+}
+.animate-neural-pulse-6 {
+  animation: neural-pulse-6 4.2s ease-in-out infinite;
+}
+
+@keyframes neural-pulse-7 {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.3); }
+}
+.animate-neural-pulse-7 {
+  animation: neural-pulse-7 3.2s ease-in-out infinite;
+}
+
+@keyframes neural-pulse-8 {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.65; transform: scale(1.15); }
+}
+.animate-neural-pulse-8 {
+  animation: neural-pulse-8 4.8s ease-in-out infinite;
+}
+
+/* Synaptic Connection Animations */
+@keyframes synaptic-flow-1 {
+  0% { opacity: 0.2; transform: scaleY(0.8); }
+  50% { opacity: 0.4; transform: scaleY(1.2); }
+  100% { opacity: 0.2; transform: scaleY(0.8); }
+}
+.animate-synaptic-flow-1 {
+  animation: synaptic-flow-1 2.5s ease-in-out infinite;
+}
+
+@keyframes synaptic-flow-2 {
+  0% { opacity: 0.15; transform: scaleY(0.7); }
+  50% { opacity: 0.35; transform: scaleY(1.3); }
+  100% { opacity: 0.15; transform: scaleY(0.7); }
+}
+.animate-synaptic-flow-2 {
+  animation: synaptic-flow-2 3s ease-in-out infinite;
+}
+
+@keyframes synaptic-flow-3 {
+  0% { opacity: 0.25; transform: scaleY(0.9); }
+  50% { opacity: 0.45; transform: scaleY(1.1); }
+  100% { opacity: 0.25; transform: scaleY(0.9); }
+}
+.animate-synaptic-flow-3 {
+  animation: synaptic-flow-3 2.8s ease-in-out infinite;
+}
+
+@keyframes synaptic-flow-4 {
+  0% { opacity: 0.1; transform: scaleY(0.6); }
+  50% { opacity: 0.3; transform: scaleY(1.4); }
+  100% { opacity: 0.1; transform: scaleY(0.6); }
+}
+.animate-synaptic-flow-4 {
+  animation: synaptic-flow-4 3.5s ease-in-out infinite;
+}
+
+@keyframes synaptic-flow-5 {
+  0% { opacity: 0.2; transform: scaleY(0.8); }
+  50% { opacity: 0.4; transform: scaleY(1.2); }
+  100% { opacity: 0.2; transform: scaleY(0.8); }
+}
+.animate-synaptic-flow-5 {
+  animation: synaptic-flow-5 2.7s ease-in-out infinite;
+}
+
+@keyframes synaptic-flow-6 {
+  0% { opacity: 0.15; transform: scaleY(0.7); }
+  50% { opacity: 0.35; transform: scaleY(1.3); }
+  100% { opacity: 0.15; transform: scaleY(0.7); }
+}
+.animate-synaptic-flow-6 {
+  animation: synaptic-flow-6 3.2s ease-in-out infinite;
+}
+
+/* Data Stream Animations */
+@keyframes data-stream-1 {
+  0% { opacity: 0.1; transform: translateY(-100%); }
+  50% { opacity: 0.2; transform: translateY(0%); }
+  100% { opacity: 0.1; transform: translateY(100%); }
+}
+.animate-data-stream-1 {
+  animation: data-stream-1 8s linear infinite;
+}
+
+@keyframes data-stream-2 {
+  0% { opacity: 0.1; transform: translateY(-100%); }
+  50% { opacity: 0.2; transform: translateY(0%); }
+  100% { opacity: 0.1; transform: translateY(100%); }
+}
+.animate-data-stream-2 {
+  animation: data-stream-2 10s linear infinite;
+}
+
+@keyframes data-stream-3 {
+  0% { opacity: 0.1; transform: translateY(-100%); }
+  50% { opacity: 0.2; transform: translateY(0%); }
+  100% { opacity: 0.1; transform: translateY(100%); }
+}
+.animate-data-stream-3 {
+  animation: data-stream-3 12s linear infinite;
+}
+
+@keyframes data-stream-4 {
+  0% { opacity: 0.1; transform: translateY(-100%); }
+  50% { opacity: 0.2; transform: translateY(0%); }
+  100% { opacity: 0.1; transform: translateY(100%); }
+}
+.animate-data-stream-4 {
+  animation: data-stream-4 9s linear infinite;
+}
+
+/* Neural Hub Animations */
+@keyframes neural-hub-1 {
+  0%, 100% { opacity: 0.08; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.12; transform: scale(1.1) rotate(180deg); }
+}
+.animate-neural-hub-1 {
+  animation: neural-hub-1 6s ease-in-out infinite;
+}
+
+@keyframes neural-hub-2 {
+  0%, 100% { opacity: 0.08; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.12; transform: scale(1.15) rotate(-180deg); }
+}
+.animate-neural-hub-2 {
+  animation: neural-hub-2 7s ease-in-out infinite;
+}
+
+@keyframes neural-hub-3 {
+  0%, 100% { opacity: 0.08; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.12; transform: scale(1.2) rotate(90deg); }
+}
+.animate-neural-hub-3 {
+  animation: neural-hub-3 8s ease-in-out infinite;
+}
+
+/* Thought Wave Animations */
+@keyframes thought-wave-1 {
+  0% { opacity: 0.06; transform: translateX(-100%); }
+  50% { opacity: 0.12; transform: translateX(0%); }
+  100% { opacity: 0.06; transform: translateX(100%); }
+}
+.animate-thought-wave-1 {
+  animation: thought-wave-1 15s linear infinite;
+}
+
+@keyframes thought-wave-2 {
+  0% { opacity: 0.06; transform: translateX(-100%); }
+  50% { opacity: 0.12; transform: translateX(0%); }
+  100% { opacity: 0.06; transform: translateX(100%); }
+}
+.animate-thought-wave-2 {
+  animation: thought-wave-2 18s linear infinite;
+}
+
+@keyframes thought-wave-3 {
+  0% { opacity: 0.06; transform: translateX(-100%); }
+  50% { opacity: 0.12; transform: translateX(0%); }
+  100% { opacity: 0.06; transform: translateX(100%); }
+}
+.animate-thought-wave-3 {
+  animation: thought-wave-3 20s linear infinite;
+}
+
+@keyframes thought-wave-4 {
+  0% { opacity: 0.06; transform: translateX(-100%); }
+  50% { opacity: 0.12; transform: translateX(0%); }
+  100% { opacity: 0.06; transform: translateX(100%); }
+}
+.animate-thought-wave-4 {
+  animation: thought-wave-4 16s linear infinite;
+}
+
+/* Learning Pattern Animations */
+@keyframes learning-pattern-1 {
+  0%, 100% { opacity: 0.06; transform: scale(1) rotate(0deg); }
+  25% { opacity: 0.08; transform: scale(1.05) rotate(90deg); }
+  50% { opacity: 0.1; transform: scale(1.1) rotate(180deg); }
+  75% { opacity: 0.08; transform: scale(1.05) rotate(270deg); }
+}
+.animate-learning-pattern-1 {
+  animation: learning-pattern-1 12s ease-in-out infinite;
+}
+
+@keyframes learning-pattern-2 {
+  0%, 100% { opacity: 0.06; transform: scale(1) rotate(0deg); }
+  25% { opacity: 0.08; transform: scale(1.08) rotate(-90deg); }
+  50% { opacity: 0.1; transform: scale(1.12) rotate(-180deg); }
+  75% { opacity: 0.08; transform: scale(1.08) rotate(-270deg); }
+}
+.animate-learning-pattern-2 {
+  animation: learning-pattern-2 14s ease-in-out infinite;
+}
+
+@keyframes learning-pattern-3 {
+  0%, 100% { opacity: 0.06; transform: scale(1) rotate(0deg); }
+  25% { opacity: 0.08; transform: scale(1.06) rotate(45deg); }
+  50% { opacity: 0.1; transform: scale(1.15) rotate(90deg); }
+  75% { opacity: 0.08; transform: scale(1.06) rotate(135deg); }
+}
+.animate-learning-pattern-3 {
+  animation: learning-pattern-3 16s ease-in-out infinite;
+}
+
+/* AI Consciousness Pulse Animations */
+@keyframes ai-pulse-1 {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.3); }
+}
+.animate-ai-pulse-1 {
+  animation: ai-pulse-1 2s ease-in-out infinite;
+}
+
+@keyframes ai-pulse-2 {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.3); }
+}
+.animate-ai-pulse-2 {
+  animation: ai-pulse-2 2.5s ease-in-out infinite;
+}
+
+@keyframes ai-pulse-3 {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.3); }
+}
+.animate-ai-pulse-3 {
+  animation: ai-pulse-3 3s ease-in-out infinite;
+}
+
+@keyframes ai-pulse-4 {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.3); }
+}
+.animate-ai-pulse-4 {
+  animation: ai-pulse-4 3.5s ease-in-out infinite;
+}
+
+@keyframes ai-pulse-5 {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.3); }
+}
+.animate-ai-pulse-5 {
+  animation: ai-pulse-5 4s ease-in-out infinite;
+}
+
+/* Quantum Processing Animations */
+@keyframes quantum-pulse-1 {
+  0%, 100% { opacity: 0.05; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.1; transform: scale(1.2) rotate(180deg); }
+}
+.animate-quantum-pulse-1 {
+  animation: quantum-pulse-1 5s ease-in-out infinite;
+}
+
+@keyframes quantum-pulse-2 {
+  0%, 100% { opacity: 0.05; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.1; transform: scale(1.15) rotate(-180deg); }
+}
+.animate-quantum-pulse-2 {
+  animation: quantum-pulse-2 6s ease-in-out infinite;
+}
+
+@keyframes quantum-pulse-3 {
+  0%, 100% { opacity: 0.05; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.1; transform: scale(1.25) rotate(90deg); }
+}
+.animate-quantum-pulse-3 {
+  animation: quantum-pulse-3 7s ease-in-out infinite;
+}

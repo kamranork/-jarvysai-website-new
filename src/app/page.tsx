@@ -1,0 +1,2460 @@
+'use client';
+
+import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
+import Particles from "@tsparticles/react";
+import { loadFull } from "tsparticles";
+import { initParticlesEngine } from "@tsparticles/react";
+import { FaRobot, FaHandPaper, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaNetworkWired, FaDatabase, FaMobileAlt, FaLaptopCode, FaUserShield, FaRocket, FaSatelliteDish, FaSearchLocation, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronLeft, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb } from "react-icons/fa";
+import { SiReact, SiPython, SiAmazon, SiNodedotjs, SiNextdotjs, SiDjango, SiLaravel, SiFlutter, SiTwilio, SiAmazons3, SiDocker, SiKubernetes, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiGithub, SiGooglecloud, SiTypescript } from "react-icons/si";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
+
+// HEADER
+function Header() {
+  // Add scroll shadow effect
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const header = document.getElementById("main-header");
+      const onScroll = () => {
+        if (header) {
+          if (window.scrollY > 10) {
+            header.classList.add("shadow-xl", "bg-[#0a192f]/95");
+          } else {
+            header.classList.remove("shadow-xl", "bg-[#0a192f]/95");
+          }
+        }
+      };
+      window.addEventListener("scroll", onScroll);
+      return () => window.removeEventListener("scroll", onScroll);
+    }
+  }, []);
+  return (
+    <header id="main-header" className="w-full sticky top-0 z-50 bg-[#0a192f]/80 backdrop-blur-md flex justify-between items-center py-4 px-8 border-b border-white/10 transition-all duration-300">
+      <div className="flex items-center h-16">
+        <Image src="/logo.png" alt="JarvysAI Logo" width={56} height={56} className="rounded-full shadow-md" priority />
+      </div>
+      <nav className="hidden md:flex space-x-6 text-gray-200 text-sm font-medium">
+        {[
+          { href: "#about", label: "About" },
+          { href: "#services", label: "Services" },
+          { href: "#technologies", label: "Technologies" },
+          { href: "#portfolio", label: "Portfolio" },
+          { href: "#testimonials", label: "Testimonials" },
+          { href: "#faq", label: "FAQ" },
+          { href: "#contact", label: "Contact" },
+        ].map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="relative px-1 hover:text-cyan-400 transition group"
+          >
+            {item.label}
+            <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 rounded-full" />
+          </a>
+        ))}
+      </nav>
+      <a href="#contact" className="ml-6 px-5 py-2 bg-gradient-to-tr from-cyan-500 to-purple-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-cyan-500/30 transition-transform hidden md:inline-block">Let's Talk</a>
+    </header>
+  );
+}
+
+// HERO SECTION
+function Hero() {
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadFull(engine);
+    });
+  }, []);
+  
+  const particlesOptions = {
+    fullScreen: false,
+    background: { color: "transparent" },
+    fpsLimit: 60,
+    particles: {
+      color: { 
+        value: ["#ffffff", "#f0f8ff", "#e6f3ff", "#87ceeb"] 
+      },
+      links: { 
+        enable: true, 
+        color: "#00e6fe", 
+        distance: 300, 
+        opacity: 0.2,
+        width: 1,
+        triangles: {
+          enable: false
+        }
+      },
+      move: { 
+        enable: true, 
+        speed: 0.2,
+        direction: "none" as const,
+        random: true,
+        straight: false,
+        outModes: { default: "bounce" as const },
+        attract: {
+          enable: false
+        }
+      },
+      number: { 
+        value: 150,
+        density: {
+          enable: true,
+          value_area: 1200
+        }
+      },
+      opacity: { 
+        value: { min: 0.1, max: 0.6 },
+        animation: {
+          enable: true,
+          speed: 0.3,
+          minimumValue: 0.05
+        }
+      },
+      shape: { 
+        type: ["circle"],
+        stroke: {
+          width: 0,
+          color: "#000000"
+        }
+      },
+      size: { 
+        value: { min: 1, max: 4 },
+        animation: {
+          enable: true,
+          speed: 0.5,
+          minimumValue: 0.1
+        }
+      },
+      twinkle: {
+        particles: {
+          enable: true,
+          color: "#ffffff",
+          frequency: 0.02,
+          opacity: 0.8
+        }
+      },
+      interactivity: {
+        events: {
+          onHover: {
+            enable: true,
+            mode: "repulse"
+          },
+          onClick: {
+            enable: true,
+            mode: "push"
+          },
+          resize: { enable: true }
+        },
+        modes: {
+          repulse: {
+            distance: 100,
+            duration: 0.4
+          },
+          push: {
+            particles_nb: 2
+          }
+        }
+      }
+    },
+    detectRetina: true,
+  };
+
+      return (
+      <section className="w-full flex flex-col items-center justify-center text-center py-32 bg-gradient-to-b from-[#0a192f] via-[#0f1a2e] to-[#111827] relative overflow-hidden min-h-screen">
+        {/* Enhanced animated particles background */}
+        <div className="absolute inset-0 z-0">
+          <Particles id="tsparticles" options={particlesOptions} className="w-full h-full" />
+        </div>
+        
+        {/* Global Satellite Network Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          {/* Deep Space Background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-slate-900/30 to-black/90"></div>
+          
+          {/* Starlink Constellation - Realistic Train */}
+          <div className="absolute top-20 left-0 w-full">
+            <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
+            <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
+            <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
+            <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
+            <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
+          </div>
+          
+          {/* Individual Satellites - More Realistic */}
+          <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
+          <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
+          <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
+          <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
+          <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
+          
+          {/* Communication Signals - Organic Beams */}
+          <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
+          <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
+          <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
+          <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
+          
+          {/* Data Streams - Natural Flow */}
+          <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
+          <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
+          <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
+          <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
+          
+          {/* Ground Stations - More Organic */}
+          <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
+            <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+          </div>
+          <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
+            <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+          </div>
+          <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
+            <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+          </div>
+          
+          {/* Signal Pulses - Natural Energy */}
+          <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
+          <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
+          <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
+          <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
+          
+          {/* Atmospheric Energy Waves */}
+          <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
+          <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
+          <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
+          
+          {/* Network Energy Fields */}
+          <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
+          <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
+          <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
+          
+          {/* Status Indicators - Subtle */}
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
+            <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
+            <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
+            <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
+            <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
+            <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
+          </div>
+        </div>
+      
+      {/* Moving stars across the sky */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Star group 1 - moving from left to right */}
+        <div className="absolute top-24 left-0 w-full h-4 animate-star-group-1">
+          <div className="flex justify-between">
+            <div className="star-shape-1 animate-pulse"></div>
+            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '3s' }}></div>
+            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '4s' }}></div>
+          </div>
+        </div>
+        
+        {/* Star group 2 - moving diagonally */}
+        <div className="absolute top-40 left-0 w-full h-4 animate-star-group-2">
+          <div className="flex justify-between">
+            <div className="star-shape-2 animate-pulse"></div>
+            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '3s' }}></div>
+            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '4.5s' }}></div>
+            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '6s' }}></div>
+          </div>
+        </div>
+        
+        {/* Star group 3 - moving from right to left */}
+        <div className="absolute top-56 right-0 w-full h-4 animate-star-group-3">
+          <div className="flex justify-between">
+            <div className="star-shape-1 animate-pulse"></div>
+            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '2s' }}></div>
+            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '4s' }}></div>
+            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '6s' }}></div>
+            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '8s' }}></div>
+          </div>
+        </div>
+        
+        {/* Star group 4 - moving slowly across */}
+        <div className="absolute top-72 left-0 w-full h-4 animate-star-group-4">
+          <div className="flex justify-between">
+            <div className="star-shape-2 animate-pulse"></div>
+            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '3s' }}></div>
+            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '6s' }}></div>
+            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '9s' }}></div>
+            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '12s' }}></div>
+          </div>
+        </div>
+      </div>
+
+      {/* Gradient overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a192f]/20 to-[#0a192f]/40 z-0"></div>
+      
+      <div className="relative z-10 flex flex-col items-center max-w-5xl mx-auto px-4">
+        {/* Animated badge */}
+        <div className="mb-6 animate-fadein">
+          <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 text-cyan-300 backdrop-blur-sm">
+            <span className="w-2 h-2 bg-cyan-400 rounded-full mr-2 animate-pulse"></span>
+            AI-Powered Solutions
+          </span>
+        </div>
+
+        {/* Enhanced main heading with gradient text */}
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight animate-fadein">
+          <span className="bg-gradient-to-r from-white via-cyan-300 to-purple-400 bg-clip-text text-transparent">
+            Empowering
+          </span>
+          <br />
+          <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            Businesses
+          </span>
+          <br />
+          <span className="text-4xl md:text-5xl lg:text-6xl bg-gradient-to-r from-cyan-300 to-purple-300 bg-clip-text text-transparent">
+            with AI Solutions
+          </span>
+        </h1>
+
+        {/* Enhanced subtitle */}
+        <p className="text-xl md:text-2xl lg:text-3xl text-cyan-200 mb-10 max-w-4xl animate-fadein delay-200 leading-relaxed">
+          We build modern, scalable, and intelligent software that transforms businesses and drives innovation.
+        </p>
+
+        {/* Enhanced CTA buttons */}
+        <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fadein delay-300">
+          <a
+            href="#contact"
+            className="group relative px-10 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-full font-bold text-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 overflow-hidden"
+          >
+            <span className="relative z-10">Get Started Today</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-purple-700 blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+          </a>
+          
+          <a
+            href="#portfolio"
+            className="group relative px-10 py-4 border-2 border-cyan-500 text-cyan-300 rounded-full font-bold text-lg hover:bg-cyan-500/10 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 overflow-hidden backdrop-blur-sm"
+          >
+            <span className="relative z-10">View Our Work</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </a>
+        </div>
+
+        {/* Stats section */}
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fadein delay-400">
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-cyan-400 mb-2">50+</div>
+            <div className="text-gray-400 text-sm">Projects Delivered</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-purple-400 mb-2">95%</div>
+            <div className="text-gray-400 text-sm">Client Satisfaction</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-cyan-400 mb-2">24/7</div>
+            <div className="text-gray-400 text-sm">Support Available</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl md:text-4xl font-bold text-purple-400 mb-2">3+</div>
+            <div className="text-gray-400 text-sm">Years Experience</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-cyan-500 rounded-full flex justify-center">
+          <div className="w-1 h-3 bg-cyan-500 rounded-full mt-2 animate-pulse"></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ABOUT SECTION
+function About() {
+  // Robotic/galaxy/starlink particles config
+  const aboutParticlesOptions = {
+    fullScreen: false,
+    background: { color: "transparent" },
+    fpsLimit: 60,
+    particles: {
+      color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
+      number: { value: 60, density: { enable: true, value_area: 900 } },
+      size: { value: { min: 1, max: 2.5 } },
+      opacity: { value: { min: 0.18, max: 0.6 } },
+      move: { enable: true, speed: 0.5, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const }, angle: { value: 45, offset: 0 }, attract: { enable: true, rotateX: 600, rotateY: 1200 } },
+      shape: { type: ["circle", "star"], stroke: { width: 0 } },
+      links: { enable: true, color: "#00e6fe", distance: 140, opacity: 0.22, width: 1.2 },
+      twinkle: { particles: { enable: true, color: "#fff", frequency: 0.12, opacity: 0.7 } },
+    },
+    detectRetina: true,
+  };
+  return (
+    <section id="about" className="w-full max-w-4xl mx-auto py-20 px-4 text-center relative overflow-hidden">
+      {/* Realistic Satellite Network Ecosystem */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Particles id="about-particles" options={aboutParticlesOptions} className="w-full h-full" />
+        
+        {/* Deep Space Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-slate-900/30 to-black/90"></div>
+        
+        {/* Starlink Constellation - Realistic Train */}
+        <div className="absolute top-20 left-0 w-full">
+          <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
+          <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
+          <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
+          <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
+          <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
+        </div>
+        
+        {/* Individual Satellites - More Realistic */}
+        <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
+        <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
+        <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
+        <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
+        <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
+        
+        {/* Communication Signals - Organic Beams */}
+        <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
+        
+        {/* Data Streams - Natural Flow */}
+        <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
+        <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
+        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
+        <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
+        
+        {/* Ground Stations - More Organic */}
+        <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
+          <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
+          <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
+          <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        
+        {/* Signal Pulses - Natural Energy */}
+        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
+        
+        {/* Atmospheric Energy Waves */}
+        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
+        
+        {/* Network Energy Fields */}
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
+        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
+        <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
+        
+        {/* Status Indicators - Subtle */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
+          <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
+          <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
+          <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
+          <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
+          <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
+        </div>
+      </div>
+      <h2 className="text-4xl font-bold text-cyan-400 mb-2 relative z-10 animate-fadein">About Us</h2>
+      {/* Animated gradient bar for visual flair */}
+      <div className="mx-auto mb-6 flex justify-center relative z-10">
+        <div className="h-1 w-28 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg" style={{ animationDuration: '2.5s' }} />
+      </div>
+      <div className="text-center text-gray-300 mb-10 text-xl max-w-3xl mx-auto relative z-10 animate-fadein delay-200 font-medium">Pioneering the future of business with next-gen AI, automation, and digital transformation.</div>
+      <div className="text-gray-300 text-xl font-medium leading-relaxed mb-6 space-y-4 relative z-10">
+        <p>JarvysAI is rewriting the rules of intelligent automation and digital infrastructure.</p>
+        <p>We are a next-generation AI company building hyper-intelligent voicebots, smart dialers, scalable cloud platforms, and advanced automation systems. Our solutions blend cutting-edge artificial intelligence, real-time data, and seamless integrations to break down barriers between humans and technology—empowering businesses to operate smarter, faster, and at scale.</p>
+        <p>From AI-powered outbound campaigns and autonomous agents to IoT, SaaS, and digital transformation for enterprises, we deliver production-ready technology that transforms how industries work, connect, and grow. Our mission is to disrupt the status quo across BPO, telecom, SaaS, retail, and beyond—enabling a new era of business powered by AI.</p>
+        <p className="font-semibold text-cyan-300">We are not just automating tasks.<br/>We're reimagining the infrastructure of how businesses think, talk, and operate.</p>
+      </div>
+      {/* Vision block */}
+      <div className="bg-gradient-to-r from-cyan-900/40 via-purple-900/30 to-cyan-900/40 rounded-xl p-6 mt-8 mb-2 max-w-2xl mx-auto shadow-lg border border-cyan-800/30 relative z-10">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <span className="text-2xl">🔹</span>
+          <span className="text-lg font-bold text-cyan-300">Our Vision</span>
+        </div>
+        <div className="text-gray-200 text-base">To become the go-to platform for businesses seeking intelligent, fully autonomous solutions that are secure, scalable, and indistinguishable from human expertise—across every industry.</div>
+      </div>
+      {/* Floating robot icon background (already included above) */}
+    </section>
+  );
+}
+
+// SERVICES SECTION
+function Services() {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [hoveredService, setHoveredService] = useState<number | null>(null);
+
+  const serviceCategories = [
+    { id: 'all', name: 'All Services', count: 14 },
+    { id: 'ai', name: 'AI & ML', count: 6 },
+    { id: 'automation', name: 'Automation', count: 3 },
+    { id: 'development', name: 'Development', count: 3 },
+    { id: 'communication', name: 'Communication', count: 2 },
+  ];
+
+  const services = [
+    { 
+      id: 1,
+      category: 'ai',
+      icon: (
+        <div className="relative">
+          <FaMicrophone className="text-3xl text-cyan-400 animate-pulse" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+        </div>
+      ), 
+      title: "Conversational AI & Voicebots", 
+      desc: "Next-gen AI voice & chat agents for sales, support, and lead gen. Human-like, 24/7, multilingual.",
+      features: ["Natural Language Processing", "Multi-language Support", "24/7 Availability", "CRM Integration"],
+      benefits: ["Increase conversion rates by 300%", "Reduce support costs by 60%", "Handle 1000+ conversations simultaneously"],
+      tech: ["OpenAI GPT", "Whisper", "Custom NLP", "WebRTC"],
+      color: "from-cyan-400 to-blue-500"
+    },
+    { 
+      id: 2,
+      category: 'ai',
+      icon: (
+        <div className="relative">
+          <FaHeadset className="text-3xl text-purple-400 animate-bounce" />
+          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-purple-400 rounded-full animate-pulse"></div>
+          <div className="absolute -top-1 -left-1 w-2 h-2 bg-pink-400 rounded-full animate-ping"></div>
+        </div>
+      ), 
+      title: "Smart Chatbots & Virtual Assistants", 
+      desc: "GPT/LLM-powered bots for web, WhatsApp, Messenger, and more. Seamless, context-aware, always-on.",
+      features: ["Context Awareness", "Multi-platform Support", "Sentiment Analysis", "Seamless Handoff"],
+      benefits: ["Improve customer satisfaction by 85%", "Reduce response time to 2 seconds", "Scale support without hiring"],
+      tech: ["GPT-4", "Claude", "WhatsApp API", "Facebook Messenger"],
+      color: "from-purple-400 to-pink-500"
+    },
+    { 
+      id: 3,
+      category: 'automation',
+      icon: (
+        <div className="relative">
+          <FaCog className="text-3xl text-green-400 animate-spin-slow" />
+          <div className="absolute top-0 left-0 w-6 h-6 border-2 border-green-400 rounded-full animate-spin-slow-reverse"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-2 border-emerald-400 rounded-full animate-spin-slow"></div>
+        </div>
+      ), 
+      title: "AI Automation & RPA", 
+      desc: "Automate workflows, CRMs, and business ops with AI, RPA, and custom integrations. Work smarter, not harder.",
+      features: ["Workflow Automation", "CRM Integration", "Custom APIs", "Process Optimization"],
+      benefits: ["Reduce manual work by 80%", "Improve accuracy by 95%", "Save 40+ hours per week"],
+      tech: ["UiPath", "Zapier", "Custom APIs", "Machine Learning"],
+      color: "from-green-400 to-emerald-500"
+    },
+    { 
+      id: 4,
+      category: 'ai',
+      icon: (
+        <div className="relative">
+          <FaChartBar className="text-3xl text-pink-400 animate-pulse" />
+          <div className="absolute -top-2 -right-2 w-2 h-8 bg-gradient-to-b from-pink-400 to-transparent animate-pulse"></div>
+          <div className="absolute -bottom-2 -left-2 w-8 h-2 bg-gradient-to-r from-rose-400 to-transparent animate-pulse delay-1000"></div>
+        </div>
+      ), 
+      title: "Generative AI & LLM Solutions", 
+      desc: "Custom tools with GPT, Whisper, Claude, and more for content, legal, medical, and finance.",
+      features: ["Content Generation", "Document Analysis", "Code Generation", "Custom Training"],
+      benefits: ["Generate content 10x faster", "Reduce research time by 70%", "Improve content quality"],
+      tech: ["GPT-4", "Claude", "Whisper", "Custom Models"],
+      color: "from-pink-400 to-rose-500"
+    },
+    { 
+      id: 5,
+      category: 'ai',
+      icon: (
+        <div className="relative">
+          <FaServer className="text-3xl text-blue-400 animate-pulse" />
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-6 bg-gradient-to-b from-blue-400 to-transparent animate-pulse"></div>
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-indigo-400 to-transparent animate-pulse delay-500"></div>
+          <div className="absolute top-1/2 left-0 transform -translate-y-1/2 w-1 h-4 bg-gradient-to-b from-blue-400 to-transparent animate-pulse delay-1000"></div>
+        </div>
+      ), 
+      title: "Data Labeling & AI Training", 
+      desc: "End-to-end data pipelines: labeling, pre-processing, analytics, and ML model training.",
+      features: ["Data Annotation", "Model Training", "Quality Assurance", "Performance Monitoring"],
+      benefits: ["Improve model accuracy by 40%", "Reduce training time by 60%", "Ensure data quality"],
+      tech: ["TensorFlow", "PyTorch", "Label Studio", "Custom Tools"],
+      color: "from-blue-400 to-indigo-500"
+    },
+    { 
+      id: 6,
+      category: 'automation',
+      icon: (
+        <div className="relative">
+          <FaWifi className="text-3xl text-yellow-400 animate-pulse" />
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-orange-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/2 -right-2 w-1 h-1 bg-yellow-300 rounded-full animate-ping delay-500"></div>
+        </div>
+      ), 
+      title: "IoT & Smart Device Integration", 
+      desc: "Connect, automate, and monitor devices in real-time for industry, enterprise, and home.",
+      features: ["Device Connectivity", "Real-time Monitoring", "Automation Rules", "Data Analytics"],
+      benefits: ["Monitor 1000+ devices simultaneously", "Reduce energy costs by 30%", "Predictive maintenance"],
+      tech: ["MQTT", "Node.js", "Python", "Cloud Platforms"],
+      color: "from-yellow-400 to-orange-500"
+    },
+    { 
+      id: 7,
+      category: 'communication',
+      icon: (
+        <div className="relative">
+          <FaPhoneVolume className="text-3xl text-red-400 animate-bounce" />
+          <div className="absolute -top-2 -right-2 w-4 h-4 border-2 border-red-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-pink-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/2 -right-3 w-1 h-1 bg-red-300 rounded-full animate-ping delay-1000"></div>
+        </div>
+      ), 
+      title: "Cloud Call Center Tech", 
+      desc: "Hosted dialers, SIP trunking, Twilio/Asterisk/Vicidial, and AI agents for next-level call centers.",
+      features: ["Auto-dialing", "Call Recording", "Analytics Dashboard", "AI Agents"],
+      benefits: ["Increase call volume by 500%", "Reduce costs by 50%", "Improve agent productivity"],
+      tech: ["Twilio", "Asterisk", "Vicidial", "Custom Solutions"],
+      color: "from-red-400 to-pink-500"
+    },
+    { 
+      id: 8,
+      category: 'communication',
+      icon: (
+        <div className="relative">
+          <FaGlobe className="text-3xl text-indigo-400 animate-pulse" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-indigo-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/2 -right-2 w-1 h-1 bg-indigo-300 rounded-full animate-ping delay-500"></div>
+          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-purple-300 rounded-full animate-ping delay-1000"></div>
+        </div>
+      ), 
+      title: "VoIP & Communication APIs", 
+      desc: "Global calling, programmable voice, SMS, and video with Twilio, Asterisk, and custom APIs.",
+      features: ["Global Calling", "SMS Integration", "Video Calls", "Custom APIs"],
+      benefits: ["Reduce communication costs by 70%", "Global reach", "Scalable infrastructure"],
+      tech: ["Twilio", "Asterisk", "WebRTC", "Custom APIs"],
+      color: "from-indigo-400 to-purple-500"
+    },
+    { 
+      id: 9,
+      category: 'ai',
+      icon: (
+        <div className="relative">
+          <FaUserTie className="text-3xl text-teal-400 animate-pulse" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-teal-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/2 -right-2 w-1 h-1 bg-teal-300 rounded-full animate-ping delay-500"></div>
+          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-cyan-300 rounded-full animate-ping delay-1000"></div>
+        </div>
+      ), 
+      title: "AI Agents & Virtual Closers", 
+      desc: "AI voicebots that qualify leads, handle objections, and close deals—no human needed.",
+      features: ["Lead Qualification", "Objection Handling", "Deal Closing", "Follow-up Automation"],
+      benefits: ["Close 3x more deals", "Work 24/7", "Reduce sales cycle by 60%"],
+      tech: ["Advanced NLP", "Sales Psychology", "CRM Integration", "Custom AI"],
+      color: "from-teal-400 to-cyan-500"
+    },
+    { 
+      id: 10,
+      category: 'development',
+      icon: (
+        <div className="relative">
+          <FaTabletAlt className="text-3xl text-emerald-400 animate-bounce" />
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/2 -right-2 w-1 h-1 bg-emerald-300 rounded-full animate-ping delay-500"></div>
+        </div>
+      ), 
+      title: "Mobile App Engineering", 
+      desc: "Stunning cross-platform apps with Flutter, React Native, or native stacks. Fast, beautiful, robust.",
+      features: ["Cross-platform Development", "Native Performance", "UI/UX Design", "App Store Optimization"],
+      benefits: ["Launch 50% faster", "Reduce development costs", "Reach both platforms"],
+      tech: ["Flutter", "React Native", "Swift", "Kotlin"],
+      color: "from-emerald-400 to-green-500"
+    },
+    { 
+      id: 11,
+      category: 'development',
+      icon: (
+        <div className="relative">
+          <FaDesktop className="text-3xl text-violet-400 animate-pulse" />
+          <div className="absolute -top-2 -right-2 w-1 h-6 bg-gradient-to-b from-violet-400 to-transparent animate-pulse"></div>
+          <div className="absolute -bottom-2 -left-2 w-6 h-1 bg-gradient-to-r from-purple-400 to-transparent animate-pulse delay-500"></div>
+          <div className="absolute top-1/2 -right-3 w-1 h-1 bg-violet-300 rounded-full animate-ping delay-1000"></div>
+        </div>
+      ), 
+      title: "Web & SaaS Product Dev", 
+      desc: "Modern, scalable web apps & SaaS platforms with React, Next.js, Django, and more.",
+      features: ["Full-stack Development", "Scalable Architecture", "Cloud Deployment", "Performance Optimization"],
+      benefits: ["Scale to millions of users", "99.9% uptime", "Lightning-fast performance"],
+      tech: ["React", "Next.js", "Django", "Node.js"],
+      color: "from-violet-400 to-purple-500"
+    },
+    { 
+      id: 12,
+      category: 'development',
+      icon: (
+        <div className="relative">
+          <FaShieldAlt className="text-3xl text-amber-400 animate-pulse" />
+          <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-amber-300 rounded-full animate-ping delay-500"></div>
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-orange-300 rounded-full animate-ping delay-1000"></div>
+        </div>
+      ), 
+      title: "Custom SaaS & Platform Builds", 
+      desc: "Multi-tenant SaaS, billing, analytics, user roles, APIs—engineered for scale and security.",
+      features: ["Multi-tenancy", "Subscription Billing", "User Management", "API Development"],
+      benefits: ["Generate recurring revenue", "Scale globally", "Enterprise-grade security"],
+      tech: ["AWS", "Stripe", "OAuth", "Microservices"],
+      color: "from-amber-400 to-orange-500"
+    },
+    { 
+      id: 13,
+      category: 'automation',
+      icon: (
+        <div className="relative">
+          <FaSearch className="text-3xl text-rose-400 animate-pulse" />
+          <div className="absolute -top-2 -right-2 w-4 h-4 border-2 border-rose-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-2 -left-2 w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
+          <div className="absolute top-1/2 -right-3 w-1 h-1 bg-rose-300 rounded-full animate-ping delay-500"></div>
+          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-red-300 rounded-full animate-ping delay-1000"></div>
+        </div>
+      ), 
+      title: "SEO, Analytics & Digital Growth", 
+      desc: "Technical, content, and local SEO plus analytics for measurable business impact.",
+      features: ["Technical SEO", "Content Strategy", "Analytics Setup", "Performance Monitoring"],
+      benefits: ["Increase organic traffic by 200%", "Improve search rankings", "Data-driven decisions"],
+      tech: ["Google Analytics", "Search Console", "Custom Tools", "AI Optimization"],
+      color: "from-rose-400 to-red-500"
+    },
+    { 
+      id: 14,
+      category: 'development',
+      icon: (
+        <div className="relative">
+          <FaLightbulb className="text-3xl text-sky-400 animate-bounce" />
+          <div className="absolute -top-2 -right-2 w-1 h-6 bg-gradient-to-b from-sky-400 to-transparent animate-pulse"></div>
+          <div className="absolute -bottom-2 -left-2 w-6 h-1 bg-gradient-to-r from-blue-400 to-transparent animate-pulse delay-500"></div>
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-sky-400 rounded-full animate-ping"></div>
+          <div className="absolute -bottom-1 -left-1 w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+        </div>
+      ), 
+      title: "Startup MVPs & Product Rescue", 
+      desc: "Rapid MVPs, product rescue, and expert consulting for founders and enterprises.",
+      features: ["Rapid Prototyping", "Product Strategy", "Technical Consulting", "Team Building"],
+      benefits: ["Launch in 4-8 weeks", "Validate ideas quickly", "Expert guidance"],
+      tech: ["Lean Methodology", "Modern Stack", "Cloud Services", "Best Practices"],
+      color: "from-sky-400 to-blue-500"
+    },
+  ];
+
+  const filteredServices = selectedCategory === 'all' 
+    ? services 
+    : services.filter(service => service.category === selectedCategory);
+  return (
+    <section id="services" className="w-full py-20 px-4 relative overflow-hidden">
+      {/* AI-Generated Neural Network Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Deep Neural Network Base */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-slate-900/20 to-black/95"></div>
+        
+        {/* Neural Network Nodes - Evolving Pattern */}
+        <div className="absolute top-10 left-1/6 w-2 h-2 bg-gradient-to-r from-cyan-400/80 to-blue-400/60 animate-neural-pulse-1 blur-sm"></div>
+        <div className="absolute top-20 right-1/4 w-1.5 h-1.5 bg-gradient-to-r from-purple-400/70 to-pink-400/50 animate-neural-pulse-2 blur-sm"></div>
+        <div className="absolute top-30 left-1/3 w-2.5 h-2.5 bg-gradient-to-r from-green-400/75 to-cyan-400/55 animate-neural-pulse-3 blur-sm"></div>
+        <div className="absolute top-40 right-1/3 w-1.8 h-1.8 bg-gradient-to-r from-pink-400/65 to-purple-400/45 animate-neural-pulse-4 blur-sm"></div>
+        <div className="absolute top-50 left-2/3 w-2.2 h-2.2 bg-gradient-to-r from-blue-400/70 to-green-400/50 animate-neural-pulse-5 blur-sm"></div>
+        <div className="absolute top-60 right-1/6 w-1.6 h-1.6 bg-gradient-to-r from-cyan-400/60 to-pink-400/40 animate-neural-pulse-6 blur-sm"></div>
+        <div className="absolute top-70 left-1/2 w-2.8 h-2.8 bg-gradient-to-r from-purple-400/80 to-cyan-400/60 animate-neural-pulse-7 blur-sm"></div>
+        <div className="absolute top-80 right-2/3 w-1.9 h-1.9 bg-gradient-to-r from-green-400/65 to-blue-400/45 animate-neural-pulse-8 blur-sm"></div>
+        
+        {/* Synaptic Connections - Dynamic Links */}
+        <div className="absolute top-15 left-1/4 w-0.5 h-16 bg-gradient-to-b from-cyan-400/40 to-transparent animate-synaptic-flow-1 blur-sm"></div>
+        <div className="absolute top-25 right-1/3 w-0.5 h-12 bg-gradient-to-b from-purple-400/35 to-transparent animate-synaptic-flow-2 blur-sm"></div>
+        <div className="absolute top-35 left-1/2 w-0.5 h-20 bg-gradient-to-b from-green-400/45 to-transparent animate-synaptic-flow-3 blur-sm"></div>
+        <div className="absolute top-45 right-1/2 w-0.5 h-14 bg-gradient-to-b from-pink-400/30 to-transparent animate-synaptic-flow-4 blur-sm"></div>
+        <div className="absolute top-55 left-1/4 w-0.5 h-18 bg-gradient-to-b from-blue-400/40 to-transparent animate-synaptic-flow-5 blur-sm"></div>
+        <div className="absolute top-65 right-1/4 w-0.5 h-15 bg-gradient-to-b from-cyan-400/35 to-transparent animate-synaptic-flow-6 blur-sm"></div>
+        
+        {/* Data Streams - Intelligent Flow */}
+        <div className="absolute top-0 left-1/5 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/20 to-transparent animate-data-stream-1 blur-sm"></div>
+        <div className="absolute top-0 left-2/5 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/20 to-transparent animate-data-stream-2 blur-sm"></div>
+        <div className="absolute top-0 left-3/5 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/20 to-transparent animate-data-stream-3 blur-sm"></div>
+        <div className="absolute top-0 left-4/5 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/20 to-transparent animate-data-stream-4 blur-sm"></div>
+        
+        {/* AI Processing Centers - Neural Hubs */}
+        <div className="absolute top-1/4 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/8 to-blue-400/8 animate-neural-hub-1 blur-sm">
+          <div className="w-2 h-2 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/8 to-pink-400/8 animate-neural-hub-2 blur-sm">
+          <div className="w-1.5 h-1.5 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse delay-500 blur-sm"></div>
+        </div>
+        <div className="absolute top-3/4 left-1/3 w-14 h-14 bg-gradient-to-r from-green-400/8 to-cyan-400/8 animate-neural-hub-3 blur-sm">
+          <div className="w-2.5 h-2.5 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse delay-1000 blur-sm"></div>
+        </div>
+        
+        {/* Thought Patterns - Evolving Ideas */}
+        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/12 to-transparent animate-thought-wave-1 blur-sm"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/12 to-transparent animate-thought-wave-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-400/12 to-transparent animate-thought-wave-3 blur-sm"></div>
+        <div className="absolute top-2/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/12 to-transparent animate-thought-wave-4 blur-sm"></div>
+        
+        {/* Learning Algorithms - Adaptive Patterns */}
+        <div className="absolute top-1/4 left-1/3 w-20 h-20 bg-gradient-to-r from-cyan-400/6 to-blue-500/6 animate-learning-pattern-1 blur-sm"></div>
+        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-gradient-to-r from-purple-400/6 to-pink-500/6 animate-learning-pattern-2 blur-sm"></div>
+        <div className="absolute top-3/4 left-1/2 w-18 h-18 bg-gradient-to-r from-green-400/6 to-cyan-500/6 animate-learning-pattern-3 blur-sm"></div>
+        
+        {/* AI Consciousness Indicators */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-3">
+          <div className="w-1 h-1 bg-cyan-400/70 rounded-full animate-ai-pulse-1 blur-sm"></div>
+          <div className="w-1 h-1 bg-purple-400/70 rounded-full animate-ai-pulse-2 blur-sm"></div>
+          <div className="w-1 h-1 bg-green-400/70 rounded-full animate-ai-pulse-3 blur-sm"></div>
+          <div className="w-1 h-1 bg-pink-400/70 rounded-full animate-ai-pulse-4 blur-sm"></div>
+          <div className="w-1 h-1 bg-blue-400/70 rounded-full animate-ai-pulse-5 blur-sm"></div>
+        </div>
+        
+        {/* Quantum Processing Units */}
+        <div className="absolute top-1/3 left-1/6 w-8 h-8 bg-gradient-to-r from-cyan-400/10 to-transparent animate-quantum-pulse-1 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/6 w-6 h-6 bg-gradient-to-r from-purple-400/10 to-transparent animate-quantum-pulse-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-4/5 w-10 h-10 bg-gradient-to-r from-green-400/10 to-transparent animate-quantum-pulse-3 blur-sm"></div>
+      </div>
+      
+      {/* Enhanced Header */}
+      <div className="relative z-10 text-center mb-12">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <FaCogs className="text-4xl text-cyan-400 animate-spin-slow" />
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Our Services</h2>
+          <FaCogs className="text-4xl text-purple-400 animate-spin-slow-reverse" />
+        </div>
+        <div className="h-1.5 w-32 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg mx-auto mb-4"></div>
+        <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+          AI-powered, industry-driven solutions for modern businesses. Explore what JarvysAI can build for you.
+        </p>
+      </div>
+
+      {/* Category Filter */}
+      <div className="relative z-10 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+          {serviceCategories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                selectedCategory === category.id
+                  ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/25'
+                  : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-gray-600/50'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                {category.name}
+                <span className={`px-2 py-1 rounded-full text-xs ${
+                  selectedCategory === category.id
+                    ? 'bg-white/20 text-white'
+                    : 'bg-gray-600/50 text-gray-300'
+                }`}>
+                  {category.count}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Enhanced Service Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto relative z-10">
+        {filteredServices.map((service, i) => (
+          <div
+            key={service.id}
+            className="group relative rounded-2xl p-8 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
+            style={{ animationDelay: `${i * 100}ms` }}
+            onMouseEnter={() => setHoveredService(service.id)}
+            onMouseLeave={() => setHoveredService(null)}
+          >
+            {/* Animated Border */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            {/* Service Number */}
+            <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 flex items-center justify-center text-xs font-bold text-cyan-300">
+              {service.id.toString().padStart(2, '0')}
+            </div>
+
+            {/* Icon */}
+            <div className="relative z-10 flex flex-col items-center text-center mb-6">
+              <div className={`w-20 h-20 flex items-center justify-center rounded-2xl mb-4 bg-gradient-to-tr ${service.color} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
+                {service.icon}
+              </div>
+              
+              {/* Title */}
+              <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 group-hover:text-xl transition-all duration-300">
+                {service.title}
+              </h3>
+              
+              {/* Description */}
+              <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                {service.desc}
+              </p>
+            </div>
+
+            {/* Features */}
+            <div className="relative z-10 mb-6">
+              <h4 className="text-sm font-semibold text-cyan-300 mb-3 flex items-center gap-2">
+                <FaCheck className="text-xs" />
+                Key Features
+              </h4>
+              <div className="space-y-2">
+                {service.features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400"></div>
+                    {feature}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="relative z-10 mb-6">
+              <h4 className="text-sm font-semibold text-green-300 mb-3 flex items-center gap-2">
+                <FaChartLine className="text-xs" />
+                Business Impact
+              </h4>
+              <div className="space-y-2">
+                {service.benefits.map((benefit, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-400"></div>
+                    {benefit}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Technology Stack */}
+            <div className="relative z-10">
+              <h4 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2">
+                <FaCode className="text-xs" />
+                Technology Stack
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {service.tech.map((tech, idx) => (
+                  <span key={idx} className="px-2 py-1 text-xs bg-gradient-to-r from-purple-400/20 to-pink-400/20 text-purple-300 rounded-full border border-purple-400/30">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Hover Overlay */}
+            {hoveredService === service.id && (
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-400/5 to-pink-400/5 rounded-2xl transition-all duration-300"></div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Call to Action */}
+      <div className="relative z-10 text-center mt-16">
+        <div className="bg-gradient-to-r from-cyan-400/10 via-purple-400/10 to-pink-400/10 rounded-2xl p-8 border border-cyan-400/20 backdrop-blur-xl">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-4">
+            Ready to Transform Your Business?
+          </h3>
+          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            Let's discuss how our AI solutions can revolutionize your operations, boost efficiency, and drive growth.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#contact" className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg shadow-cyan-500/25">
+              Get Free Consultation
+            </a>
+            <a href="#portfolio" className="px-8 py-3 border border-cyan-400/50 text-cyan-300 rounded-full font-semibold hover:bg-cyan-400/10 transition-all duration-300">
+              View Our Work
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// TECHNOLOGIES SECTION
+function Technologies() {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [hoveredTech, setHoveredTech] = useState<number | null>(null);
+
+  const techCategories = [
+    { id: 'all', name: 'All Technologies', count: 25 },
+    { id: 'ai-ml', name: 'AI & Machine Learning', count: 3 },
+    { id: 'web-dev', name: 'Web Development', count: 6 },
+    { id: 'mobile', name: 'Mobile Development', count: 3 },
+    { id: 'cloud', name: 'Cloud & DevOps', count: 4 },
+    { id: 'database', name: 'Databases', count: 4 },
+    { id: 'communication', name: 'Communication', count: 3 },
+    { id: 'automation', name: 'Automation & IoT', count: 2 },
+  ];
+
+  const techs = [
+    // AI & Machine Learning
+    { 
+      id: 1,
+      category: 'ai-ml',
+      icon: <SiPython className="text-4xl text-cyan-400" />, 
+      name: "Python (AI/ML)", 
+      description: "Advanced AI/ML development with TensorFlow, PyTorch, and custom models",
+      expertise: "Expert",
+      useCases: ["Machine Learning", "Deep Learning", "Data Science", "AI Development"],
+      projects: 15,
+      color: "from-cyan-400 to-blue-500"
+    },
+    { 
+      id: 2,
+      category: 'ai-ml',
+      icon: <FaRobot className="text-4xl text-purple-400" />, 
+      name: "AI/ML/LLM/RL", 
+      description: "Cutting-edge AI solutions including Large Language Models and Reinforcement Learning",
+      expertise: "Expert",
+      useCases: ["Natural Language Processing", "Computer Vision", "Predictive Analytics", "AI Agents"],
+      projects: 12,
+      color: "from-purple-400 to-pink-500"
+    },
+    { 
+      id: 3,
+      category: 'ai-ml',
+      icon: <FaBrain className="text-4xl text-green-400" />, 
+      name: "Neural Networks", 
+      description: "Custom neural network architectures and deep learning solutions",
+      expertise: "Expert",
+      useCases: ["Deep Learning", "Neural Networks", "AI Training", "Model Optimization"],
+      projects: 8,
+      color: "from-green-400 to-emerald-500"
+    },
+    
+    // Web Development
+    { 
+      id: 4,
+      category: 'web-dev',
+      icon: <SiReact className="text-4xl text-blue-400" />, 
+      name: "React (Web/SaaS)", 
+      description: "Modern React applications with hooks, context, and advanced state management",
+      expertise: "Expert",
+      useCases: ["Single Page Applications", "Web Dashboards", "E-commerce", "SaaS Platforms"],
+      projects: 20,
+      color: "from-blue-400 to-indigo-500"
+    },
+    { 
+      id: 5,
+      category: 'web-dev',
+      icon: <SiNextdotjs className="text-4xl text-black" />, 
+      name: "Next.js (Web/SaaS)", 
+      description: "Full-stack React framework with SSR, SSG, and API routes",
+      expertise: "Expert",
+      useCases: ["SEO-Optimized Websites", "E-commerce", "Blog Platforms", "SaaS Applications"],
+      projects: 18,
+      color: "from-gray-400 to-black"
+    },
+    { 
+      id: 6,
+      category: 'web-dev',
+      icon: <SiNodedotjs className="text-4xl text-green-400" />, 
+      name: "Node.js (APIs)", 
+      description: "Server-side JavaScript with Express, REST APIs, and real-time applications",
+      expertise: "Expert",
+      useCases: ["REST APIs", "Real-time Applications", "Microservices", "Backend Services"],
+      projects: 25,
+      color: "from-green-400 to-emerald-500"
+    },
+    { 
+      id: 7,
+      category: 'web-dev',
+      icon: <SiDjango className="text-4xl text-green-600" />, 
+      name: "Django (Backend)", 
+      description: "Python web framework with admin panel, ORM, and rapid development",
+      expertise: "Expert",
+      useCases: ["Content Management", "E-commerce", "Admin Panels", "REST APIs"],
+      projects: 12,
+      color: "from-green-600 to-green-800"
+    },
+    { 
+      id: 8,
+      category: 'web-dev',
+      icon: <SiLaravel className="text-4xl text-red-400" />, 
+      name: "Laravel (Backend)", 
+      description: "PHP framework with elegant syntax, ORM, and robust features",
+      expertise: "Advanced",
+      useCases: ["Web Applications", "API Development", "E-commerce", "CMS"],
+      projects: 8,
+      color: "from-red-400 to-red-600"
+    },
+    { 
+      id: 9,
+      category: 'web-dev',
+      icon: <SiTypescript className="text-4xl text-blue-500" />, 
+      name: "TypeScript (Web)", 
+      description: "Typed JavaScript for better development experience and code quality",
+      expertise: "Expert",
+      useCases: ["Type Safety", "Large Applications", "Team Development", "API Integration"],
+      projects: 22,
+      color: "from-blue-500 to-blue-700"
+    },
+    
+    // Mobile Development
+    { 
+      id: 10,
+      category: 'mobile',
+      icon: <SiFlutter className="text-4xl text-blue-400" />, 
+      name: "Flutter (Mobile)", 
+      description: "Cross-platform mobile development with beautiful UI and native performance",
+      expertise: "Expert",
+      useCases: ["Cross-platform Apps", "Mobile UI", "Native Performance", "Rapid Development"],
+      projects: 15,
+      color: "from-blue-400 to-indigo-500"
+    },
+    { 
+      id: 11,
+      category: 'mobile',
+      icon: <FaMobileAlt className="text-4xl text-green-400" />, 
+      name: "iOS App Development", 
+      description: "Native iOS applications with Swift and modern iOS features",
+      expertise: "Advanced",
+      useCases: ["Native iOS Apps", "App Store", "iOS Features", "Performance"],
+      projects: 6,
+      color: "from-green-400 to-emerald-500"
+    },
+    { 
+      id: 12,
+      category: 'mobile',
+      icon: <FaMobileAlt className="text-4xl text-green-400" />, 
+      name: "Android App Development", 
+      description: "Native Android applications with Kotlin and Material Design",
+      expertise: "Advanced",
+      useCases: ["Native Android Apps", "Google Play", "Android Features", "Material Design"],
+      projects: 5,
+      color: "from-green-400 to-emerald-500"
+    },
+    
+    // Cloud & DevOps
+    { 
+      id: 13,
+      category: 'cloud',
+      icon: <SiAmazon className="text-4xl text-orange-400" />, 
+      name: "AWS (Cloud/IoT)", 
+      description: "Amazon Web Services for scalable cloud infrastructure and IoT solutions",
+      expertise: "Expert",
+      useCases: ["Cloud Infrastructure", "IoT Solutions", "Serverless", "Scalability"],
+      projects: 18,
+      color: "from-orange-400 to-orange-600"
+    },
+    { 
+      id: 14,
+      category: 'cloud',
+      icon: <SiGooglecloud className="text-4xl text-blue-400" />, 
+      name: "Google Cloud (AI/Infra)", 
+      description: "Google Cloud Platform for AI/ML infrastructure and cloud services",
+      expertise: "Advanced",
+      useCases: ["AI/ML Infrastructure", "Cloud Services", "Data Analytics", "Machine Learning"],
+      projects: 10,
+      color: "from-blue-400 to-indigo-500"
+    },
+    { 
+      id: 15,
+      category: 'cloud',
+      icon: <SiDocker className="text-4xl text-blue-500" />, 
+      name: "Docker (DevOps)", 
+      description: "Containerization platform for consistent deployment and development",
+      expertise: "Expert",
+      useCases: ["Containerization", "DevOps", "Microservices", "Deployment"],
+      projects: 20,
+      color: "from-blue-500 to-blue-700"
+    },
+    { 
+      id: 16,
+      category: 'cloud',
+      icon: <SiKubernetes className="text-4xl text-blue-400" />, 
+      name: "Kubernetes (DevOps)", 
+      description: "Container orchestration for scalable and resilient applications",
+      expertise: "Advanced",
+      useCases: ["Container Orchestration", "Scalability", "High Availability", "Microservices"],
+      projects: 8,
+      color: "from-blue-400 to-indigo-500"
+    },
+    
+    // Databases
+    { 
+      id: 17,
+      category: 'database',
+      icon: <SiMongodb className="text-4xl text-green-400" />, 
+      name: "MongoDB (NoSQL)", 
+      description: "Document-based NoSQL database for flexible data storage",
+      expertise: "Expert",
+      useCases: ["Document Storage", "Big Data", "Real-time Applications", "Scalable Data"],
+      projects: 15,
+      color: "from-green-400 to-emerald-500"
+    },
+    { 
+      id: 18,
+      category: 'database',
+      icon: <SiPostgresql className="text-4xl text-blue-400" />, 
+      name: "PostgreSQL (DB)", 
+      description: "Advanced open-source relational database with ACID compliance",
+      expertise: "Expert",
+      useCases: ["Relational Data", "ACID Compliance", "Complex Queries", "Data Integrity"],
+      projects: 12,
+      color: "from-blue-400 to-indigo-500"
+    },
+    { 
+      id: 19,
+      category: 'database',
+      icon: <SiMysql className="text-4xl text-blue-500" />, 
+      name: "MySQL (DB)", 
+      description: "Popular relational database for web applications and data storage",
+      expertise: "Advanced",
+      useCases: ["Web Applications", "Data Storage", "E-commerce", "Content Management"],
+      projects: 10,
+      color: "from-blue-500 to-blue-700"
+    },
+    { 
+      id: 20,
+      category: 'database',
+      icon: <SiRedis className="text-4xl text-red-400" />, 
+      name: "Redis (Cache)", 
+      description: "In-memory data structure store for caching and real-time applications",
+      expertise: "Expert",
+      useCases: ["Caching", "Session Storage", "Real-time Data", "Performance"],
+      projects: 18,
+      color: "from-red-400 to-red-600"
+    },
+    
+    // Communication
+    { 
+      id: 21,
+      category: 'communication',
+      icon: <SiTwilio className="text-4xl text-red-400" />, 
+      name: "Twilio (Voice/SMS)", 
+      description: "Cloud communications platform for voice, SMS, and messaging",
+      expertise: "Expert",
+      useCases: ["Voice Calls", "SMS", "Messaging", "Communication APIs"],
+      projects: 12,
+      color: "from-red-400 to-red-600"
+    },
+    { 
+      id: 22,
+      category: 'communication',
+      icon: <FaPhoneAlt className="text-4xl text-green-400" />, 
+      name: "Asterisk (Call Center)", 
+      description: "Open-source telephony platform for call centers and VoIP",
+      expertise: "Advanced",
+      useCases: ["Call Centers", "VoIP", "Telephony", "Communication Systems"],
+      projects: 8,
+      color: "from-green-400 to-emerald-500"
+    },
+    { 
+      id: 23,
+      category: 'communication',
+      icon: <FaCloud className="text-4xl text-blue-400" />, 
+      name: "Vicidial (Dialer)", 
+      description: "Open-source call center dialer for outbound campaigns",
+      expertise: "Advanced",
+      useCases: ["Outbound Calls", "Call Centers", "Campaign Management", "Lead Generation"],
+      projects: 6,
+      color: "from-blue-400 to-indigo-500"
+    },
+    
+    // Automation & IoT
+    { 
+      id: 24,
+      category: 'automation',
+      icon: <FaSatelliteDish className="text-4xl text-yellow-400" />, 
+      name: "IoT (Internet of Things)", 
+      description: "Internet of Things solutions for device connectivity and automation",
+      expertise: "Advanced",
+      useCases: ["Device Connectivity", "Smart Homes", "Industrial IoT", "Automation"],
+      projects: 8,
+      color: "from-yellow-400 to-orange-500"
+    },
+    { 
+      id: 25,
+      category: 'automation',
+      icon: <FaCogs className="text-4xl text-gray-400" />, 
+      name: "Automation", 
+      description: "Business process automation and workflow optimization",
+      expertise: "Expert",
+      useCases: ["Process Automation", "Workflow Optimization", "RPA", "Business Efficiency"],
+      projects: 15,
+      color: "from-gray-400 to-gray-600"
+    },
+  ];
+
+  const filteredTechs = selectedCategory === 'all' 
+    ? techs 
+    : techs.filter(tech => tech.category === selectedCategory);
+  return (
+    <section id="technologies" className="w-full py-20 px-4 relative overflow-hidden">
+      {/* AI-Generated Neural Network Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Deep Neural Network Base */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-slate-900/20 to-black/95"></div>
+        
+        {/* Neural Network Nodes - Evolving Pattern */}
+        <div className="absolute top-10 left-1/6 w-2 h-2 bg-gradient-to-r from-cyan-400/80 to-blue-400/60 animate-neural-pulse-1 blur-sm"></div>
+        <div className="absolute top-20 right-1/4 w-1.5 h-1.5 bg-gradient-to-r from-purple-400/70 to-pink-400/50 animate-neural-pulse-2 blur-sm"></div>
+        <div className="absolute top-30 left-1/3 w-2.5 h-2.5 bg-gradient-to-r from-green-400/75 to-cyan-400/55 animate-neural-pulse-3 blur-sm"></div>
+        <div className="absolute top-40 right-1/3 w-1.8 h-1.8 bg-gradient-to-r from-pink-400/65 to-purple-400/45 animate-neural-pulse-4 blur-sm"></div>
+        <div className="absolute top-50 left-2/3 w-2.2 h-2.2 bg-gradient-to-r from-blue-400/70 to-green-400/50 animate-neural-pulse-5 blur-sm"></div>
+        <div className="absolute top-60 right-1/6 w-1.6 h-1.6 bg-gradient-to-r from-cyan-400/60 to-pink-400/40 animate-neural-pulse-6 blur-sm"></div>
+        <div className="absolute top-70 left-1/2 w-2.8 h-2.8 bg-gradient-to-r from-purple-400/80 to-cyan-400/60 animate-neural-pulse-7 blur-sm"></div>
+        <div className="absolute top-80 right-2/3 w-1.9 h-1.9 bg-gradient-to-r from-green-400/65 to-blue-400/45 animate-neural-pulse-8 blur-sm"></div>
+        
+        {/* Synaptic Connections - Dynamic Links */}
+        <div className="absolute top-15 left-1/4 w-0.5 h-16 bg-gradient-to-b from-cyan-400/40 to-transparent animate-synaptic-flow-1 blur-sm"></div>
+        <div className="absolute top-25 right-1/3 w-0.5 h-12 bg-gradient-to-b from-purple-400/35 to-transparent animate-synaptic-flow-2 blur-sm"></div>
+        <div className="absolute top-35 left-1/2 w-0.5 h-20 bg-gradient-to-b from-green-400/45 to-transparent animate-synaptic-flow-3 blur-sm"></div>
+        <div className="absolute top-45 right-1/2 w-0.5 h-14 bg-gradient-to-b from-pink-400/30 to-transparent animate-synaptic-flow-4 blur-sm"></div>
+        <div className="absolute top-55 left-1/4 w-0.5 h-18 bg-gradient-to-b from-blue-400/40 to-transparent animate-synaptic-flow-5 blur-sm"></div>
+        <div className="absolute top-65 right-1/4 w-0.5 h-15 bg-gradient-to-b from-cyan-400/35 to-transparent animate-synaptic-flow-6 blur-sm"></div>
+        
+        {/* Data Streams - Intelligent Flow */}
+        <div className="absolute top-0 left-1/5 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/20 to-transparent animate-data-stream-1 blur-sm"></div>
+        <div className="absolute top-0 left-2/5 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/20 to-transparent animate-data-stream-2 blur-sm"></div>
+        <div className="absolute top-0 left-3/5 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/20 to-transparent animate-data-stream-3 blur-sm"></div>
+        <div className="absolute top-0 left-4/5 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/20 to-transparent animate-data-stream-4 blur-sm"></div>
+        
+        {/* AI Processing Centers - Neural Hubs */}
+        <div className="absolute top-1/4 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/8 to-blue-400/8 animate-neural-hub-1 blur-sm">
+          <div className="w-2 h-2 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/8 to-pink-400/8 animate-neural-hub-2 blur-sm">
+          <div className="w-1.5 h-1.5 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse delay-500 blur-sm"></div>
+        </div>
+        <div className="absolute top-3/4 left-1/3 w-14 h-14 bg-gradient-to-r from-green-400/8 to-cyan-400/8 animate-neural-hub-3 blur-sm">
+          <div className="w-2.5 h-2.5 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse delay-1000 blur-sm"></div>
+        </div>
+        
+        {/* Thought Patterns - Evolving Ideas */}
+        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/12 to-transparent animate-thought-wave-1 blur-sm"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/12 to-transparent animate-thought-wave-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-green-400/12 to-transparent animate-thought-wave-3 blur-sm"></div>
+        <div className="absolute top-2/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/12 to-transparent animate-thought-wave-4 blur-sm"></div>
+        
+        {/* Learning Algorithms - Adaptive Patterns */}
+        <div className="absolute top-1/4 left-1/3 w-20 h-20 bg-gradient-to-r from-cyan-400/6 to-blue-500/6 animate-learning-pattern-1 blur-sm"></div>
+        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-gradient-to-r from-purple-400/6 to-pink-500/6 animate-learning-pattern-2 blur-sm"></div>
+        <div className="absolute top-3/4 left-1/2 w-18 h-18 bg-gradient-to-r from-green-400/6 to-cyan-500/6 animate-learning-pattern-3 blur-sm"></div>
+        
+        {/* AI Consciousness Indicators */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-3">
+          <div className="w-1 h-1 bg-cyan-400/70 rounded-full animate-ai-pulse-1 blur-sm"></div>
+          <div className="w-1 h-1 bg-purple-400/70 rounded-full animate-ai-pulse-2 blur-sm"></div>
+          <div className="w-1 h-1 bg-green-400/70 rounded-full animate-ai-pulse-3 blur-sm"></div>
+          <div className="w-1 h-1 bg-pink-400/70 rounded-full animate-ai-pulse-4 blur-sm"></div>
+          <div className="w-1 h-1 bg-blue-400/70 rounded-full animate-ai-pulse-5 blur-sm"></div>
+        </div>
+        
+        {/* Quantum Processing Units */}
+        <div className="absolute top-1/3 left-1/6 w-8 h-8 bg-gradient-to-r from-cyan-400/10 to-transparent animate-quantum-pulse-1 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/6 w-6 h-6 bg-gradient-to-r from-purple-400/10 to-transparent animate-quantum-pulse-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-4/5 w-10 h-10 bg-gradient-to-r from-green-400/10 to-transparent animate-quantum-pulse-3 blur-sm"></div>
+      </div>
+      
+      {/* Enhanced Header */}
+      <div className="relative z-10 text-center mb-12">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <FaCode className="text-4xl text-cyan-400 animate-pulse" />
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">We Offer</h2>
+          <FaCode className="text-4xl text-purple-400 animate-pulse delay-500" />
+        </div>
+        <div className="h-1.5 w-32 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg mx-auto mb-4"></div>
+        <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
+          Cutting-edge technologies and frameworks we master to build innovative solutions for your business.
+        </p>
+      </div>
+
+      {/* Category Filter */}
+      <div className="relative z-10 mb-12">
+        <div className="flex flex-wrap justify-center gap-4 max-w-5xl mx-auto">
+          {techCategories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                selectedCategory === category.id
+                  ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/25'
+                  : 'bg-white/10 text-gray-300 hover:bg-white/20 border border-gray-600/50'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                {category.name}
+                <span className={`px-2 py-1 rounded-full text-xs ${
+                  selectedCategory === category.id
+                    ? 'bg-white/20 text-white'
+                    : 'bg-gray-600/50 text-gray-300'
+                }`}>
+                  {category.count}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Enhanced Technology Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto relative z-10">
+        {filteredTechs.map((tech, i) => (
+          <div
+            key={tech.id}
+            className="group relative rounded-2xl p-6 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
+            style={{ animationDelay: `${i * 80}ms` }}
+            onMouseEnter={() => setHoveredTech(tech.id)}
+            onMouseLeave={() => setHoveredTech(null)}
+          >
+            {/* Animated Border */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            
+            {/* Technology Number */}
+            <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 flex items-center justify-center text-xs font-bold text-cyan-300">
+              {tech.id.toString().padStart(2, '0')}
+            </div>
+
+            {/* Icon */}
+            <div className="relative z-10 flex flex-col items-center text-center mb-4">
+              <div className={`w-16 h-16 flex items-center justify-center rounded-2xl mb-3 bg-gradient-to-tr ${tech.color} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
+                {tech.icon}
+              </div>
+              
+              {/* Title */}
+              <h3 className="text-lg font-bold bg-gradient-to-r from-cyan-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2 group-hover:text-lg transition-all duration-300">
+                {tech.name}
+              </h3>
+              
+              {/* Description */}
+              <p className="text-gray-300 text-xs leading-relaxed mb-4">
+                {tech.description}
+              </p>
+            </div>
+
+            {/* Expertise Level */}
+            <div className="relative z-10 mb-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-400">Expertise:</span>
+                <span className={`px-2 py-1 text-xs rounded-full font-semibold ${
+                  tech.expertise === 'Expert' 
+                    ? 'bg-gradient-to-r from-green-400/20 to-emerald-400/20 text-green-300 border border-green-400/30'
+                    : 'bg-gradient-to-r from-blue-400/20 to-indigo-400/20 text-blue-300 border border-blue-400/30'
+                }`}>
+                  {tech.expertise}
+                </span>
+              </div>
+            </div>
+
+            {/* Use Cases */}
+            <div className="relative z-10 mb-4">
+              <h4 className="text-xs font-semibold text-cyan-300 mb-2 flex items-center gap-1">
+                <FaCheck className="text-xs" />
+                Use Cases
+              </h4>
+              <div className="space-y-1">
+                {tech.useCases.slice(0, 3).map((useCase, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="w-1 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400"></div>
+                    {useCase}
+                  </div>
+                ))}
+                {tech.useCases.length > 3 && (
+                  <div className="text-xs text-gray-500 italic">
+                    +{tech.useCases.length - 3} more...
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Projects Count */}
+            <div className="relative z-10">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-400">Projects:</span>
+                <span className="text-xs font-semibold text-purple-300">
+                  {tech.projects}+ completed
+                </span>
+              </div>
+            </div>
+
+            {/* Hover Overlay */}
+            {hoveredTech === tech.id && (
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-400/5 to-pink-400/5 rounded-2xl transition-all duration-300"></div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Call to Action */}
+      <div className="relative z-10 text-center mt-16">
+        <div className="bg-gradient-to-r from-cyan-400/10 via-purple-400/10 to-pink-400/10 rounded-2xl p-8 border border-cyan-400/20 backdrop-blur-xl">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-4">
+            Ready to Build Something Amazing?
+          </h3>
+          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            Let's leverage our technology expertise to create innovative solutions that drive your business forward.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#contact" className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg shadow-cyan-500/25">
+              Start Your Project
+            </a>
+            <a href="#portfolio" className="px-8 py-3 border border-cyan-400/50 text-cyan-300 rounded-full font-semibold hover:bg-cyan-400/10 transition-all duration-300">
+              View Our Work
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// PORTFOLIO SECTION
+function Portfolio() {
+  // Subtle particles config for background stars
+  const portfolioParticlesOptions = {
+    fullScreen: false,
+    background: { color: "transparent" },
+    fpsLimit: 60,
+    particles: {
+      color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
+      number: { value: 20, density: { enable: true, value_area: 900 } }, // was 40
+      size: { value: { min: 1, max: 2 } },
+      opacity: { value: { min: 0.15, max: 0.3 } }, // lighter
+      move: { enable: true, speed: 0.12, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const } },
+      shape: { type: ["circle", "star"] },
+      twinkle: { particles: { enable: true, color: "#00e6fe", frequency: 0.08, opacity: 1 } },
+      links: { enable: false },
+    },
+    detectRetina: true,
+  };
+  // Restore projects array
+  const projects = [
+    {
+      name: "AI Voicebot for FinTech BPO",
+      desc: "Deployed a human-like outbound voicebot that handled 15,000+ daily calls for loan qualification and lead generation, increasing conversion rates by 32%.",
+      image: "https://bernardmarr.com/wp-content/uploads/2025/05/How-AI-Agents-Will-Revolutionize-Your-Day-To-Day-Life.jpg",
+      tag: "AI/FinTech",
+    },
+    {
+      name: "VoIP Integration for Global Retailer",
+      desc: "Integrated Twilio SIP trunking and AI voice agents for a global retailer, enabling seamless international calling and automated order confirmations.",
+      image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80",
+      tag: "VoIP/E-commerce",
+    },
+    {
+      name: "IoT Solutions & Automation",
+      desc: "Delivered end-to-end IoT projects: industrial automation, connected devices, smart dashboards, and real-time monitoring for businesses and enterprises.",
+      image: "https://images.ctfassets.net/5i1m3im8l2b5/2g17zgCFVcG2WdFZ5quItK/8c62eaa94bbf18d19a2a441dc32ae58e/What_is_IoT.jpg?w=900&h=472&q=75&fm=webp&fit=fill",
+      tag: "IoT/Automation",
+    },
+    {
+      name: "SEO & Local Lead Generation",
+      desc: "Ranked a local business #1 on Google and boosted organic leads by 300% with advanced SEO strategies.",
+      image: "https://audiologydesign.com/wp-content/uploads/2023/03/3.27.23-SEO_jargon.png",
+      tag: "SEO/Local",
+    },
+    {
+      name: "E-commerce Automation Suite",
+      desc: "Built a scalable e-commerce platform with inventory automation, payment integration, and marketing tools.",
+      image: "https://compulynx.com/wp-content/uploads/2022/05/eCommerce.jpg",
+      tag: "E-commerce/Automation",
+    },
+    // More sample projects
+    {
+      name: "AI Chatbot for Healthcare",
+      desc: "Deployed a HIPAA-compliant AI chatbot for patient triage and appointment scheduling, improving efficiency and patient satisfaction.",
+      image: "https://images.pexels.com/photos/8059385/pexels-photo-8059385.jpeg",
+      tag: "Healthcare/AI",
+    },
+    {
+      name: "POS System for Retail Chain",
+      desc: "Custom POS solution with real-time inventory, analytics, and seamless payment integration for a multi-location retailer.",
+      image: "https://images.pexels.com/photos/8422724/pexels-photo-8422724.jpeg",
+      tag: "Retail/POS",
+    },
+    {
+      name: "Mobile Banking App",
+      desc: "Designed and launched a secure, user-friendly mobile banking app with biometric login and instant transfers.",
+      image: "https://images.pexels.com/photos/7821552/pexels-photo-7821552.jpeg",
+      tag: "FinTech/Mobile",
+    },
+    {
+      name: "Smart Home Automation Platform",
+      desc: "Developed a cloud-based platform for smart home device control, automation, and energy monitoring.",
+      image: "https://images.pexels.com/photos/16423103/pexels-photo-16423103.jpeg",
+      tag: "IoT/Smart Home",
+    },
+  ];
+  return (
+    <section id="portfolio" className="w-full max-w-6xl mx-auto py-20 px-4 relative overflow-hidden">
+      {/* Satellite Network Background for Our Work */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Deep Space Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/30 to-black/90"></div>
+        
+        {/* Starlink Constellation - Realistic Train */}
+        <div className="absolute top-20 left-0 w-full">
+          <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
+          <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
+          <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
+          <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
+          <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
+        </div>
+        
+        {/* Individual Satellites - More Realistic */}
+        <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
+        <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
+        <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
+        <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
+        <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
+        
+        {/* Communication Signals - Organic Beams */}
+        <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
+        
+        {/* Data Streams - Natural Flow */}
+        <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
+        <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
+        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
+        <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
+        
+        {/* Ground Stations - More Organic */}
+        <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
+          <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
+          <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
+          <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        
+        {/* Signal Pulses - Natural Energy */}
+        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
+        
+        {/* Atmospheric Energy Waves */}
+        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
+        
+        {/* Network Energy Fields */}
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
+        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
+        <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
+        
+        {/* Status Indicators - Subtle */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
+          <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
+          <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
+          <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
+          <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
+          <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
+        </div>
+      </div>
+      
+      <h2 className="text-3xl font-bold text-cyan-400 text-center mb-10 relative z-10">Our Work</h2>
+      <Swiper
+        spaceBetween={32}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{ delay: 6000, disableOnInteraction: false }}
+        speed={800}
+        breakpoints={{
+          768: { slidesPerView: 2 },
+          1200: { slidesPerView: 3 },
+        }}
+        className="relative z-10"
+      >
+        {projects.map((p, i) => (
+          <SwiperSlide key={i}>
+            <div className="relative group bg-[#181f2a] rounded-2xl shadow-lg border border-cyan-900 overflow-hidden flex flex-col transition-transform hover:scale-[1.03] hover:shadow-cyan-500/30 animate-fadein" style={{ animationDelay: `${i * 100}ms` }}>
+              {/* Unique animated gradient border on hover */}
+              <div className="absolute inset-0 z-0 pointer-events-none rounded-2xl group-hover:animate-border-glow" />
+              {/* Project image */}
+              <div className="h-48 w-full overflow-hidden flex items-center justify-center bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 opacity-80">
+                <img src={p.image + "?w=400&q=60"} alt={p.name} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+              </div>
+              <div className="flex-1 flex flex-col p-6 z-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-3 py-1 text-xs rounded-full bg-cyan-700/30 text-cyan-200 font-semibold shadow">{p.tag}</span>
+                </div>
+                <h3 className="text-lg font-semibold text-cyan-200 mb-2">{p.name}</h3>
+                <p className="text-gray-400 mb-4 text-sm">{p.desc}</p>
+                <div className="mt-auto">
+                  <button className="px-4 py-2 bg-gradient-to-tr from-cyan-500 to-purple-500 text-white rounded-full font-semibold shadow hover:scale-105 transition-transform">View Details</button>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </section>
+  );
+}
+
+// TESTIMONIALS SECTION
+function Testimonials() {
+  const testimonials = [
+    {
+      name: "Ali Raza",
+      feedback: "JarvysAI's voicebot solution helped us double our lead conversion rate. Highly recommended!",
+      avatar: <FaRobot className="text-2xl text-cyan-400" />,
+      tag: "AI Voicebot",
+    },
+    {
+      name: "Sarah Khan",
+      feedback: "Their team automated our call center workflows—our support costs dropped and customer satisfaction soared!",
+      avatar: "S",
+      tag: "Call Center Automation",
+    },
+    {
+      name: "John Matthews",
+      feedback: "The AI-powered chatbots from JarvysAI are a game changer for our SaaS onboarding. Seamless and smart!",
+      avatar: "J",
+      tag: "Chatbot",
+    },
+    {
+      name: "Adeel Ahmed",
+      feedback: "Our IoT devices are now connected, monitored, and automated in real-time. JarvysAI's IoT team is brilliant!",
+      avatar: "A",
+      tag: "IoT Automation",
+    },
+    {
+      name: "Maria Gomez",
+      feedback: "We launched a smart home app with JarvysAI's help—our users love the seamless device control!",
+      avatar: "M",
+      tag: "IoT Smart Home",
+    },
+    {
+      name: "Bilal Siddiqui",
+      feedback: "Their SEO team ranked our business #1 locally and boosted our online leads. True digital partners!",
+      avatar: "B",
+      tag: "SEO",
+    },
+    // New testimonial: iOS App
+    {
+      name: "Jessica Lee",
+      feedback: "Our iOS app is beautiful, fast, and user-friendly. The JarvysAI team delivered beyond expectations!",
+      avatar: "J",
+      tag: "iOS App Development",
+    },
+    // New testimonial: POS System
+    {
+      name: "Omar Farooq",
+      feedback: "The POS system JarvysAI built for our retail chain is rock-solid and easy for our staff. Sales and reporting are a breeze now!",
+      avatar: "O",
+      tag: "POS System",
+    },
+    // New testimonial: IoT
+    {
+      name: "Emily Chen",
+      feedback: "We automated our entire factory floor with JarvysAI's IoT solutions. Real-time monitoring and control has transformed our operations.",
+      avatar: "E",
+      tag: "Industrial IoT",
+    },
+  ];
+  return (
+    <section id="testimonials" className="w-full py-20 px-4 relative">
+      {/* Satellite Network Background for Testimonials */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Deep Space Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/30 to-black/90"></div>
+        
+        {/* Starlink Constellation - Realistic Train */}
+        <div className="absolute top-20 left-0 w-full">
+          <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
+          <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
+          <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
+          <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
+          <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
+        </div>
+        
+        {/* Individual Satellites - More Realistic */}
+        <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
+        <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
+        <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
+        <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
+        <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
+        
+        {/* Communication Signals - Organic Beams */}
+        <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
+        
+        {/* Data Streams - Natural Flow */}
+        <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
+        <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
+        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
+        <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
+        
+        {/* Ground Stations - More Organic */}
+        <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
+          <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
+          <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
+          <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        
+        {/* Signal Pulses - Natural Energy */}
+        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
+        
+        {/* Atmospheric Energy Waves */}
+        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
+        
+        {/* Network Energy Fields */}
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
+        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
+        <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
+        
+        {/* Status Indicators - Subtle */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
+          <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
+          <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
+          <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
+          <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
+          <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
+        </div>
+      </div>
+      
+      <h2 className="text-3xl font-bold text-cyan-400 text-center mb-2 relative z-10">What Our Clients Say</h2>
+      {/* Cool animated gradient bar for visual flair */}
+      <div className="mx-auto mb-6 flex justify-center">
+        <div className="h-1 w-32 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg" style={{ animationDuration: '2.5s' }} />
+      </div>
+      <div className="text-center text-gray-400 mb-10 text-lg max-w-2xl mx-auto">Real results. Real partnerships. Here's what our clients love about JarvysAI.</div>
+      {/* Floating robot icon background */}
+      <FaRobot className="hidden md:block absolute bottom-8 right-8 text-[120px] text-cyan-900/20 blur-sm animate-float pointer-events-none z-0" />
+      <Swiper
+        spaceBetween={32}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
+        speed={800}
+        effect="slide"
+        grabCursor={true}
+        slidesPerGroup={1}
+        centeredSlides={false}
+        watchSlidesProgress={true}
+        watchOverflow={true}
+        breakpoints={{
+          640: { slidesPerView: 1, spaceBetween: 24 },
+          768: { slidesPerView: 2, spaceBetween: 32 },
+          1024: { slidesPerView: 3, spaceBetween: 40 },
+        }}
+        className="max-w-6xl mx-auto relative z-10"
+        modules={[Autoplay, EffectFade, Navigation, Pagination]}
+        navigation={{
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        }}
+        pagination={{
+          clickable: true,
+          el: '.swiper-pagination',
+          bulletClass: 'swiper-pagination-bullet',
+          bulletActiveClass: 'swiper-pagination-bullet-active',
+        }}
+      >
+        {/* Custom Navigation Arrows */}
+        <div className="swiper-button-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm rounded-full border border-cyan-400/30 hover:border-cyan-300/60 transition-all duration-300 group cursor-pointer">
+          <div className="w-full h-full flex items-center justify-center">
+            <FaChevronLeft className="text-cyan-400 group-hover:text-white transition-colors duration-300" />
+          </div>
+        </div>
+        <div className="swiper-button-next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 backdrop-blur-sm rounded-full border border-purple-400/30 hover:border-purple-300/60 transition-all duration-300 group cursor-pointer">
+          <div className="w-full h-full flex items-center justify-center">
+            <FaChevronRight className="text-purple-400 group-hover:text-white transition-colors duration-300" />
+          </div>
+        </div>
+        
+        {/* Custom Pagination */}
+        <div className="swiper-pagination absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          <style jsx>{`
+            .swiper-pagination-bullet {
+              width: 12px;
+              height: 12px;
+              background: rgba(0, 230, 254, 0.3);
+              border: 1px solid rgba(0, 230, 254, 0.5);
+              border-radius: 50%;
+              transition: all 0.3s ease;
+              cursor: pointer;
+            }
+            .swiper-pagination-bullet-active {
+              background: linear-gradient(45deg, #00e6fe, #7f5af0);
+              border-color: #00e6fe;
+              transform: scale(1.2);
+              box-shadow: 0 0 10px rgba(0, 230, 254, 0.5);
+            }
+          `}</style>
+        </div>
+        {testimonials.map((t, i) => (
+          <SwiperSlide key={i}>
+            <div className="relative bg-gradient-to-br from-[#181f2a] via-[#1a2332] to-[#151e2e] rounded-3xl p-8 shadow-2xl border border-cyan-900/50 flex flex-col items-center text-center mx-2 transition-all duration-500 hover:scale-105 group overflow-hidden animate-fadein backdrop-blur-xl" style={{ animationDelay: `${i * 80}ms` }}>
+              {/* Animated border/glow on hover */}
+              <div className="absolute inset-0 z-0 pointer-events-none rounded-2xl group-hover:animate-border-glow group-hover:shadow-[0_0_32px_0_rgba(0,255,255,0.18)] group-hover:border-2 group-hover:border-cyan-400/60 transition-all duration-300" />
+              <div className="relative z-10 flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold mb-6 shadow-2xl overflow-hidden ring-4 ring-cyan-400/40 group-hover:ring-cyan-300/60 transition-all duration-300">
+                  {t.avatar}
+                </div>
+                <span className="absolute top-6 right-6 bg-gradient-to-r from-cyan-600 to-purple-600 text-white text-xs px-4 py-2 rounded-full font-semibold shadow-lg border border-cyan-400/30 group-hover:border-cyan-300/50 transition-all duration-300">
+                  {t.tag}
+                </span>
+                <p className="text-gray-300 italic mb-4">"{t.feedback}"</p>
+                <div className="text-cyan-300 font-semibold">{t.name}</div>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <div className="text-center text-gray-300 mt-12 text-lg max-w-3xl mx-auto relative z-10">
+        <span className="text-cyan-400 font-bold">We love building long-term partnerships.</span> 
+        <span className="text-gray-400"> Your success is our success!</span>
+        <div className="mt-4 flex items-center justify-center gap-2">
+          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+          <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// FAQ SECTION
+function FAQ() {
+  const faqs = [
+    {
+      q: "What kind of businesses do you work with?",
+      a: "We serve startups, BPOs, call centers, SaaS platforms, and enterprises looking for AI, automation, and custom tech solutions.",
+    },
+    {
+      q: "Can you help us build a product from scratch?",
+      a: "Absolutely. Whether it's just an idea or you're stuck with an unfinished MVP, we help design, develop, and launch complete solutions.",
+    },
+    {
+      q: "Do you offer dialer + voicebot packages for call centers?",
+      a: "Yes — we offer fully integrated solutions including DDV data, hosted dialer setup (Vicidial/GoAutoDial), and AI-powered voice agents.",
+    },
+    {
+      q: "How long does it take to build a custom solution?",
+      a: "Timelines vary by scope. A small MVP can take 2–4 weeks, while full SaaS platforms may take 1–2 months. We give clear timelines after a free consultation.",
+    },
+    {
+      q: "Is your AI voicebot compatible with our existing SIP or Vicidial setup?",
+      a: "Yes. Our voicebots are built with Asterisk ARI, making them fully compatible with SIP trunks, Vicidial, and other dialers.",
+    },
+    {
+      q: "How do I get started with JarvysAI?",
+      a: "Just contact us. We'll schedule a free discovery call to understand your goals and recommend the best solution — no strings attached.",
+    },
+  ];
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const toggle = (idx: number) => setOpenIndex(openIndex === idx ? null : idx);
+  return (
+    <section id="faq" className="w-full max-w-3xl mx-auto py-20 px-4 relative overflow-hidden">
+      {/* Satellite Network Background for FAQ */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Deep Space Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-slate-900/30 to-black/90"></div>
+        
+        {/* Starlink Constellation - Realistic Train */}
+        <div className="absolute top-20 left-0 w-full">
+          <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
+          <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
+          <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
+          <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
+          <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
+        </div>
+        
+        {/* Individual Satellites - More Realistic */}
+        <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
+        <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
+        <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
+        <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
+        <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
+        
+        {/* Communication Signals - Organic Beams */}
+        <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
+        
+        {/* Data Streams - Natural Flow */}
+        <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
+        <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
+        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
+        <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
+        
+        {/* Ground Stations - More Organic */}
+        <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
+          <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
+          <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
+          <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        
+        {/* Signal Pulses - Natural Energy */}
+        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
+        
+        {/* Atmospheric Energy Waves */}
+        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
+        
+        {/* Network Energy Fields */}
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
+        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
+        <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
+        
+        {/* Status Indicators - Subtle */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
+          <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
+          <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
+          <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
+          <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
+          <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
+        </div>
+      </div>
+      
+      <h2 className="text-4xl font-bold text-cyan-400 text-center mb-6 flex items-center justify-center gap-3 relative z-10">
+        <FaRobot className="text-cyan-400 text-3xl animate-pulse" />
+        Frequently Asked Questions
+      </h2>
+      
+      {/* Enhanced gradient bar */}
+      <div className="mx-auto mb-12 flex justify-center relative z-10">
+        <div className="h-1.5 w-32 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg" style={{ animationDuration: '3s' }} />
+      </div>
+      
+      <div className="text-center text-gray-300 mb-12 text-lg max-w-2xl mx-auto relative z-10">
+        Got questions? We've got answers. Everything you need to know about working with JarvysAI.
+      </div>
+      
+      <div className="space-y-6 max-w-4xl mx-auto relative z-10">
+        {faqs.map((f, i) => (
+          <div 
+            key={i} 
+            className="group bg-gradient-to-br from-[#181f2a] via-[#1a2332] to-[#151e2e] rounded-2xl border border-cyan-900/50 overflow-hidden transition-all duration-500 hover:border-cyan-400/60 hover:shadow-[0_0_20px_0_rgba(0,255,255,0.15)] backdrop-blur-xl animate-fadein"
+            style={{ animationDelay: `${i * 100}ms` }}
+          >
+            <button
+              className="w-full flex justify-between items-center px-8 py-6 text-left text-cyan-200 font-semibold focus:outline-none focus:ring-2 focus:ring-cyan-400/50 group-hover:text-cyan-100 transition-all duration-300"
+              onClick={() => toggle(i)}
+              aria-expanded={openIndex === i}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 flex items-center justify-center group-hover:from-cyan-400/30 group-hover:to-purple-400/30 transition-all duration-300">
+                  <span className="text-cyan-400 text-sm font-bold">{i + 1}</span>
+                </div>
+                <span className="text-lg group-hover:text-xl transition-all duration-300">{f.q}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`transform transition-all duration-500 ${openIndex === i ? 'rotate-90 text-cyan-400 scale-110' : 'rotate-0 text-gray-400'}`}>
+                  <FaChevronRight className="text-xl" />
+                </span>
+              </div>
+            </button>
+            <div
+              className={`px-8 transition-all duration-500 ease-in-out overflow-hidden ${
+                openIndex === i 
+                  ? 'max-h-96 opacity-100 pb-6' 
+                  : 'max-h-0 opacity-0 pb-0'
+              }`}
+            >
+              <div className="border-t border-cyan-900/50 pt-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 mt-2 flex-shrink-0"></div>
+                  <p className="text-gray-200 text-base leading-relaxed">
+                    {f.a}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Enhanced bottom section */}
+      <div className="text-center mt-16 relative z-10">
+        <div className="bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-8 border border-cyan-400/20 backdrop-blur-xl">
+          <h3 className="text-2xl font-bold text-cyan-300 mb-4">Still Have Questions?</h3>
+          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            Can't find what you're looking for? Our team is here to help. Reach out and we'll get back to you within 24 hours.
+          </p>
+          <a 
+            href="#contact" 
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white px-8 py-3 rounded-full font-semibold hover:from-cyan-400 hover:to-purple-400 transition-all duration-300 shadow-lg hover:shadow-cyan-500/25 hover:scale-105"
+          >
+            <FaComments className="text-lg" />
+            Get In Touch
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// CONTACT SECTION
+function Contact() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
+  const [success, setSuccess] = useState(false);
+  // Animated particles config for background
+  const contactParticlesOptions = {
+    fullScreen: false,
+    background: { color: "transparent" },
+    fpsLimit: 60,
+    particles: {
+      color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
+      number: { value: 24, density: { enable: true, value_area: 700 } },
+      size: { value: { min: 1, max: 2.5 } },
+      opacity: { value: { min: 0.18, max: 0.5 } },
+      move: { enable: true, speed: 0.3, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const } },
+      shape: { type: ["circle", "star"], stroke: { width: 0 } },
+      links: { enable: true, color: "#00e6fe", distance: 120, opacity: 0.13, width: 1 },
+      twinkle: { particles: { enable: true, color: "#fff", frequency: 0.09, opacity: 0.5 } },
+    },
+    detectRetina: true,
+  };
+  const validate = () => {
+    const errs: { name?: string; email?: string; message?: string } = {};
+    if (!form.name.trim()) errs.name = "Name is required";
+    if (!form.email.trim()) errs.email = "Email is required";
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email)) errs.email = "Invalid email";
+    if (!form.message.trim()) errs.message = "Message is required";
+    return errs;
+  };
+  const handleChange = (e: any) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: undefined });
+  };
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length === 0) {
+      setSuccess(true);
+      setForm({ name: "", email: "", message: "" });
+      setTimeout(() => setSuccess(false), 3500);
+    }
+  };
+  return (
+    <section id="contact" className="w-full max-w-2xl mx-auto py-20 px-4 relative overflow-hidden">
+      {/* Satellite Network Background for Contact */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {/* Deep Space Background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-slate-900/30 to-black/90"></div>
+        
+        {/* Starlink Constellation - Realistic Train */}
+        <div className="absolute top-20 left-0 w-full">
+          <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
+          <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
+          <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
+          <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
+          <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
+        </div>
+        
+        {/* Individual Satellites - More Realistic */}
+        <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
+        <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
+        <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
+        <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
+        <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
+        
+        {/* Communication Signals - Organic Beams */}
+        <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
+        
+        {/* Data Streams - Natural Flow */}
+        <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
+        <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
+        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
+        <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
+        
+        {/* Ground Stations - More Organic */}
+        <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
+          <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
+          <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
+          <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
+        </div>
+        
+        {/* Signal Pulses - Natural Energy */}
+        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
+        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
+        <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
+        
+        {/* Atmospheric Energy Waves */}
+        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
+        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
+        
+        {/* Network Energy Fields */}
+        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
+        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
+        <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
+        
+        {/* Status Indicators - Subtle */}
+        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
+          <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
+          <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
+          <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
+          <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
+          <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
+        </div>
+      </div>
+      <h2 className="text-3xl font-bold text-cyan-400 text-center mb-2 flex items-center justify-center gap-2 relative z-10"><FaRobot className="text-cyan-400 text-2xl mr-2" />Contact Us</h2>
+      {/* Animated gradient bar for visual flair */}
+      <div className="mx-auto mb-8 flex justify-center relative z-10">
+        <div className="h-1 w-28 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg" style={{ animationDuration: '2.5s' }} />
+      </div>
+      <div className="relative z-10">
+        <div className="backdrop-blur-xl bg-[#181f2a]/80 border border-cyan-900 rounded-2xl shadow-2xl p-8 max-w-xl mx-auto glass-card animate-fadein">
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit} autoComplete="off" noValidate>
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 text-lg" />
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                className={`pl-10 p-3 rounded bg-[#181f2a]/80 border ${errors.name ? "border-red-500 animate-shake" : "border-cyan-900"} text-white transition-all w-full focus:border-cyan-400 focus:ring-2 focus:ring-cyan-700/30`}
+                value={form.name}
+                onChange={handleChange}
+              />
+              {errors.name && <div className="text-red-400 text-xs animate-fadein-fast text-left pl-1 mt-1">{errors.name}</div>}
+            </div>
+            <div className="relative">
+              <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400 text-lg" />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                className={`pl-10 p-3 rounded bg-[#181f2a]/80 border ${errors.email ? "border-red-500 animate-shake" : "border-cyan-900"} text-white transition-all w-full focus:border-cyan-400 focus:ring-2 focus:ring-cyan-700/30`}
+                value={form.email}
+                onChange={handleChange}
+              />
+              {errors.email && <div className="text-red-400 text-xs animate-fadein-fast text-left pl-1 mt-1">{errors.email}</div>}
+            </div>
+            <div className="relative">
+              <FaCommentDots className="absolute left-3 top-4 text-cyan-400 text-lg" />
+              <textarea
+                name="message"
+                placeholder="Your Message"
+                className={`pl-10 p-3 rounded bg-[#181f2a]/80 border ${errors.message ? "border-red-500 animate-shake" : "border-cyan-900"} text-white transition-all w-full focus:border-cyan-400 focus:ring-2 focus:ring-cyan-700/30`}
+                rows={4}
+                value={form.message}
+                onChange={handleChange}
+              />
+              {errors.message && <div className="text-red-400 text-xs animate-fadein-fast text-left pl-1 mt-1">{errors.message}</div>}
+            </div>
+            <button
+              type="submit"
+              className="bg-gradient-to-tr from-cyan-500 to-purple-500 text-white font-semibold py-3 rounded-full hover:from-cyan-400 hover:to-purple-400 transition shadow-lg glow-btn flex items-center justify-center gap-2 text-lg animate-gradient-shimmer"
+            >
+              <FaRobot className="text-xl animate-float-slow" /> Send Message
+            </button>
+            {success && (
+              <div className="text-green-400 text-base mt-2 flex items-center gap-2 animate-fadein-fast"><span className="text-2xl">✅</span> Thank you! Your message has been sent.</div>
+            )}
+          </form>
+        </div>
+        <div className="mt-10 text-left text-gray-300 space-y-2 animate-fadein delay-200 max-w-xl mx-auto">
+          <div className="flex items-center gap-2"><span className="font-semibold text-cyan-300"><FaEnvelope className="inline mr-1" /> Email:</span> info@jarvysai.com</div>
+          <div className="flex items-center gap-2"><span className="font-semibold text-cyan-300"><FaPhoneAlt className="inline mr-1" /> Phone:</span> +923155126625</div>
+          <div className="flex items-center gap-2"><span className="font-semibold text-cyan-300"><FaMapMarkerAlt className="inline mr-1" /> Office:</span> Gulshanabad Sector 1, Rawalpindi, Pakistan</div>
+          <div className="flex gap-4 mt-2">
+            <a href="#" className="hover:text-cyan-400 text-xl" aria-label="LinkedIn"><FaLinkedin /></a>
+            <a href="https://x.com/JarvysAiTech" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 text-xl" aria-label="Twitter"><FaTwitter /></a>
+            <a href="https://www.facebook.com/people/JarvysAi-Agency/61578293887427/" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 text-xl" aria-label="Facebook"><FaFacebook /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// FOOTER
+function Footer() {
+  // Animated particles config for background
+  const footerParticlesOptions = {
+    fullScreen: false,
+    background: { color: "transparent" },
+    fpsLimit: 60,
+    particles: {
+      color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
+      number: { value: 25, density: { enable: true, value_area: 800 } },
+      size: { value: { min: 1, max: 3 } },
+      opacity: { value: { min: 0.1, max: 0.3 } },
+      move: { enable: true, speed: 0.3, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const } },
+      shape: { type: ["circle", "star"], stroke: { width: 0 } },
+      links: { enable: true, color: "#00e6fe", distance: 120, opacity: 0.06, width: 1 },
+      twinkle: { particles: { enable: true, color: "#fff", frequency: 0.1, opacity: 0.5 } },
+    },
+    detectRetina: true,
+  };
+  return (
+    <footer className="w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#000000] py-16 px-4 text-gray-300 relative overflow-hidden">
+      {/* Enhanced animated particles background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Particles id="footer-particles" options={footerParticlesOptions} className="w-full h-full" />
+      </div>
+      
+      {/* Animated gradient border at the top */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 via-purple-500 via-pink-500 to-transparent animate-gradient-x opacity-60"></div>
+      
+      {/* Main footer content */}
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Top section with logo and social */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 mb-12">
+                     {/* Company description */}
+           <div className="flex flex-col items-center lg:items-start gap-4">
+             <div className="text-center lg:text-left">
+               <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-wider mb-2">
+                 JarvysAI
+               </h3>
+               <p className="text-gray-400 text-sm max-w-md">
+                 Empowering businesses with cutting-edge AI, automation, and modern technology solutions.
+               </p>
+             </div>
+            {/* Social links with enhanced hover effects */}
+            <div className="flex gap-6 mt-4">
+              <a href="#" className="group relative p-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 hover:border-cyan-400/60 transition-all duration-300 hover:scale-110" aria-label="LinkedIn">
+                <FaLinkedin className="text-xl text-cyan-400 group-hover:text-white transition-colors" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+              </a>
+              <a href="https://x.com/JarvysAiTech" target="_blank" rel="noopener noreferrer" className="group relative p-3 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 hover:border-purple-400/60 transition-all duration-300 hover:scale-110" aria-label="Twitter">
+                <FaTwitter className="text-xl text-purple-400 group-hover:text-white transition-colors" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+              </a>
+              <a href="https://www.facebook.com/people/JarvysAi-Agency/61578293887427/" target="_blank" rel="noopener noreferrer" className="group relative p-3 rounded-full bg-gradient-to-r from-pink-500/20 to-cyan-500/20 border border-pink-500/30 hover:border-pink-400/60 transition-all duration-300 hover:scale-110" aria-label="Facebook">
+                <FaFacebook className="text-xl text-pink-400 group-hover:text-white transition-colors" />
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-400 to-cyan-400 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+              </a>
+            </div>
+          </div>
+          
+          {/* Contact info with enhanced styling */}
+          <div className="flex flex-col items-center lg:items-end gap-6">
+            <div className="text-center lg:text-right">
+              <h3 className="text-lg font-semibold text-cyan-300 mb-4">Get In Touch</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 justify-center lg:justify-end">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 flex items-center justify-center">
+                    <FaEnvelope className="text-cyan-400 text-sm" />
+                  </div>
+                  <span className="text-gray-300 hover:text-cyan-400 transition-colors">info@jarvysai.com</span>
+                </div>
+                <div className="flex items-center gap-3 justify-center lg:justify-end">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+                    <FaPhoneAlt className="text-purple-400 text-sm" />
+                  </div>
+                  <span className="text-gray-300 hover:text-purple-400 transition-colors">+923155126625</span>
+                </div>
+                <div className="flex items-center gap-3 justify-center lg:justify-end">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500/20 to-cyan-500/20 flex items-center justify-center">
+                    <FaMapMarkerAlt className="text-pink-400 text-sm" />
+                  </div>
+                  <span className="text-gray-300 hover:text-pink-400 transition-colors">Rawalpindi, Pakistan</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+
+        
+        {/* Bottom section with copyright */}
+        <div className="border-t border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-sm">
+              <FaRobot className="text-cyan-400 animate-pulse" />
+              <span className="text-gray-400">
+                Powered by <span className="font-bold text-cyan-400 tracking-wider">JarvysAI</span>
+              </span>
+            </div>
+            <div className="text-sm text-gray-500">
+              &copy; {new Date().getFullYear()} JarvysAI. All rights reserved.
+            </div>
+            <div className="flex items-center gap-4 text-xs text-gray-500">
+              <span className="hover:text-cyan-400 transition-colors cursor-pointer">Privacy Policy</span>
+              <span className="hover:text-purple-400 transition-colors cursor-pointer">Terms of Service</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default function Home() {
+  return (
+    <main className="w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#000000] relative overflow-hidden">
+      {/* Global animated particles background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <Particles 
+          id="global-particles" 
+          options={{
+            fullScreen: false,
+            background: { color: "transparent" },
+            fpsLimit: 60,
+            particles: {
+              color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
+              number: { value: 20, density: { enable: true, value_area: 1000 } },
+              size: { value: { min: 1, max: 2 } },
+              opacity: { value: { min: 0.05, max: 0.2 } },
+              move: { enable: true, speed: 0.2, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const } },
+              shape: { type: ["circle", "star"], stroke: { width: 0 } },
+              links: { enable: true, color: "#00e6fe", distance: 150, opacity: 0.04, width: 1 },
+              twinkle: { particles: { enable: true, color: "#fff", frequency: 0.08, opacity: 0.4 } },
+            },
+            detectRetina: true,
+          }} 
+          className="w-full h-full" 
+        />
+      </div>
+      
+      {/* Global animated gradient border at the top */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 via-purple-500 via-pink-500 to-transparent animate-gradient-x opacity-40"></div>
+      
+      <div className="relative z-10">
+        <Header />
+        <Hero />
+        <Services />
+        <Technologies />
+        <Portfolio />
+        <Testimonials />
+        <About />
+        <FAQ />
+        <Contact />
+        <Footer />
+      </div>
+    </main>
+  );
+}
