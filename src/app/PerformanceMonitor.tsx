@@ -34,12 +34,12 @@ const PerformanceMonitor = () => {
       });
       fcpObserver.observe({ entryTypes: ['paint'] });
 
-      // Measure Largest Contentful Paint
+      // Observe LCP
       const lcpObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        const lcp = entries[entries.length - 1];
-        if (lcp) {
-          setMetrics(prev => prev ? { ...prev, lcp: lcp.startTime } : { lcp: lcp.startTime } as PerformanceMetrics);
+        const lastEntry = entries[entries.length - 1] as PerformanceEntry;
+        if (lastEntry) {
+          setMetrics(prev => prev ? { ...prev, lcp: Math.round(lastEntry.startTime) } : null);
         }
       });
       lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
@@ -59,7 +59,7 @@ const PerformanceMonitor = () => {
         let clsValue = 0;
         for (const entry of list.getEntries()) {
           if (!entry.hadRecentInput) {
-            clsValue += (entry as any).value;
+            clsValue += (entry as PerformanceEntry & { value?: number }).value || 0;
           }
         }
         setMetrics(prev => prev ? { ...prev, cls: clsValue } : { cls: clsValue } as PerformanceMetrics);

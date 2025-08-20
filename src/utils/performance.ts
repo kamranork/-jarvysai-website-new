@@ -1,7 +1,7 @@
 // Performance utility functions for JarvysAI website
 
 // Debounce function for performance optimization
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
@@ -13,9 +13,9 @@ export const debounce = <T extends (...args: any[]) => any>(
 };
 
 // Throttle function for performance optimization
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
-  limit: number
+  wait: number
 ): ((...args: Parameters<T>) => void) => {
   let inThrottle: boolean;
   return (...args: Parameters<T>) => {
@@ -39,7 +39,7 @@ export const prefersReducedMotion = (): boolean => {
 export const isLowEndDevice = (): boolean => {
   if (typeof navigator !== 'undefined') {
     const hardwareConcurrency = navigator.hardwareConcurrency || 4;
-    const memory = (navigator as any).deviceMemory || 4;
+    const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 4;
     return hardwareConcurrency <= 2 || memory <= 2;
   }
   return false;
@@ -176,8 +176,6 @@ export const getOptimizedCSSVariables = () => {
 export const applyPerformanceOptimizations = (): void => {
   if (typeof document === 'undefined') return;
 
-  const settings = getOptimizedAnimationSettings();
-  
   // Apply CSS variables
   const root = document.documentElement;
   const cssVars = getOptimizedCSSVariables();
@@ -290,7 +288,7 @@ export const cleanupAnimations = (): void => {
 };
 
 // Export all utilities
-export default {
+const performanceUtils = {
   debounce,
   throttle,
   prefersReducedMotion,
@@ -308,3 +306,5 @@ export default {
   getReducedAnimationSettings,
   cleanupAnimations,
 };
+
+export default performanceUtils;

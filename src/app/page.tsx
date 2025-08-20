@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState, lazy, Suspense, memo } from "react";
 import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 import { initParticlesEngine } from "@tsparticles/react";
+
 import { FaRobot, FaHandPaper, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaNetworkWired, FaDatabase, FaMobileAlt, FaLaptopCode, FaUserShield, FaRocket, FaSatelliteDish, FaSearchLocation, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronLeft, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb } from "react-icons/fa";
 import { SiReact, SiPython, SiAmazon, SiNodedotjs, SiNextdotjs, SiDjango, SiLaravel, SiFlutter, SiTwilio, SiAmazons3, SiDocker, SiKubernetes, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiGithub, SiGooglecloud, SiTypescript } from "react-icons/si";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -24,7 +25,7 @@ const useDeviceCapabilities = () => {
   useEffect(() => {
     // Check device performance
     const hardwareConcurrency = navigator.hardwareConcurrency || 4;
-    const deviceMemory = (navigator as any).deviceMemory || 4;
+    const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory || 4;
     const isLowEndDevice = hardwareConcurrency <= 2 || deviceMemory <= 2;
     setIsLowEnd(isLowEndDevice);
 
@@ -2232,11 +2233,11 @@ function Contact() {
     if (!form.message.trim()) errs.message = "Message is required";
     return errs;
   };
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: undefined });
   };
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
@@ -2503,29 +2504,27 @@ function Footer() {
 export default function Home() {
   const { isLowEnd, userPrefersReducedMotion } = useDeviceCapabilities();
   
-  // Performance optimization: Reduce particle count for low-end devices
-  const particleCount = isLowEnd ? 20 : (userPrefersReducedMotion ? 50 : 150);
-  const enableAnimations = !isLowEnd && !userPrefersReducedMotion;
+          // Performance optimization: Conditional rendering based on device capabilities
+        // Device capabilities checked for conditional rendering
   
   // Performance optimization: Conditional rendering of heavy components
   const shouldRenderParticles = !isLowEnd && !userPrefersReducedMotion;
   const shouldRenderComplexAnimations = !isLowEnd && !userPrefersReducedMotion;
   
-  // Performance optimization: Debounced scroll for better performance
-  const [scrollY, setScrollY] = useState(0);
-  useDebouncedScroll(() => {
-    setScrollY(window.scrollY);
-  }, 16); // 60fps scroll handling
+          // Performance optimization: Debounced scroll for better performance
+        useDebouncedScroll(() => {
+          // Scroll handling optimized
+        }, 16); // 60fps scroll handling
 
-  // Particles initialization
-  const particlesInit = useCallback(async (engine: any) => {
-    await loadFull(engine);
-  }, []);
-
-  const particlesLoaded = useCallback(async (container: any) => {
-    // Particles are loaded and ready
-    console.log('Particles loaded successfully');
-  }, []);
+          // Particles initialization
+        const particlesInit = useCallback(async (engine: any) => {
+          await loadFull(engine);
+        }, []);
+      
+        const particlesLoaded = useCallback(async (container: any) => {
+          // Particles are loaded and ready
+          console.log('Particles loaded successfully');
+        }, []);
 
   return (
     <main className="w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#000000] relative overflow-hidden">
