@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { useCallback, useEffect, useState, lazy, Suspense, memo } from "react";
+import { useCallback, useEffect, useState, lazy, memo } from "react";
 import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 import { initParticlesEngine } from "@tsparticles/react";
@@ -1621,7 +1621,7 @@ function Technologies() {
             Ready to Build Something Amazing?
           </h3>
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-            Let's leverage our technology expertise to create innovative solutions that drive your business forward.
+            Let&apos;s leverage our technology expertise to create innovative solutions that drive your business forward.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#contact" className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg shadow-cyan-500/25">
@@ -1853,7 +1853,7 @@ function Portfolio() {
           Our Work
         </h2>
         <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-          Real projects. Real results. See how we've transformed businesses with cutting-edge technology.
+          Real projects. Real results. See how we&apos;ve transformed businesses with cutting-edge technology.
         </p>
         
         {/* Category Filter */}
@@ -2720,7 +2720,7 @@ export default function Home() {
   }, 16); // 60fps scroll handling
 
   // Particles initialization
-  const particlesInit = useCallback(async (engine: any) => {
+  const particlesInit = useCallback(async (engine: unknown) => {
     await loadFull(engine);
   }, []);
   
