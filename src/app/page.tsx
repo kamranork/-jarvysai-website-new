@@ -2220,7 +2220,7 @@ function Testimonials() {
                 
                 {/* Feedback */}
                 <p className="text-gray-300 text-sm leading-relaxed italic">
-                  "{t.feedback}"
+                  &ldquo;{t.feedback}&rdquo;
                 </p>
               </div>
             ))}
@@ -2357,7 +2357,7 @@ function FAQ() {
       </div>
       
       <div className="text-center text-gray-300 mb-12 text-lg max-w-2xl mx-auto relative z-10">
-        Got questions? We've got answers. Everything you need to know about working with JarvysAI.
+        Got questions? We&apos;ve got answers. Everything you need to know about working with JarvysAI.
       </div>
       
       <div className="space-y-6 max-w-4xl mx-auto relative z-10">
@@ -2409,7 +2409,7 @@ function FAQ() {
         <div className="bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-8 border border-cyan-400/20 backdrop-blur-xl">
           <h3 className="text-2xl font-bold text-cyan-300 mb-4">Still Have Questions?</h3>
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-            Can't find what you're looking for? Our team is here to help. Reach out and we'll get back to you within 24 hours.
+            Can&apos;t find what you&apos;re looking for? Our team is here to help. Reach out and we&apos;ll get back to you within 24 hours.
           </p>
           <a 
             href="#contact" 
