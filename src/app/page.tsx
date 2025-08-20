@@ -182,7 +182,23 @@ const useIntersectionObserver = (options = {}) => {
 };
 
 // Performance optimization: Memoized service card
-const ServiceCard = memo(({ service, index, onHover, isHovered }: any) => (
+interface ServiceCardProps {
+  service: {
+    id: number;
+    title: string;
+    desc: string;
+    color: string;
+    icon: React.ReactNode;
+    features: string[];
+    benefits: string[];
+    tech: string[];
+  };
+  index: number;
+  onHover: (id: number | null) => void;
+  isHovered: boolean;
+}
+
+const ServiceCard = memo(({ service, index, onHover, isHovered }: ServiceCardProps) => (
   <div
     className="group relative rounded-2xl p-8 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
     style={{ animationDelay: `${index * 100}ms` }}
@@ -271,7 +287,21 @@ const ServiceCard = memo(({ service, index, onHover, isHovered }: any) => (
 ServiceCard.displayName = 'ServiceCard';
 
 // Performance optimization: Memoized technology card
-const TechnologyCard = memo(({ tech, index, onHover, isHovered }: any) => (
+interface TechnologyCardProps {
+  tech: {
+    id: number;
+    name: string;
+    description: string;
+    icon: React.ReactNode;
+    category: string;
+    level: string;
+  };
+  index: number;
+  onHover: (id: number | null) => void;
+  isHovered: boolean;
+}
+
+const TechnologyCard = memo(({ tech, index, onHover, isHovered }: TechnologyCardProps) => (
   <div
     className="group relative rounded-2xl p-6 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
     style={{ animationDelay: `${index * 80}ms` }}
@@ -1622,23 +1652,6 @@ function Technologies() {
 
 // PORTFOLIO SECTION
 function Portfolio() {
-  // Subtle particles config for background stars
-  const portfolioParticlesOptions = {
-    fullScreen: false,
-    background: { color: "transparent" },
-    fpsLimit: 60,
-    particles: {
-      color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
-      number: { value: 20, density: { enable: true, value_area: 900 } }, // was 40
-      size: { value: { min: 1, max: 2 } },
-      opacity: { value: { min: 0.15, max: 0.3 } }, // lighter
-      move: { enable: true, speed: 0.12, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const } },
-      shape: { type: ["circle", "star"] },
-      twinkle: { particles: { enable: true, color: "#00e6fe", frequency: 0.08, opacity: 1 } },
-      links: { enable: false },
-    },
-    detectRetina: true,
-  };
   // Restore projects array
   const projects = [
     {
@@ -2208,23 +2221,7 @@ function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
   const [success, setSuccess] = useState(false);
-  // Animated particles config for background
-  const contactParticlesOptions = {
-    fullScreen: false,
-    background: { color: "transparent" },
-    fpsLimit: 60,
-    particles: {
-      color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
-      number: { value: 24, density: { enable: true, value_area: 700 } },
-      size: { value: { min: 1, max: 2.5 } },
-      opacity: { value: { min: 0.18, max: 0.5 } },
-      move: { enable: true, speed: 0.3, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const } },
-      shape: { type: ["circle", "star"], stroke: { width: 0 } },
-      links: { enable: true, color: "#00e6fe", distance: 120, opacity: 0.13, width: 1 },
-      twinkle: { particles: { enable: true, color: "#fff", frequency: 0.09, opacity: 0.5 } },
-    },
-    detectRetina: true,
-  };
+
   const validate = () => {
     const errs: { name?: string; email?: string; message?: string } = {};
     if (!form.name.trim()) errs.name = "Name is required";
@@ -2505,7 +2502,6 @@ export default function Home() {
   const { isLowEnd, userPrefersReducedMotion } = useDeviceCapabilities();
   
           // Performance optimization: Conditional rendering based on device capabilities
-        // Device capabilities checked for conditional rendering
   
   // Performance optimization: Conditional rendering of heavy components
   const shouldRenderParticles = !isLowEnd && !userPrefersReducedMotion;

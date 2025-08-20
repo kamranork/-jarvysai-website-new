@@ -34,14 +34,14 @@ const PerformanceMonitor = () => {
       });
       fcpObserver.observe({ entryTypes: ['paint'] });
 
-      // Observe LCP
-      const lcpObserver = new PerformanceObserver((list) => {
-        const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1] as PerformanceEntry;
-        if (lastEntry) {
-          setMetrics(prev => prev ? { ...prev, lcp: Math.round(lastEntry.startTime) } : null);
-        }
-      });
+             // Observe LCP
+       const lcpObserver = new PerformanceObserver((list) => {
+         const entries = list.getEntries();
+         const lastEntry = entries[entries.length - 1];
+         if (lastEntry) {
+           setMetrics(prev => prev ? { ...prev, lcp: Math.round(lastEntry.startTime) } : { lcp: Math.round(lastEntry.startTime) } as PerformanceMetrics);
+         }
+       });
       lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
 
       // Measure First Input Delay

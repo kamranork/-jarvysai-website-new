@@ -15,7 +15,7 @@ export const debounce = <T extends (...args: unknown[]) => unknown>(
 // Throttle function for performance optimization
 export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
-  wait: number
+  limit: number
 ): ((...args: Parameters<T>) => void) => {
   let inThrottle: boolean;
   return (...args: Parameters<T>) => {
@@ -135,7 +135,7 @@ export const measurePerformance = (name: string, fn: () => void): void => {
 };
 
 // Optimize scroll performance
-export const optimizeScroll = (callback: () => void, delay: number = 16): (() => void) => {
+export const optimizeScroll = (callback: () => void): (() => void) => {
   let ticking = false;
   
   return () => {
