@@ -446,6 +446,9 @@ function Header() {
 function Hero() {
   const [particlesLoaded, setParticlesLoaded] = useState(false);
   
+  // Check for reduced motion preference
+  const reducedMotion = typeof window !== 'undefined' ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+  
   useEffect(() => {
     if (!reducedMotion) {
       initParticlesEngine(async (engine) => {
@@ -1954,8 +1957,6 @@ function Portfolio() {
                   {project.tag}
                 </span>
               </div>
-              
-
             </div>
 
             {/* Project Content */}
