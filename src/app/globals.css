@@ -85,6 +85,22 @@ body {
   animation: float-slow 8s ease-in-out infinite;
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+.animate-float-delayed {
+  animation: float-delayed 6s ease-in-out infinite;
+}
+
 /* Moving star animations - slow and natural like real stars */
 @keyframes star-group-1 {
   0% { transform: translateX(-100%) translateY(0); }

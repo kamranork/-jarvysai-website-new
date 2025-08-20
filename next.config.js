@@ -19,14 +19,31 @@ const nextConfig = {
   // Compression and optimization
   compress: true,
   
-  // Bundle analyzer (optional - uncomment to analyze bundle)
-  // webpack: (config, { dev, isServer }) => {
-  //   if (!dev && !isServer) {
-  //     const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-  //     config.plugins.push(new BundleAnalyzerPlugin());
-  //   }
-  //   return config;
-  // },
+  // Webpack configuration to handle path issues
+  webpack: (config, { dev, isServer }) => {
+    // Handle path issues with special characters
+    if (process.platform === 'win32') {
+      // Use relative paths for Windows to avoid special character issues
+      config.context = undefined;
+      config.output.path = undefined;
+      
+      // Set cache directory to avoid path issues
+      if (config.cache) {
+        config.cache.cacheDirectory = undefined;
+      }
+    }
+    
+    // Bundle analyzer (optional - uncomment to analyze bundle)
+    // if (!dev && !isServer) {
+    //   const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+    //   config.plugins.push(new BundleAnalyzerPlugin());
+    // }
+    
+    return config;
+  },
+  
+  // Output configuration to avoid path issues
+  distDir: '.next',
   
   // Security headers
   async headers() {

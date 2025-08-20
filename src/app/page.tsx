@@ -7,7 +7,7 @@ import { loadFull } from "tsparticles";
 import { initParticlesEngine } from "@tsparticles/react";
 
 
-import { FaRobot, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb } from "react-icons/fa";
+import { FaRobot, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb, FaMobileAlt, FaSatelliteDish, FaShoppingCart } from "react-icons/fa";
 import { SiReact, SiPython, SiAmazon, SiNodedotjs, SiNextdotjs, SiDjango, SiLaravel, SiFlutter, SiTwilio, SiDocker, SiKubernetes, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiGooglecloud, SiTypescript } from "react-icons/si";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -437,14 +437,13 @@ function Header() {
           </a>
         ))}
       </nav>
-      <a href="#contact" className="ml-6 px-5 py-2 bg-gradient-to-tr from-cyan-500 to-purple-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-cyan-500/30 transition-transform hidden md:inline-block">Let's Talk</a>
+      <a href="#contact" className="ml-6 px-5 py-2 bg-gradient-to-tr from-cyan-500 to-purple-500 text-white rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-cyan-500/30 transition-transform hidden md:inline-block">Let&apos;s Talk</a>
     </header>
   );
 }
 
 // HERO SECTION
 function Hero() {
-  const [reducedMotion] = useState(prefersReducedMotion());
   const [particlesLoaded, setParticlesLoaded] = useState(false);
   
   useEffect(() => {
@@ -775,7 +774,7 @@ function About() {
         <p>JarvysAI is rewriting the rules of intelligent automation and digital infrastructure.</p>
         <p>We are a next-generation AI company building hyper-intelligent voicebots, smart dialers, scalable cloud platforms, and advanced automation systems. Our solutions blend cutting-edge artificial intelligence, real-time data, and seamless integrations to break down barriers between humans and technology—empowering businesses to operate smarter, faster, and at scale.</p>
         <p>From AI-powered outbound campaigns and autonomous agents to IoT, SaaS, and digital transformation for enterprises, we deliver production-ready technology that transforms how industries work, connect, and grow. Our mission is to disrupt the status quo across BPO, telecom, SaaS, retail, and beyond—enabling a new era of business powered by AI.</p>
-        <p className="font-semibold text-cyan-300">We are not just automating tasks.<br/>We're reimagining the infrastructure of how businesses think, talk, and operate.</p>
+        <p className="font-semibold text-cyan-300">We are not just automating tasks.<br/>We&apos;re reimagining the infrastructure of how businesses think, talk, and operate.</p>
       </div>
       {/* Vision block */}
       <div className="bg-gradient-to-r from-cyan-900/40 via-purple-900/30 to-cyan-900/40 rounded-xl p-6 mt-8 mb-2 max-w-2xl mx-auto shadow-lg border border-cyan-800/30 relative z-10">
@@ -1184,7 +1183,7 @@ function Services() {
             Ready to Transform Your Business?
           </h3>
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-            Let's discuss how our AI solutions can revolutionize your operations, boost efficiency, and drive growth.
+            Let&apos;s discuss how our AI solutions can revolutionize your operations, boost efficiency, and drive growth.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#contact" className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg shadow-cyan-500/25">
@@ -1578,18 +1577,7 @@ function Technologies() {
         <div className="absolute top-1/2 left-4/5 w-10 h-10 bg-gradient-to-r from-green-400/10 to-transparent animate-quantum-pulse-3 blur-sm"></div>
       </div>
       
-      {/* Enhanced Header */}
-      <div className="relative z-10 text-center mb-12">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <FaCode className="text-4xl text-cyan-400 animate-pulse" />
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">We Offer</h2>
-          <FaCode className="text-4xl text-purple-400 animate-pulse delay-500" />
-        </div>
-        <div className="h-1.5 w-32 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg mx-auto mb-4"></div>
-        <p className="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed">
-          Cutting-edge technologies and frameworks we master to build innovative solutions for your business.
-        </p>
-      </div>
+
 
       {/* Category Filter */}
       <div className="relative z-10 mb-12">
@@ -1651,174 +1639,394 @@ function Technologies() {
 
 // PORTFOLIO SECTION
 function Portfolio() {
-  // Restore projects array
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+
+  const categories = [
+    { id: 'all', name: 'All Projects', count: 13 },
+    { id: 'ai', name: 'AI & Automation', count: 5 },
+    { id: 'fintech', name: 'FinTech', count: 3 },
+    { id: 'ecommerce', name: 'E-commerce', count: 2 },
+    { id: 'iot', name: 'IoT & Hardware', count: 2 },
+    { id: 'retail', name: 'Retail & POS', count: 1 },
+  ];
+
   const projects = [
     {
+      id: 1,
+      category: 'ai',
       name: "AI Voicebot for FinTech BPO",
-      desc: "Deployed a human-like outbound voicebot that handled 15,000+ daily calls for loan qualification and lead generation, increasing conversion rates by 32%.",
-      image: "https://bernardmarr.com/wp-content/uploads/2025/05/How-AI-Agents-Will-Revolutionize-Your-Day-To-Day-Life.jpg",
+      shortDesc: "Human-like outbound voicebot for loan qualification",
+      fullDesc: "Deployed a production-ready AI voicebot that handles 15,000+ daily calls for loan qualification and lead generation. The system integrates with existing CRM platforms and provides real-time analytics.",
+
       tag: "AI/FinTech",
+      metrics: {
+        callsPerDay: "15,000+",
+        conversionRate: "32%",
+        costReduction: "60%",
+        roi: "400%"
+      },
+      technologies: ["OpenAI GPT-4", "Whisper", "WebRTC", "Asterisk ARI"],
+
+      client: "Leading FinTech BPO",
+      results: [
+        "Increased conversion rates by 32%",
+        "Reduced operational costs by 60%",
+        "Handles 1000+ simultaneous conversations",
+        "24/7 availability with 99.9% uptime"
+      ]
     },
     {
+      id: 2,
+      category: 'fintech',
       name: "VoIP Integration for Global Retailer",
-      desc: "Integrated Twilio SIP trunking and AI voice agents for a global retailer, enabling seamless international calling and automated order confirmations.",
-      image: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80",
+      shortDesc: "International calling & AI voice agents",
+      fullDesc: "Integrated Twilio SIP trunking and AI voice agents for a global retailer, enabling seamless international calling and automated order confirmations across 15 countries.",
+
       tag: "VoIP/E-commerce",
+      metrics: {
+        countries: "15",
+        callsPerMonth: "50,000+",
+        costSavings: "45%",
+        setupTime: "3 weeks"
+      },
+      technologies: ["Twilio", "Asterisk", "AI Voice Agents", "SIP Trunking"],
+
+      client: "Global Retail Chain",
+      results: [
+        "45% reduction in international calling costs",
+        "Automated order confirmations in 8 languages",
+        "Seamless integration with existing systems",
+        "Real-time call analytics and reporting"
+      ]
     },
     {
+      id: 3,
+      category: 'iot',
       name: "IoT Solutions & Automation",
-      desc: "Delivered end-to-end IoT projects: industrial automation, connected devices, smart dashboards, and real-time monitoring for businesses and enterprises.",
-      image: "https://images.ctfassets.net/5i1m3im8l2b5/2g17zgCFVcG2WdFZ5quItK/8c62eaa94bbf18d19a2a441dc32ae58e/What_is_IoT.jpg?w=900&h=472&q=75&fm=webp&fit=fill",
+      shortDesc: "Industrial automation & smart monitoring",
+      fullDesc: "Delivered end-to-end IoT projects: industrial automation, connected devices, smart dashboards, and real-time monitoring for manufacturing and logistics enterprises.",
+
       tag: "IoT/Automation",
+      metrics: {
+        devices: "500+",
+        efficiency: "78%",
+        costSavings: "35%",
+        uptime: "99.5%"
+      },
+      technologies: ["MQTT", "Node.js", "React", "MongoDB", "Docker"],
+
+      client: "Manufacturing Enterprise",
+      results: [
+        "78% improvement in operational efficiency",
+        "35% reduction in energy costs",
+        "Real-time monitoring of 500+ devices",
+        "Predictive maintenance alerts"
+      ]
     },
     {
-      name: "SEO & Local Lead Generation",
-      desc: "Ranked a local business #1 on Google and boosted organic leads by 300% with advanced SEO strategies.",
-      image: "https://audiologydesign.com/wp-content/uploads/2023/03/3.27.23-SEO_jargon.png",
-      tag: "SEO/Local",
-    },
-    {
-      name: "E-commerce Automation Suite",
-      desc: "Built a scalable e-commerce platform with inventory automation, payment integration, and marketing tools.",
-      image: "https://compulynx.com/wp-content/uploads/2022/05/eCommerce.jpg",
-      tag: "E-commerce/Automation",
-    },
-    // More sample projects
-    {
+      id: 4,
+      category: 'ai',
       name: "AI Chatbot for Healthcare",
-      desc: "Deployed a HIPAA-compliant AI chatbot for patient triage and appointment scheduling, improving efficiency and patient satisfaction.",
-      image: "https://images.pexels.com/photos/8059385/pexels-photo-8059385.jpeg",
+      shortDesc: "HIPAA-compliant patient triage system",
+      fullDesc: "Deployed a HIPAA-compliant AI chatbot for patient triage and appointment scheduling, improving efficiency and patient satisfaction while maintaining security standards.",
+
       tag: "Healthcare/AI",
+      metrics: {
+        patients: "10,000+",
+        accuracy: "94%",
+        waitTime: "85%",
+        satisfaction: "92%"
+      },
+      technologies: ["OpenAI GPT", "HIPAA Compliance", "React", "Node.js"],
+
+      client: "Healthcare Network",
+      results: [
+        "94% accuracy in patient triage",
+        "85% reduction in wait times",
+        "10,000+ patients served monthly",
+        "92% patient satisfaction rate"
+      ]
     },
     {
-      name: "POS System for Retail Chain",
-      desc: "Custom POS solution with real-time inventory, analytics, and seamless payment integration for a multi-location retailer.",
-      image: "https://images.pexels.com/photos/8422724/pexels-photo-8422724.jpeg",
-      tag: "Retail/POS",
+      id: 5,
+      category: 'ecommerce',
+      name: "E-commerce Automation Suite",
+      shortDesc: "Scalable platform with full automation",
+      fullDesc: "Built a scalable e-commerce platform with inventory automation, payment integration, marketing tools, and AI-powered product recommendations.",
+
+      tag: "E-commerce/Automation",
+      metrics: {
+        products: "50,000+",
+        revenue: "2.5M+",
+        conversion: "18%",
+        growth: "300%"
+      },
+      technologies: ["Next.js", "Stripe", "MongoDB", "Redis", "AI/ML"],
+
+      client: "E-commerce Startup",
+      results: [
+        "300% revenue growth in 6 months",
+        "18% conversion rate improvement",
+        "50,000+ products managed automatically",
+        "AI-powered product recommendations"
+      ]
     },
     {
+      id: 6,
+      category: 'fintech',
       name: "Mobile Banking App",
-      desc: "Designed and launched a secure, user-friendly mobile banking app with biometric login and instant transfers.",
-      image: "https://images.pexels.com/photos/7821552/pexels-photo-7821552.jpeg",
+      shortDesc: "Secure banking with biometric login",
+      fullDesc: "Designed and launched a secure, user-friendly mobile banking app with biometric login, instant transfers, and real-time fraud detection.",
+
       tag: "FinTech/Mobile",
+      metrics: {
+        users: "25,000+",
+        transactions: "100K+",
+        security: "100%",
+        rating: "4.8/5"
+      },
+      technologies: ["React Native", "Biometric Auth", "Blockchain", "AWS"],
+
+      client: "Digital Bank",
+      results: [
+        "25,000+ active users in 3 months",
+        "100% security record (zero breaches)",
+        "4.8/5 app store rating",
+        "100,000+ monthly transactions"
+      ]
     },
     {
-      name: "Smart Home Automation Platform",
-      desc: "Developed a cloud-based platform for smart home device control, automation, and energy monitoring.",
-      image: "https://images.pexels.com/photos/16423103/pexels-photo-16423103.jpeg",
-      tag: "IoT/Smart Home",
-    },
+      id: 7,
+      category: 'retail',
+      name: "POS System for Retail Chain",
+      shortDesc: "Custom POS with inventory & analytics",
+      fullDesc: "Developed a comprehensive Point of Sale system for a multi-location retail chain, featuring real-time inventory management, advanced analytics, and seamless payment integration.",
+      tag: "Retail/POS",
+      metrics: {
+        locations: "25+",
+        transactions: "500K+",
+        efficiency: "85%",
+        costSavings: "40%"
+      },
+      technologies: ["React", "Node.js", "PostgreSQL", "Stripe", "Redis"],
+      client: "Multi-Location Retail Chain",
+      results: [
+        "25+ store locations connected",
+        "85% improvement in checkout efficiency",
+        "40% reduction in operational costs",
+        "500,000+ monthly transactions processed"
+      ]
+    }
   ];
+
+  const filteredProjects = selectedCategory === 'all' 
+    ? projects 
+    : projects.filter(p => p.category === selectedCategory);
+
   return (
-    <section id="portfolio" className="w-full max-w-6xl mx-auto py-20 px-4 relative overflow-hidden">
-      {/* Satellite Network Background for Our Work */}
+    <section id="portfolio" className="w-full max-w-7xl mx-auto py-24 px-4 relative overflow-hidden">
+      {/* Enhanced Background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Deep Space Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/30 to-black/90"></div>
         
-        {/* Starlink Constellation - Realistic Train */}
-        <div className="absolute top-20 left-0 w-full">
-          <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
-          <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
-          <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
-          <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
-          <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
+        {/* Floating Tech Icons */}
+        <div className="absolute top-20 left-10 text-cyan-400/10 text-6xl animate-float">
+          <FaRobot />
+        </div>
+        <div className="absolute top-40 right-20 text-purple-400/10 text-5xl animate-float-delayed">
+          <FaCode />
+        </div>
+        <div className="absolute bottom-40 left-20 text-pink-400/10 text-4xl animate-float">
+          <FaCloud />
         </div>
         
-        {/* Individual Satellites - More Realistic */}
-        <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
-        <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
-        <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
-        <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
-        <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
-        
-        {/* Communication Signals - Organic Beams */}
-        <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
-        <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
-        <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
-        <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
-        
-        {/* Data Streams - Natural Flow */}
-        <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
-        <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
-        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
-        <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
-        
-        {/* Ground Stations - More Organic */}
-        <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
-          <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
-        </div>
-        <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
-          <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
-        </div>
-        <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
-          <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
-        </div>
-        
-        {/* Signal Pulses - Natural Energy */}
-        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
-        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
-        <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
-        <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
-        
-        {/* Atmospheric Energy Waves */}
-        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
-        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
-        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
-        
-        {/* Network Energy Fields */}
-        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
-        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
-        <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
-        
-        {/* Status Indicators - Subtle */}
-        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
-          <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
-          <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
-          <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
-          <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
-          <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
-        </div>
+        {/* Gradient Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 rounded-full animate-pulse blur-xl"></div>
+        <div className="absolute top-1/2 right-1/4 w-24 h-24 bg-gradient-to-r from-purple-400/5 to-pink-500/5 rounded-full animate-pulse delay-1000 blur-xl"></div>
+        <div className="absolute bottom-1/4 left-1/2 w-28 h-28 bg-gradient-to-r from-green-400/5 to-cyan-500/5 rounded-full animate-pulse delay-2000 blur-xl"></div>
       </div>
       
-      <h2 className="text-3xl font-bold text-cyan-400 text-center mb-10 relative z-10">Our Work</h2>
-      <Suspense fallback={<div>Loading Swiper...</div>}>
-        <LazySwiper
-          spaceBetween={32}
-          slidesPerView={1}
-          loop={true}
-          autoplay={{ delay: 6000, disableOnInteraction: false }}
-          speed={800}
-          breakpoints={{
-            768: { slidesPerView: 2 },
-            1200: { slidesPerView: 3 },
-          }}
-          className="relative z-10"
-        >
-          {projects.map((p, i) => (
-            <LazySwiperSlide key={i}>
-              <div className="relative group bg-[#181f2a] rounded-2xl shadow-lg border border-cyan-900 overflow-hidden flex flex-col transition-transform hover:scale-[1.03] hover:shadow-cyan-500/30 animate-fadein" style={{ animationDelay: `${i * 100}ms` }}>
-                {/* Unique animated gradient border on hover */}
-                <div className="absolute inset-0 z-0 pointer-events-none rounded-2xl group-hover:animate-border-glow" />
-                {/* Project image */}
-                <div className="h-48 w-full overflow-hidden flex items-center justify-center bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 opacity-80">
-                  <img src={p.image + "?w=400&q=60"} alt={p.name} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+      {/* Header */}
+      <div className="relative z-10 text-center mb-16">
+        <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-6">
+          Our Work
+        </h2>
+        <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          Real projects. Real results. See how we've transformed businesses with cutting-edge technology.
+        </p>
+        
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
+                selectedCategory === cat.id
+                  ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-lg shadow-cyan-500/25'
+                  : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-600/50'
+              }`}
+            >
+              {cat.name} ({cat.count})
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Projects Grid */}
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        {filteredProjects.map((project, index) => (
+          <div
+            key={project.id}
+            className="group relative bg-gradient-to-br from-gray-900/80 to-gray-800/80 rounded-2xl border border-gray-700/50 overflow-hidden backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/20"
+            onMouseEnter={() => setHoveredProject(project.id)}
+            onMouseLeave={() => setHoveredProject(null)}
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            {/* Project Image */}
+            <div className="h-48 w-full overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-purple-500/20 to-pink-500/20 z-10"></div>
+              
+              {/* Project Images */}
+              {project.category === 'ai' && project.id === 1 && (
+                <img 
+                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop&crop=center&q=80" 
+                  alt="AI Voicebot Technology" 
+                  className="w-full h-full object-cover"
+                />
+              )}
+              {project.category === 'ai' && project.id === 4 && (
+                <img 
+                  src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop&crop=center&q=80" 
+                  alt="Healthcare AI Chatbot" 
+                  className="w-full h-full object-cover"
+                />
+              )}
+              {project.category === 'fintech' && project.id === 2 && (
+                <img 
+                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop&crop=center&q=80" 
+                  alt="VoIP Communication" 
+                  className="w-full h-full object-cover"
+                />
+              )}
+              {project.category === 'fintech' && project.id === 6 && (
+                <img 
+                  src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop&crop=center&q=80" 
+                  alt="Mobile Banking App" 
+                  className="w-full h-full object-cover"
+                />
+              )}
+              {project.category === 'ecommerce' && project.id === 5 && (
+                <img 
+                  src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop&crop=center&q=80" 
+                  alt="E-commerce Platform" 
+                  className="w-full h-full object-cover"
+                />
+              )}
+              {project.category === 'iot' && project.id === 3 && (
+                <img 
+                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=300&fit=crop&crop=center&q=80" 
+                  alt="IoT Automation" 
+                  className="w-full h-full object-cover"
+                />
+              )}
+              {project.category === 'retail' && project.id === 7 && (
+                <img 
+                  src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop&crop=center&q=80" 
+                  alt="POS System for Retail" 
+                  className="w-full h-full object-cover"
+                />
+              )}
+              
+              {/* Fallback Icon for any missing images */}
+              {!project.category && (
+                <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                  <div className="text-6xl text-gray-400">
+                    <FaCode />
+                  </div>
                 </div>
-                <div className="flex-1 flex flex-col p-6 z-10">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-3 py-1 text-xs rounded-full bg-cyan-700/30 text-cyan-200 font-semibold shadow">{p.tag}</span>
+              )}
+              
+              {/* Category Badge */}
+              <div className="absolute top-4 left-4 z-20">
+                <span className="px-3 py-1 text-xs rounded-full bg-cyan-600/80 text-white font-semibold backdrop-blur-sm">
+                  {project.tag}
+                </span>
+              </div>
+              
+
+            </div>
+
+            {/* Project Content */}
+            <div className="p-6">
+              <h3 className="text-xl font-bold text-cyan-200 mb-3 group-hover:text-cyan-300 transition-colors">
+                {project.name}
+              </h3>
+              <p className="text-gray-300 mb-4 text-sm leading-relaxed">
+                {project.shortDesc}
+              </p>
+              
+              {/* Key Metrics */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {Object.entries(project.metrics).slice(0, 4).map(([key, value]) => (
+                  <div key={key} className="text-center">
+                    <div className="text-lg font-bold text-cyan-300">{value}</div>
+                    <div className="text-xs text-gray-500 capitalize">
+                      {key.replace(/([A-Z])/g, ' $1').trim()}
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-cyan-200 mb-2">{p.name}</h3>
-                  <p className="text-gray-400 mb-4 text-sm">{p.desc}</p>
-                  <div className="mt-auto">
-                    <button className="px-4 py-2 bg-gradient-to-tr from-cyan-500 to-purple-500 text-white rounded-full font-semibold shadow hover:scale-105 transition-transform">View Details</button>
-                  </div>
+                ))}
+              </div>
+              
+              {/* Technologies */}
+              <div className="mb-4">
+                <div className="text-xs text-gray-500 mb-2">Technologies</div>
+                <div className="flex flex-wrap gap-1">
+                  {project.technologies.slice(0, 3).map((tech, i) => (
+                    <span key={i} className="px-2 py-1 text-xs bg-gray-700/50 text-gray-300 rounded">
+                      {tech}
+                    </span>
+                  ))}
+                  {project.technologies.length > 3 && (
+                    <span className="px-2 py-1 text-xs bg-gray-700/50 text-gray-300 rounded">
+                      +{project.technologies.length - 3}
+                    </span>
+                  )}
                 </div>
               </div>
-            </LazySwiperSlide>
-          ))}
-        </LazySwiper>
-      </Suspense>
+              
+              {/* CTA Button */}
+              <button className="w-full px-4 py-3 bg-gradient-to-r from-cyan-600 to-purple-600 text-white rounded-lg font-semibold hover:from-cyan-500 hover:to-purple-500 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                View Case Study
+              </button>
+            </div>
+
+            {/* Hover Effect Border */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+          </div>
+        ))}
+      </div>
+
+      {/* Call to Action */}
+      <div className="relative z-10 text-center">
+        <div className="bg-gradient-to-r from-cyan-900/20 via-purple-900/20 to-pink-900/20 rounded-2xl p-8 border border-cyan-500/20 backdrop-blur-xl">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent mb-4">
+            Ready to See Your Project Here?
+          </h3>
+          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+            Let&apos;s build something amazing together. Our team is ready to turn your vision into reality.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#contact" className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-full font-semibold hover:scale-105 transition-transform duration-300 shadow-lg shadow-cyan-500/25">
+              Start Your Project
+            </a>
+            <a href="#contact" className="px-8 py-3 border border-cyan-400/50 text-cyan-300 rounded-full font-semibold hover:bg-cyan-400/10 transition-all duration-300">
+              Get Free Consultation
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
@@ -2500,26 +2708,26 @@ function Footer() {
 export default function Home() {
   const { isLowEnd, userPrefersReducedMotion } = useDeviceCapabilities();
   
-          // Performance optimization: Conditional rendering based on device capabilities
+  // Performance optimization: Conditional rendering based on device capabilities
   
   // Performance optimization: Conditional rendering of heavy components
   const shouldRenderParticles = !isLowEnd && !userPrefersReducedMotion;
   const shouldRenderComplexAnimations = !isLowEnd && !userPrefersReducedMotion;
   
-          // Performance optimization: Debounced scroll for better performance
-        useDebouncedScroll(() => {
-          // Scroll handling optimized
-        }, 16); // 60fps scroll handling
+  // Performance optimization: Debounced scroll for better performance
+  useDebouncedScroll(() => {
+    // Scroll handling optimized
+  }, 16); // 60fps scroll handling
 
-          // Particles initialization
-        const particlesInit = useCallback(async (engine: any) => {
-          await loadFull(engine);
-        }, []);
-      
-        const particlesLoaded = useCallback(async (container: any) => {
-          // Particles are loaded and ready
-          console.log('Particles loaded successfully');
-        }, []);
+  // Particles initialization
+  const particlesInit = useCallback(async (engine: any) => {
+    await loadFull(engine);
+  }, []);
+  
+  const particlesLoaded = useCallback(async (container: unknown) => {
+    // Particles are loaded and ready
+    console.log('Particles loaded successfully');
+  }, []);
 
   return (
     <main className="w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#000000] relative overflow-hidden">
