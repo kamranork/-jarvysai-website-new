@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JarvysAI Website
 
-## Getting Started
+A modern, high-performance Next.js website for JarvysAI Software House, featuring AI solutions and cutting-edge web technologies.
 
-First, run the development server:
+## 🚀 **Performance Optimizations Implemented**
 
+This website has been extensively optimized for performance:
+
+- **Reduced Animation Complexity**: Animations adapt to device capabilities
+- **Conditional Rendering**: Heavy components only render when appropriate
+- **Particle System Optimization**: Reduced particle counts for better performance
+- **Mobile-First Design**: Simplified animations on mobile devices
+- **Reduced Motion Support**: Respects user preferences for minimal motion
+- **Performance Monitoring**: Real-time Core Web Vitals tracking
+
+## 🛠️ **Getting Started**
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development Server
+The website will be available at:
+- **Local**: http://localhost:3000
+- **Network**: http://192.168.56.1:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📱 **Performance Features**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Adaptive Animations**: Automatically adjusts based on device performance
+- **Lazy Loading**: Components load only when needed
+- **Optimized Particles**: Reduced complexity for better performance
+- **Mobile Optimization**: Simplified effects on mobile devices
+- **Performance Monitoring**: Built-in performance tracking
 
-## Learn More
+## 🎨 **Technologies Used**
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework**: Next.js 15 with App Router
+- **Styling**: Tailwind CSS v4
+- **Animations**: CSS animations with performance optimization
+- **Particles**: tsparticles with conditional rendering
+- **Icons**: React Icons
+- **Performance**: Custom performance monitoring
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📊 **Performance Metrics**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The website is optimized to achieve:
+- **FCP**: < 2 seconds
+- **LCP**: < 2.5 seconds  
+- **FID**: < 100ms
+- **CLS**: < 0.1
 
-## Deploy on Vercel
+## 🔧 **Customization**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Performance Settings
+Modify performance thresholds in `src/utils/performance.ts`:
+```typescript
+export const getReducedAnimationSettings = () => {
+  // Customize your performance settings here
+};
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Animation Control
+Control animations through CSS variables and device detection:
+```css
+@media (prefers-reduced-motion: reduce) {
+  /* Reduced motion styles */
+}
+```
+
+## 🚀 **Deployment**
+
+The website is optimized for Vercel deployment with automatic performance optimizations.
+
+## 📚 **Documentation**
+
+For detailed performance optimization documentation, see:
+- `PERFORMANCE_OPTIMIZATIONS.md` - Comprehensive performance guide
+- `src/utils/performance.ts` - Performance utility functions
+
+## 🤝 **Contributing**
+
+When adding new features:
+1. Ensure they respect reduced motion preferences
+2. Test on low-end devices
+3. Add performance monitoring where appropriate
+4. Document performance impact
+
+---
+
+**Built with ❤️ by JarvysAI Team**

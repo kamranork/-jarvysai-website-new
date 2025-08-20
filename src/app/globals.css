@@ -1041,3 +1041,416 @@ body {
 .animate-quantum-pulse-3 {
   animation: quantum-pulse-3 7s ease-in-out infinite;
 }
+
+/* Performance Optimizations - Reduced Animation Complexity */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable all animations and transitions */
+  .animate-fadein,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin,
+  .animate-float,
+  .animate-float-slow,
+  .animate-gradient-x,
+  .animate-border-glow,
+  .animate-shake,
+  .animate-fadein-fast,
+  .animate-gradient-shimmer,
+  .animate-star-group-1,
+  .animate-star-group-2,
+  .animate-star-group-3,
+  .animate-star-group-4,
+  .animate-satellite-1,
+  .animate-satellite-2,
+  .animate-satellite-3,
+  .animate-satellite-4,
+  .animate-satellite-5,
+  .animate-starlink-train-1,
+  .animate-starlink-train-2,
+  .animate-starlink-train-3,
+  .animate-starlink-train-4,
+  .animate-starlink-train-5,
+  .animate-beam-1,
+  .animate-beam-2,
+  .animate-beam-3,
+  .animate-beam-4,
+  .animate-data-transmission-1,
+  .animate-data-transmission-2,
+  .animate-data-transmission-3,
+  .animate-data-transmission-4,
+  .animate-signal-pulse-1,
+  .animate-signal-pulse-2,
+  .animate-signal-pulse-3,
+  .animate-signal-pulse-4,
+  .animate-atmospheric-wave-1,
+  .animate-atmospheric-wave-2,
+  .animate-atmospheric-wave-3,
+  .animate-neural-pulse-1,
+  .animate-neural-pulse-2,
+  .animate-neural-pulse-3,
+  .animate-neural-pulse-4,
+  .animate-neural-pulse-5,
+  .animate-neural-pulse-6,
+  .animate-neural-pulse-7,
+  .animate-neural-pulse-8,
+  .animate-synaptic-flow-1,
+  .animate-synaptic-flow-2,
+  .animate-synaptic-flow-3,
+  .animate-synaptic-flow-4,
+  .animate-synaptic-flow-5,
+  .animate-synaptic-flow-6,
+  .animate-data-stream-1,
+  .animate-data-stream-2,
+  .animate-data-stream-3,
+  .animate-data-stream-4,
+  .animate-neural-hub-1,
+  .animate-neural-hub-2,
+  .animate-neural-hub-3,
+  .animate-thought-wave-1,
+  .animate-thought-wave-2,
+  .animate-thought-wave-3,
+  .animate-thought-wave-4,
+  .animate-learning-pattern-1,
+  .animate-learning-pattern-2,
+  .animate-learning-pattern-3,
+  .animate-ai-pulse-1,
+  .animate-ai-pulse-2,
+  .animate-ai-pulse-3,
+  .animate-ai-pulse-4,
+  .animate-ai-pulse-5,
+  .animate-quantum-pulse-1,
+  .animate-quantum-pulse-2,
+  .animate-quantum-pulse-3 {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Performance optimizations for animations - Reduced complexity */
+.animate-fadein {
+  will-change: opacity, transform;
+  animation: fadeIn 0.8s ease both; /* Reduced from 1s */
+}
+
+.animate-pulse {
+  will-change: opacity;
+  animation: pulse 2s ease-in-out infinite; /* Reduced from 3s */
+}
+
+.animate-bounce {
+  will-change: transform;
+  animation: bounce 1.5s ease-in-out infinite; /* Reduced from 2s */
+}
+
+.animate-spin {
+  will-change: transform;
+  animation: spin 3s linear infinite; /* Reduced from 4s */
+}
+
+/* Optimize backdrop filters for better performance - Reduced blur */
+.backdrop-blur-xl {
+  will-change: backdrop-filter;
+  -webkit-backdrop-filter: blur(12px); /* Reduced from 24px */
+  backdrop-filter: blur(12px);
+}
+
+/* Optimize transforms for better performance */
+.group:hover .scale-105 {
+  will-change: transform;
+  transform: scale(1.02); /* Reduced from 1.05 */
+  transition: transform 0.2s ease; /* Added smooth transition */
+}
+
+.group:hover .scale-110 {
+  will-change: transform;
+  transform: scale(1.05); /* Reduced from 1.1 */
+  transition: transform 0.2s ease; /* Added smooth transition */
+}
+
+/* Optimize shadows for better performance */
+.shadow-2xl {
+  will-change: box-shadow;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* Simplified shadow */
+}
+
+/* Reduce repaints for fixed elements */
+.sticky {
+  will-change: transform;
+}
+
+/* Optimize gradients for better performance */
+.bg-gradient-to-r {
+  will-change: background-image;
+}
+
+/* Optimize particle effects - Reduced complexity */
+#tsparticles {
+  will-change: transform;
+  contain: layout style paint;
+  /* Limit particle count for better performance */
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Optimize image loading */
+img {
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* Optimize scroll performance */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize focus states for better accessibility */
+*:focus {
+  outline: 2px solid #00e6fe;
+  outline-offset: 2px;
+}
+
+/* Optimize hover states for better performance */
+@media (hover: hover) {
+  .group:hover .scale-105 {
+    transform: scale(1.02);
+  }
+  
+  .group:hover .scale-110 {
+    transform: scale(1.05);
+  }
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: none) {
+  .group:hover .scale-105,
+  .group:hover .scale-110 {
+    transform: none;
+  }
+}
+
+/* Optimize for high DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .star-shape-1,
+  .star-shape-2,
+  .star-shape-3 {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Optimize for print */
+@media print {
+  * {
+    animation: none !important;
+    transition: none !important;
+    background: white !important;
+    color: black !important;
+  }
+  
+  .animate-fadein,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin {
+    animation: none !important;
+  }
+}
+
+/* Optimize for low-end devices - Reduced animations */
+@media (max-width: 768px) {
+  /* Reduce particle count on mobile */
+  #tsparticles {
+    display: none;
+  }
+  
+  /* Disable most animations on mobile for better performance */
+  .animate-star-group-1,
+  .animate-star-group-2,
+  .animate-star-group-3,
+  .animate-star-group-4,
+  .animate-satellite-1,
+  .animate-satellite-2,
+  .animate-satellite-3,
+  .animate-satellite-4,
+  .animate-satellite-5,
+  .animate-starlink-train-1,
+  .animate-starlink-train-2,
+  .animate-starlink-train-3,
+  .animate-starlink-train-4,
+  .animate-starlink-train-5 {
+    animation: none;
+  }
+  
+  /* Simplify background effects on mobile */
+  .backdrop-blur-xl {
+    backdrop-filter: blur(4px); /* Further reduced for mobile */
+  }
+  
+  /* Reduce animation complexity on mobile */
+  .animate-fadein {
+    animation-duration: 0.5s; /* Faster animations on mobile */
+  }
+  
+  .animate-pulse {
+    animation-duration: 1.5s;
+  }
+}
+
+/* Optimize for high-end devices - Balanced performance */
+@media (min-width: 1200px) {
+  /* Enable more complex animations on high-end devices but with limits */
+  .animate-star-group-1 {
+    animation-duration: 60s; /* Reduced from 80s */
+  }
+  
+  .animate-star-group-2 {
+    animation-duration: 90s; /* Reduced from 120s */
+  }
+  
+  .animate-star-group-3 {
+    animation-duration: 70s; /* Reduced from 100s */
+  }
+  
+  .animate-star-group-4 {
+    animation-duration: 100s; /* Reduced from 150s */
+  }
+}
+
+/* Performance monitoring classes */
+.performance-monitor {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 9999;
+  display: none;
+}
+
+.performance-monitor.show {
+  display: block;
+}
+
+/* Loading states for better UX */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Optimize for reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .loading-skeleton {
+    animation: none;
+    background: #f0f0f0;
+  }
+}
+
+/* Additional performance optimizations */
+* {
+  /* Reduce paint complexity */
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize transforms */
+.transform {
+  will-change: transform;
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+/* Reduce layout thrashing */
+.container {
+  contain: layout style;
+}
+
+/* Optimize animations with GPU acceleration */
+.animate-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Custom Swiper styles for testimonials */
+.testimonials-swiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 230, 254, 0.3);
+  border: 1px solid rgba(0, 230, 254, 0.5);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 0 4px;
+}
+
+.testimonials-swiper .swiper-pagination-bullet-active {
+  background: linear-gradient(45deg, #00e6fe, #7f5af0);
+  border-color: #00e6fe;
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(0, 230, 254, 0.5);
+}
+
+/* Optimize testimonials for mobile */
+@media (max-width: 768px) {
+  .testimonials-swiper .swiper-button-prev,
+  .testimonials-swiper .swiper-button-next {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .testimonials-swiper .swiper-button-prev {
+    left: 1px;
+  }
+  
+  .testimonials-swiper .swiper-button-next {
+    right: 1px;
+  }
+}
+
+/* Train-style testimonials scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Smooth scrolling for testimonials */
+.testimonials-container {
+  scroll-behavior: smooth;
+}
+
+/* Train track animation */
+@keyframes train-move {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.train-track {
+  animation: train-move 20s linear infinite;
+}

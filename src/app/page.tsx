@@ -1,7 +1,7 @@
 'use client';
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, lazy, Suspense, memo } from "react";
 import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 import { initParticlesEngine } from "@tsparticles/react";
@@ -13,30 +13,379 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
+import PerformanceMonitor from "./PerformanceMonitor";
+import { prefersReducedMotion, isLowEndDevice, supportsModernFeatures } from "../utils/performance";
+
+// Performance optimization: Check device capabilities
+const useDeviceCapabilities = () => {
+  const [isLowEnd, setIsLowEnd] = useState(false);
+  const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    // Check device performance
+    const hardwareConcurrency = navigator.hardwareConcurrency || 4;
+    const deviceMemory = (navigator as any).deviceMemory || 4;
+    const isLowEndDevice = hardwareConcurrency <= 2 || deviceMemory <= 2;
+    setIsLowEnd(isLowEndDevice);
+
+    // Check motion preferences
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setUserPrefersReducedMotion(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setUserPrefersReducedMotion(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  return { isLowEnd, userPrefersReducedMotion };
+};
+
+// Performance optimization: Lazy load heavy components
+const LazySwiper = lazy(() => import('swiper/react').then(module => ({ default: module.Swiper })));
+const LazySwiperSlide = lazy(() => import('swiper/react').then(module => ({ default: module.SwiperSlide })));
+
+// Performance optimization: Debounced scroll handler
+const useDebouncedScroll = (callback: () => void, delay: number) => {
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const handleScroll = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(callback, delay);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [callback, delay]);
+};
+
+// Performance optimization: Memoized particles options
+const getParticlesOptions = (reducedMotion: boolean) => ({
+  fullScreen: false,
+  background: { color: "transparent" },
+  fpsLimit: reducedMotion ? 30 : 60, // Reduce FPS for better performance
+  particles: {
+    color: { 
+      value: ["#ffffff", "#f0f8ff", "#e6f3ff", "#87ceeb"] 
+    },
+    links: { 
+      enable: !reducedMotion, // Disable links if reduced motion
+      color: "#00e6fe", 
+      distance: 300, 
+      opacity: 0.2,
+      width: 1,
+      triangles: {
+        enable: false
+      }
+    },
+    move: { 
+      enable: !reducedMotion, // Disable movement if reduced motion
+      speed: reducedMotion ? 0 : 0.2,
+      direction: "none" as const,
+      random: true,
+      straight: false,
+      outModes: { default: "bounce" as const },
+      attract: {
+        enable: false
+      }
+    },
+    number: { 
+      value: reducedMotion ? 50 : 150, // Reduce particle count for better performance
+      density: {
+        enable: true,
+        value_area: 1200
+      }
+    },
+    opacity: { 
+      value: { min: 0.1, max: 0.6 },
+      animation: {
+        enable: !reducedMotion, // Disable opacity animation if reduced motion
+        speed: 0.3,
+        minimumValue: 0.05
+      }
+    },
+    shape: { 
+      type: ["circle"],
+      stroke: {
+        width: 0,
+        color: "#000000"
+      }
+    },
+    size: { 
+      value: { min: 1, max: 4 },
+      animation: {
+        enable: !reducedMotion, // Disable size animation if reduced motion
+        speed: 0.5,
+        minimumValue: 0.1
+      }
+    },
+    twinkle: {
+      particles: {
+        enable: !reducedMotion, // Disable twinkle if reduced motion
+        color: "#ffffff",
+        frequency: 0.02,
+        opacity: 0.8
+      }
+    },
+    interactivity: {
+      events: {
+        onHover: {
+          enable: !reducedMotion, // Disable hover effects if reduced motion
+          mode: "repulse"
+        },
+        onClick: {
+          enable: !reducedMotion, // Disable click effects if reduced motion
+          mode: "push"
+        },
+        resize: { enable: true }
+      },
+      modes: {
+        repulse: {
+          distance: 100,
+          duration: 0.4
+        },
+        push: {
+          particles_nb: 2
+        }
+      }
+    }
+  },
+  detectRetina: true,
+});
+
+// Performance optimization: Intersection Observer for animations
+const useIntersectionObserver = (options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [ref, setRef] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!ref) return;
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsIntersecting(entry.isIntersecting);
+    }, {
+      threshold: 0.1,
+      ...options
+    });
+
+    observer.observe(ref);
+    return () => observer.disconnect();
+  }, [ref, options]);
+
+  return [setRef, isIntersecting];
+};
+
+// Performance optimization: Memoized service card
+const ServiceCard = memo(({ service, index, onHover, isHovered }: any) => (
+  <div
+    className="group relative rounded-2xl p-8 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
+    style={{ animationDelay: `${index * 100}ms` }}
+    onMouseEnter={() => onHover(service.id)}
+    onMouseLeave={() => onHover(null)}
+  >
+    {/* Animated Border */}
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    
+    {/* Service Number */}
+    <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 flex items-center justify-center text-xs font-bold text-cyan-300">
+      {service.id.toString().padStart(2, '0')}
+    </div>
+
+    {/* Icon */}
+    <div className="relative z-10 flex flex-col items-center text-center mb-6">
+      <div className={`w-20 h-20 flex items-center justify-center rounded-2xl mb-4 bg-gradient-to-tr ${service.color} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
+        {service.icon}
+      </div>
+      
+      {/* Title */}
+      <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 group-hover:text-xl transition-all duration-300">
+        {service.title}
+      </h3>
+      
+      {/* Description */}
+      <p className="text-gray-300 text-sm leading-relaxed mb-6">
+        {service.desc}
+      </p>
+    </div>
+
+    {/* Features */}
+    <div className="relative z-10 mb-6">
+      <h4 className="text-sm font-semibold text-cyan-300 mb-3 flex items-center gap-2">
+        <FaCheck className="text-xs" />
+        Key Features
+      </h4>
+      <div className="space-y-2">
+        {service.features.map((feature: string, idx: number) => (
+          <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
+            <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400"></div>
+            {feature}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Benefits */}
+    <div className="relative z-10 mb-6">
+      <h4 className="text-sm font-semibold text-green-300 mb-3 flex items-center gap-2">
+        <FaChartLine className="text-xs" />
+        Business Impact
+      </h4>
+      <div className="space-y-2">
+        {service.benefits.map((benefit: string, idx: number) => (
+          <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
+            <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-400"></div>
+            {benefit}
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Technology Stack */}
+    <div className="relative z-10">
+      <h4 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2">
+        <FaCode className="text-xs" />
+        Technology Stack
+      </h4>
+      <div className="flex flex-wrap gap-2">
+        {service.tech.map((tech: string, idx: number) => (
+          <span key={idx} className="px-2 py-1 text-xs bg-gradient-to-r from-purple-400/20 to-pink-400/20 text-purple-300 rounded-full border border-purple-400/30">
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    {/* Hover Overlay */}
+    {isHovered && (
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-400/5 to-pink-400/5 rounded-2xl transition-all duration-300"></div>
+    )}
+  </div>
+));
+
+ServiceCard.displayName = 'ServiceCard';
+
+// Performance optimization: Memoized technology card
+const TechnologyCard = memo(({ tech, index, onHover, isHovered }: any) => (
+  <div
+    className="group relative rounded-2xl p-6 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
+    style={{ animationDelay: `${index * 80}ms` }}
+    onMouseEnter={() => onHover(tech.id)}
+    onMouseLeave={() => onHover(null)}
+  >
+    {/* Animated Border */}
+    <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+    
+    {/* Technology Number */}
+    <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 flex items-center justify-center text-xs font-bold text-cyan-300">
+      {tech.id.toString().padStart(2, '0')}
+    </div>
+
+    {/* Icon */}
+    <div className="relative z-10 flex flex-col items-center text-center mb-4">
+      <div className={`w-16 h-16 flex items-center justify-center rounded-2xl mb-3 bg-gradient-to-tr ${tech.color} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
+        {tech.icon}
+      </div>
+      
+      {/* Title */}
+      <h3 className="text-lg font-bold bg-gradient-to-r from-cyan-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2 group-hover:text-lg transition-all duration-300">
+        {tech.name}
+      </h3>
+      
+      {/* Description */}
+      <p className="text-gray-300 text-xs leading-relaxed mb-4">
+        {tech.description}
+      </p>
+    </div>
+
+    {/* Expertise Level */}
+    <div className="relative z-10 mb-4">
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-gray-400">Expertise:</span>
+        <span className={`px-2 py-1 text-xs rounded-full font-semibold ${
+          tech.expertise === 'Expert' 
+            ? 'bg-gradient-to-r from-green-400/20 to-emerald-400/20 text-green-300 border border-green-400/30'
+            : 'bg-gradient-to-r from-blue-400/20 to-indigo-400/20 text-blue-300 border border-blue-400/30'
+        }`}>
+          {tech.expertise}
+        </span>
+      </div>
+    </div>
+
+    {/* Use Cases */}
+    <div className="relative z-10 mb-4">
+      <h4 className="text-xs font-semibold text-cyan-300 mb-2 flex items-center gap-1">
+        <FaCheck className="text-xs" />
+        Use Cases
+      </h4>
+      <div className="space-y-1">
+        {tech.useCases.slice(0, 3).map((useCase: string, idx: number) => (
+          <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
+            <div className="w-1 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400"></div>
+            {useCase}
+          </div>
+        ))}
+        {tech.useCases.length > 3 && (
+          <div className="text-xs text-gray-500 italic">
+            +{tech.useCases.length - 3} more...
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* Projects Count */}
+    <div className="relative z-10">
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-gray-400">Projects:</span>
+        <span className="text-xs font-semibold text-purple-300">
+          {tech.projects}+ completed
+        </span>
+      </div>
+    </div>
+
+    {/* Hover Overlay */}
+    {isHovered && (
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-400/5 to-pink-400/5 rounded-2xl transition-all duration-300"></div>
+    )}
+  </div>
+));
+
+TechnologyCard.displayName = 'TechnologyCard';
 
 // HEADER
 function Header() {
-  // Add scroll shadow effect
-  useEffect(() => {
+  const [reducedMotion] = useState(prefersReducedMotion());
+  
+  // Performance optimization: Debounced scroll handler
+  useDebouncedScroll(() => {
     if (typeof window !== "undefined") {
       const header = document.getElementById("main-header");
-      const onScroll = () => {
-        if (header) {
-          if (window.scrollY > 10) {
-            header.classList.add("shadow-xl", "bg-[#0a192f]/95");
-          } else {
-            header.classList.remove("shadow-xl", "bg-[#0a192f]/95");
-          }
+      if (header) {
+        if (window.scrollY > 10) {
+          header.classList.add("shadow-xl", "bg-[#0a192f]/95");
+        } else {
+          header.classList.remove("shadow-xl", "bg-[#0a192f]/95");
         }
-      };
-      window.addEventListener("scroll", onScroll);
-      return () => window.removeEventListener("scroll", onScroll);
+      }
     }
-  }, []);
+  }, 16); // 60fps equivalent
+
   return (
     <header id="main-header" className="w-full sticky top-0 z-50 bg-[#0a192f]/80 backdrop-blur-md flex justify-between items-center py-4 px-8 border-b border-white/10 transition-all duration-300">
       <div className="flex items-center h-16">
-        <Image src="/logo.png" alt="JarvysAI Logo" width={56} height={56} className="rounded-full shadow-md" priority />
+        <Image 
+          src="/logo.png" 
+          alt="JarvysAI Logo" 
+          width={56} 
+          height={56} 
+          className="rounded-full shadow-md" 
+          priority 
+          loading="eager"
+        />
       </div>
       <nav className="hidden md:flex space-x-6 text-gray-200 text-sm font-medium">
         {[
@@ -65,113 +414,31 @@ function Header() {
 
 // HERO SECTION
 function Hero() {
-  useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadFull(engine);
-    });
-  }, []);
+  const [reducedMotion] = useState(prefersReducedMotion());
+  const [particlesLoaded, setParticlesLoaded] = useState(false);
   
-  const particlesOptions = {
-    fullScreen: false,
-    background: { color: "transparent" },
-    fpsLimit: 60,
-    particles: {
-      color: { 
-        value: ["#ffffff", "#f0f8ff", "#e6f3ff", "#87ceeb"] 
-      },
-      links: { 
-        enable: true, 
-        color: "#00e6fe", 
-        distance: 300, 
-        opacity: 0.2,
-        width: 1,
-        triangles: {
-          enable: false
-        }
-      },
-      move: { 
-        enable: true, 
-        speed: 0.2,
-        direction: "none" as const,
-        random: true,
-        straight: false,
-        outModes: { default: "bounce" as const },
-        attract: {
-          enable: false
-        }
-      },
-      number: { 
-        value: 150,
-        density: {
-          enable: true,
-          value_area: 1200
-        }
-      },
-      opacity: { 
-        value: { min: 0.1, max: 0.6 },
-        animation: {
-          enable: true,
-          speed: 0.3,
-          minimumValue: 0.05
-        }
-      },
-      shape: { 
-        type: ["circle"],
-        stroke: {
-          width: 0,
-          color: "#000000"
-        }
-      },
-      size: { 
-        value: { min: 1, max: 4 },
-        animation: {
-          enable: true,
-          speed: 0.5,
-          minimumValue: 0.1
-        }
-      },
-      twinkle: {
-        particles: {
-          enable: true,
-          color: "#ffffff",
-          frequency: 0.02,
-          opacity: 0.8
-        }
-      },
-      interactivity: {
-        events: {
-          onHover: {
-            enable: true,
-            mode: "repulse"
-          },
-          onClick: {
-            enable: true,
-            mode: "push"
-          },
-          resize: { enable: true }
-        },
-        modes: {
-          repulse: {
-            distance: 100,
-            duration: 0.4
-          },
-          push: {
-            particles_nb: 2
-          }
-        }
-      }
-    },
-    detectRetina: true,
-  };
+  useEffect(() => {
+    if (!reducedMotion) {
+      initParticlesEngine(async (engine) => {
+        await loadFull(engine);
+        setParticlesLoaded(true);
+      });
+    }
+  }, [reducedMotion]);
+  
+  const particlesOptions = getParticlesOptions(reducedMotion);
 
-      return (
-      <section className="w-full flex flex-col items-center justify-center text-center py-32 bg-gradient-to-b from-[#0a192f] via-[#0f1a2e] to-[#111827] relative overflow-hidden min-h-screen">
-        {/* Enhanced animated particles background */}
+  return (
+    <section className="w-full flex flex-col items-center justify-center text-center py-32 bg-gradient-to-b from-[#0a192f] via-[#0f1a2e] to-[#111827] relative overflow-hidden min-h-screen">
+      {/* Performance optimization: Only render particles if not reduced motion and loaded */}
+      {!reducedMotion && particlesLoaded && (
         <div className="absolute inset-0 z-0">
           <Particles id="tsparticles" options={particlesOptions} className="w-full h-full" />
         </div>
-        
-        {/* Global Satellite Network Background */}
+      )}
+      
+      {/* Performance optimization: Conditional background animations */}
+      {!reducedMotion && (
         <div className="absolute inset-0 z-0 pointer-events-none">
           {/* Deep Space Background */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-slate-900/30 to-black/90"></div>
@@ -240,53 +507,56 @@ function Hero() {
             <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
           </div>
         </div>
+      )}
       
-      {/* Moving stars across the sky */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Star group 1 - moving from left to right */}
-        <div className="absolute top-24 left-0 w-full h-4 animate-star-group-1">
-          <div className="flex justify-between">
-            <div className="star-shape-1 animate-pulse"></div>
-            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '1s' }}></div>
-            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '2s' }}></div>
-            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '3s' }}></div>
-            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '4s' }}></div>
+      {/* Performance optimization: Conditional star animations */}
+      {!reducedMotion && (
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          {/* Star group 1 - moving from left to right */}
+          <div className="absolute top-24 left-0 w-full h-4 animate-star-group-1">
+            <div className="flex justify-between">
+              <div className="star-shape-1 animate-pulse"></div>
+              <div className="star-shape-2 animate-pulse" style={{ animationDelay: '1s' }}></div>
+              <div className="star-shape-3 animate-pulse" style={{ animationDelay: '2s' }}></div>
+              <div className="star-shape-2 animate-pulse" style={{ animationDelay: '3s' }}></div>
+              <div className="star-shape-1 animate-pulse" style={{ animationDelay: '4s' }}></div>
+            </div>
+          </div>
+          
+          {/* Star group 2 - moving diagonally */}
+          <div className="absolute top-40 left-0 w-full h-4 animate-star-group-2">
+            <div className="flex justify-between">
+              <div className="star-shape-2 animate-pulse"></div>
+              <div className="star-shape-3 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+              <div className="star-shape-1 animate-pulse" style={{ animationDelay: '3s' }}></div>
+              <div className="star-shape-2 animate-pulse" style={{ animationDelay: '4.5s' }}></div>
+              <div className="star-shape-3 animate-pulse" style={{ animationDelay: '6s' }}></div>
+            </div>
+          </div>
+          
+          {/* Star group 3 - moving from right to left */}
+          <div className="absolute top-56 right-0 w-full h-4 animate-star-group-3">
+            <div className="flex justify-between">
+              <div className="star-shape-1 animate-pulse"></div>
+              <div className="star-shape-3 animate-pulse" style={{ animationDelay: '2s' }}></div>
+              <div className="star-shape-2 animate-pulse" style={{ animationDelay: '4s' }}></div>
+              <div className="star-shape-3 animate-pulse" style={{ animationDelay: '6s' }}></div>
+              <div className="star-shape-1 animate-pulse" style={{ animationDelay: '8s' }}></div>
+            </div>
+          </div>
+          
+          {/* Star group 4 - moving slowly across */}
+          <div className="absolute top-72 left-0 w-full h-4 animate-star-group-4">
+            <div className="flex justify-between">
+              <div className="star-shape-2 animate-pulse"></div>
+              <div className="star-shape-3 animate-pulse" style={{ animationDelay: '3s' }}></div>
+              <div className="star-shape-1 animate-pulse" style={{ animationDelay: '6s' }}></div>
+              <div className="star-shape-2 animate-pulse" style={{ animationDelay: '9s' }}></div>
+              <div className="star-shape-3 animate-pulse" style={{ animationDelay: '12s' }}></div>
+            </div>
           </div>
         </div>
-        
-        {/* Star group 2 - moving diagonally */}
-        <div className="absolute top-40 left-0 w-full h-4 animate-star-group-2">
-          <div className="flex justify-between">
-            <div className="star-shape-2 animate-pulse"></div>
-            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '3s' }}></div>
-            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '4.5s' }}></div>
-            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '6s' }}></div>
-          </div>
-        </div>
-        
-        {/* Star group 3 - moving from right to left */}
-        <div className="absolute top-56 right-0 w-full h-4 animate-star-group-3">
-          <div className="flex justify-between">
-            <div className="star-shape-1 animate-pulse"></div>
-            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '2s' }}></div>
-            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '4s' }}></div>
-            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '6s' }}></div>
-            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '8s' }}></div>
-          </div>
-        </div>
-        
-        {/* Star group 4 - moving slowly across */}
-        <div className="absolute top-72 left-0 w-full h-4 animate-star-group-4">
-          <div className="flex justify-between">
-            <div className="star-shape-2 animate-pulse"></div>
-            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '3s' }}></div>
-            <div className="star-shape-1 animate-pulse" style={{ animationDelay: '6s' }}></div>
-            <div className="star-shape-2 animate-pulse" style={{ animationDelay: '9s' }}></div>
-            <div className="star-shape-3 animate-pulse" style={{ animationDelay: '12s' }}></div>
-          </div>
-        </div>
-      </div>
+      )}
 
       {/* Gradient overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a192f]/20 to-[#0a192f]/40 z-0"></div>
@@ -361,12 +631,14 @@ function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-cyan-500 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-cyan-500 rounded-full mt-2 animate-pulse"></div>
+      {/* Scroll indicator - only show if not reduced motion */}
+      {!reducedMotion && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-cyan-500 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-cyan-500 rounded-full mt-2 animate-pulse"></div>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
@@ -871,90 +1143,7 @@ function Services() {
       {/* Enhanced Service Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto relative z-10">
         {filteredServices.map((service, i) => (
-          <div
-            key={service.id}
-            className="group relative rounded-2xl p-8 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
-            style={{ animationDelay: `${i * 100}ms` }}
-            onMouseEnter={() => setHoveredService(service.id)}
-            onMouseLeave={() => setHoveredService(null)}
-          >
-            {/* Animated Border */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            {/* Service Number */}
-            <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 flex items-center justify-center text-xs font-bold text-cyan-300">
-              {service.id.toString().padStart(2, '0')}
-            </div>
-
-            {/* Icon */}
-            <div className="relative z-10 flex flex-col items-center text-center mb-6">
-              <div className={`w-20 h-20 flex items-center justify-center rounded-2xl mb-4 bg-gradient-to-tr ${service.color} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
-                {service.icon}
-              </div>
-              
-              {/* Title */}
-              <h3 className="text-xl font-bold bg-gradient-to-r from-cyan-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3 group-hover:text-xl transition-all duration-300">
-                {service.title}
-              </h3>
-              
-              {/* Description */}
-              <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                {service.desc}
-              </p>
-            </div>
-
-            {/* Features */}
-            <div className="relative z-10 mb-6">
-              <h4 className="text-sm font-semibold text-cyan-300 mb-3 flex items-center gap-2">
-                <FaCheck className="text-xs" />
-                Key Features
-              </h4>
-              <div className="space-y-2">
-                {service.features.map((feature, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
-                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400"></div>
-                    {feature}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Benefits */}
-            <div className="relative z-10 mb-6">
-              <h4 className="text-sm font-semibold text-green-300 mb-3 flex items-center gap-2">
-                <FaChartLine className="text-xs" />
-                Business Impact
-              </h4>
-              <div className="space-y-2">
-                {service.benefits.map((benefit, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
-                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-green-400 to-emerald-400"></div>
-                    {benefit}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Technology Stack */}
-            <div className="relative z-10">
-              <h4 className="text-sm font-semibold text-purple-300 mb-3 flex items-center gap-2">
-                <FaCode className="text-xs" />
-                Technology Stack
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {service.tech.map((tech, idx) => (
-                  <span key={idx} className="px-2 py-1 text-xs bg-gradient-to-r from-purple-400/20 to-pink-400/20 text-purple-300 rounded-full border border-purple-400/30">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Hover Overlay */}
-            {hoveredService === service.id && (
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-400/5 to-pink-400/5 rounded-2xl transition-all duration-300"></div>
-            )}
-          </div>
+          <ServiceCard key={service.id} service={service} index={i} onHover={setHoveredService} isHovered={hoveredService === service.id} />
         ))}
       </div>
 
@@ -1403,88 +1592,7 @@ function Technologies() {
       {/* Enhanced Technology Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto relative z-10">
         {filteredTechs.map((tech, i) => (
-          <div
-            key={tech.id}
-            className="group relative rounded-2xl p-6 shadow-xl border border-cyan-900/50 transform transition-all duration-500 hover:scale-105 overflow-hidden animate-fadein backdrop-blur-xl bg-gradient-to-br from-white/5 via-white/10 to-white/5 hover:from-white/10 hover:via-white/15 hover:to-white/10 hover:shadow-cyan-400/20"
-            style={{ animationDelay: `${i * 80}ms` }}
-            onMouseEnter={() => setHoveredTech(tech.id)}
-            onMouseLeave={() => setHoveredTech(null)}
-          >
-            {/* Animated Border */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-400/20 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            {/* Technology Number */}
-            <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-400/20 flex items-center justify-center text-xs font-bold text-cyan-300">
-              {tech.id.toString().padStart(2, '0')}
-            </div>
-
-            {/* Icon */}
-            <div className="relative z-10 flex flex-col items-center text-center mb-4">
-              <div className={`w-16 h-16 flex items-center justify-center rounded-2xl mb-3 bg-gradient-to-tr ${tech.color} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
-                {tech.icon}
-              </div>
-              
-              {/* Title */}
-              <h3 className="text-lg font-bold bg-gradient-to-r from-cyan-300 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-2 group-hover:text-lg transition-all duration-300">
-                {tech.name}
-              </h3>
-              
-              {/* Description */}
-              <p className="text-gray-300 text-xs leading-relaxed mb-4">
-                {tech.description}
-              </p>
-            </div>
-
-            {/* Expertise Level */}
-            <div className="relative z-10 mb-4">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-400">Expertise:</span>
-                <span className={`px-2 py-1 text-xs rounded-full font-semibold ${
-                  tech.expertise === 'Expert' 
-                    ? 'bg-gradient-to-r from-green-400/20 to-emerald-400/20 text-green-300 border border-green-400/30'
-                    : 'bg-gradient-to-r from-blue-400/20 to-indigo-400/20 text-blue-300 border border-blue-400/30'
-                }`}>
-                  {tech.expertise}
-                </span>
-              </div>
-            </div>
-
-            {/* Use Cases */}
-            <div className="relative z-10 mb-4">
-              <h4 className="text-xs font-semibold text-cyan-300 mb-2 flex items-center gap-1">
-                <FaCheck className="text-xs" />
-                Use Cases
-              </h4>
-              <div className="space-y-1">
-                {tech.useCases.slice(0, 3).map((useCase, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-xs text-gray-400">
-                    <div className="w-1 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400"></div>
-                    {useCase}
-                  </div>
-                ))}
-                {tech.useCases.length > 3 && (
-                  <div className="text-xs text-gray-500 italic">
-                    +{tech.useCases.length - 3} more...
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Projects Count */}
-            <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-400">Projects:</span>
-                <span className="text-xs font-semibold text-purple-300">
-                  {tech.projects}+ completed
-                </span>
-              </div>
-            </div>
-
-            {/* Hover Overlay */}
-            {hoveredTech === tech.id && (
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/5 via-purple-400/5 to-pink-400/5 rounded-2xl transition-all duration-300"></div>
-            )}
-          </div>
+          <TechnologyCard key={tech.id} tech={tech} index={i} onHover={setHoveredTech} isHovered={hoveredTech === tech.id} />
         ))}
       </div>
 
@@ -1661,41 +1769,43 @@ function Portfolio() {
       </div>
       
       <h2 className="text-3xl font-bold text-cyan-400 text-center mb-10 relative z-10">Our Work</h2>
-      <Swiper
-        spaceBetween={32}
-        slidesPerView={1}
-        loop={true}
-        autoplay={{ delay: 6000, disableOnInteraction: false }}
-        speed={800}
-        breakpoints={{
-          768: { slidesPerView: 2 },
-          1200: { slidesPerView: 3 },
-        }}
-        className="relative z-10"
-      >
-        {projects.map((p, i) => (
-          <SwiperSlide key={i}>
-            <div className="relative group bg-[#181f2a] rounded-2xl shadow-lg border border-cyan-900 overflow-hidden flex flex-col transition-transform hover:scale-[1.03] hover:shadow-cyan-500/30 animate-fadein" style={{ animationDelay: `${i * 100}ms` }}>
-              {/* Unique animated gradient border on hover */}
-              <div className="absolute inset-0 z-0 pointer-events-none rounded-2xl group-hover:animate-border-glow" />
-              {/* Project image */}
-              <div className="h-48 w-full overflow-hidden flex items-center justify-center bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 opacity-80">
-                <img src={p.image + "?w=400&q=60"} alt={p.name} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-              </div>
-              <div className="flex-1 flex flex-col p-6 z-10">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="px-3 py-1 text-xs rounded-full bg-cyan-700/30 text-cyan-200 font-semibold shadow">{p.tag}</span>
+      <Suspense fallback={<div>Loading Swiper...</div>}>
+        <LazySwiper
+          spaceBetween={32}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{ delay: 6000, disableOnInteraction: false }}
+          speed={800}
+          breakpoints={{
+            768: { slidesPerView: 2 },
+            1200: { slidesPerView: 3 },
+          }}
+          className="relative z-10"
+        >
+          {projects.map((p, i) => (
+            <LazySwiperSlide key={i}>
+              <div className="relative group bg-[#181f2a] rounded-2xl shadow-lg border border-cyan-900 overflow-hidden flex flex-col transition-transform hover:scale-[1.03] hover:shadow-cyan-500/30 animate-fadein" style={{ animationDelay: `${i * 100}ms` }}>
+                {/* Unique animated gradient border on hover */}
+                <div className="absolute inset-0 z-0 pointer-events-none rounded-2xl group-hover:animate-border-glow" />
+                {/* Project image */}
+                <div className="h-48 w-full overflow-hidden flex items-center justify-center bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 opacity-80">
+                  <img src={p.image + "?w=400&q=60"} alt={p.name} className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                 </div>
-                <h3 className="text-lg font-semibold text-cyan-200 mb-2">{p.name}</h3>
-                <p className="text-gray-400 mb-4 text-sm">{p.desc}</p>
-                <div className="mt-auto">
-                  <button className="px-4 py-2 bg-gradient-to-tr from-cyan-500 to-purple-500 text-white rounded-full font-semibold shadow hover:scale-105 transition-transform">View Details</button>
+                <div className="flex-1 flex flex-col p-6 z-10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-3 py-1 text-xs rounded-full bg-cyan-700/30 text-cyan-200 font-semibold shadow">{p.tag}</span>
+                  </div>
+                  <h3 className="text-lg font-semibold text-cyan-200 mb-2">{p.name}</h3>
+                  <p className="text-gray-400 mb-4 text-sm">{p.desc}</p>
+                  <div className="mt-auto">
+                    <button className="px-4 py-2 bg-gradient-to-tr from-cyan-500 to-purple-500 text-white rounded-full font-semibold shadow hover:scale-105 transition-transform">View Details</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            </LazySwiperSlide>
+          ))}
+        </LazySwiper>
+      </Suspense>
     </section>
   );
 }
@@ -1705,230 +1815,207 @@ function Testimonials() {
   const testimonials = [
     {
       name: "Ali Raza",
+      position: "CEO, TechFlow Solutions",
       feedback: "JarvysAI's voicebot solution helped us double our lead conversion rate. Highly recommended!",
-      avatar: <FaRobot className="text-2xl text-cyan-400" />,
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
       tag: "AI Voicebot",
+      rating: 5
     },
     {
       name: "Sarah Khan",
+      position: "Operations Manager, CallCenter Pro",
       feedback: "Their team automated our call center workflows—our support costs dropped and customer satisfaction soared!",
-      avatar: "S",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
       tag: "Call Center Automation",
+      rating: 5
     },
     {
       name: "John Matthews",
+      position: "CTO, SaaSFlow Inc",
       feedback: "The AI-powered chatbots from JarvysAI are a game changer for our SaaS onboarding. Seamless and smart!",
-      avatar: "J",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       tag: "Chatbot",
+      rating: 5
     },
     {
       name: "Adeel Ahmed",
+      position: "IoT Director, SmartFactory",
       feedback: "Our IoT devices are now connected, monitored, and automated in real-time. JarvysAI's IoT team is brilliant!",
-      avatar: "A",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
       tag: "IoT Automation",
+      rating: 5
     },
     {
       name: "Maria Gomez",
+      position: "Product Manager, HomeSmart",
       feedback: "We launched a smart home app with JarvysAI's help—our users love the seamless device control!",
-      avatar: "M",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
       tag: "IoT Smart Home",
+      rating: 5
     },
     {
       name: "Bilal Siddiqui",
+      position: "Marketing Director, LocalBiz",
       feedback: "Their SEO team ranked our business #1 locally and boosted our online leads. True digital partners!",
-      avatar: "B",
+      avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face",
       tag: "SEO",
+      rating: 5
     },
-    // New testimonial: iOS App
     {
       name: "Jessica Lee",
+      position: "Founder, AppStudio",
       feedback: "Our iOS app is beautiful, fast, and user-friendly. The JarvysAI team delivered beyond expectations!",
-      avatar: "J",
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
       tag: "iOS App Development",
+      rating: 5
     },
-    // New testimonial: POS System
     {
       name: "Omar Farooq",
+      position: "Operations Director, RetailChain",
       feedback: "The POS system JarvysAI built for our retail chain is rock-solid and easy for our staff. Sales and reporting are a breeze now!",
-      avatar: "O",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
       tag: "POS System",
+      rating: 5
     },
-    // New testimonial: IoT
     {
       name: "Emily Chen",
+      position: "Plant Manager, IndustrialCorp",
       feedback: "We automated our entire factory floor with JarvysAI's IoT solutions. Real-time monitoring and control has transformed our operations.",
-      avatar: "E",
+      avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
       tag: "Industrial IoT",
+      rating: 5
     },
+    {
+      name: "David Wilson",
+      position: "CEO, StartupHub",
+      feedback: "JarvysAI helped us build our MVP in just 3 weeks. Their development speed and quality are unmatched!",
+      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face",
+      tag: "MVP Development",
+      rating: 5
+    },
+    {
+      name: "Lisa Rodriguez",
+      position: "CTO, FinTech Solutions",
+      feedback: "Their AI integration transformed our financial platform. We're now processing 10x more transactions efficiently!",
+      avatar: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
+      tag: "AI Integration",
+      rating: 5
+    },
+    {
+      name: "Ahmed Hassan",
+      position: "Technical Lead, CloudTech",
+      feedback: "JarvysAI's cloud migration expertise saved us months of work and significantly reduced our infrastructure costs.",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+      tag: "Cloud Migration",
+      rating: 5
+    }
   ];
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    const scrollContainer = document.getElementById('testimonials-scroll');
+    if (!scrollContainer) return;
+
+    let scrollPosition = 0;
+    const scrollSpeed = 1; // pixels per frame
+    const scrollInterval = setInterval(() => {
+      scrollPosition += scrollSpeed;
+      if (scrollPosition >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
+        scrollPosition = 0;
+      }
+      scrollContainer.scrollLeft = scrollPosition;
+    }, 50); // 50ms = 20fps
+
+    return () => clearInterval(scrollInterval);
+  }, []);
+
   return (
-    <section id="testimonials" className="w-full py-20 px-4 relative">
-      {/* Satellite Network Background for Testimonials */}
+    <section id="testimonials" className="w-full py-16 px-4 relative overflow-hidden">
+      {/* Train track background effect */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Deep Space Background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/30 to-black/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-slate-900/20 to-black/90"></div>
         
-        {/* Starlink Constellation - Realistic Train */}
-        <div className="absolute top-20 left-0 w-full">
-          <div className="absolute top-0 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-starlink-train-1 blur-sm"></div>
-          <div className="absolute top-2 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent animate-starlink-train-2 blur-sm"></div>
-          <div className="absolute top-4 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-purple-400/30 to-transparent animate-starlink-train-3 blur-sm"></div>
-          <div className="absolute top-6 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-pink-400/20 to-transparent animate-starlink-train-4 blur-sm"></div>
-          <div className="absolute top-8 left-1/4 w-40 h-0.5 bg-gradient-to-r from-transparent via-green-400/15 to-transparent animate-starlink-train-5 blur-sm"></div>
-        </div>
+        {/* Train tracks - horizontal lines */}
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent transform -translate-y-1/2"></div>
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent transform -translate-y-1/2 mt-2"></div>
         
-        {/* Individual Satellites - More Realistic */}
-        <div className="absolute top-10 left-1/6 w-2 h-1 bg-gradient-to-r from-white/70 to-cyan-400/50 animate-satellite-1 blur-sm"></div>
-        <div className="absolute top-15 right-1/4 w-1.5 h-0.5 bg-gradient-to-r from-white/60 to-purple-400/40 animate-satellite-2 blur-sm"></div>
-        <div className="absolute top-25 left-1/3 w-2 h-0.5 bg-gradient-to-r from-white/50 to-pink-400/30 animate-satellite-3 blur-sm"></div>
-        <div className="absolute top-35 right-1/3 w-1.5 h-0.5 bg-gradient-to-r from-white/55 to-green-400/35 animate-satellite-4 blur-sm"></div>
-        <div className="absolute top-45 left-2/3 w-2.5 h-0.5 bg-gradient-to-r from-white/65 to-blue-400/45 animate-satellite-5 blur-sm"></div>
-        
-        {/* Communication Signals - Organic Beams */}
-        <div className="absolute top-1/4 left-1/4 w-0.5 h-24 bg-gradient-to-b from-cyan-400/50 to-transparent animate-beam-1 blur-sm"></div>
-        <div className="absolute top-1/3 right-1/4 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent animate-beam-2 blur-sm"></div>
-        <div className="absolute top-1/2 left-1/3 w-0.5 h-28 bg-gradient-to-b from-pink-400/50 to-transparent animate-beam-3 blur-sm"></div>
-        <div className="absolute top-2/3 right-1/3 w-0.5 h-22 bg-gradient-to-b from-green-400/50 to-transparent animate-beam-4 blur-sm"></div>
-        
-        {/* Data Streams - Natural Flow */}
-        <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-400/25 to-transparent animate-data-transmission-1 blur-sm"></div>
-        <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-400/25 to-transparent animate-data-transmission-2 blur-sm"></div>
-        <div className="absolute top-0 right-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-400/25 to-transparent animate-data-transmission-3 blur-sm"></div>
-        <div className="absolute top-0 right-1/3 w-0.5 h-full bg-gradient-to-b from-transparent via-green-400/25 to-transparent animate-data-transmission-4 blur-sm"></div>
-        
-        {/* Ground Stations - More Organic */}
-        <div className="absolute bottom-10 left-1/4 w-12 h-6 bg-gradient-to-r from-cyan-500/15 to-blue-500/15 animate-pulse blur-sm">
-          <div className="w-1 h-1 bg-cyan-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
-        </div>
-        <div className="absolute bottom-15 right-1/4 w-10 h-5 bg-gradient-to-r from-purple-500/15 to-pink-500/15 animate-pulse delay-1000 blur-sm">
-          <div className="w-1 h-1 bg-purple-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
-        </div>
-        <div className="absolute bottom-20 left-1/2 w-14 h-7 bg-gradient-to-r from-green-500/15 to-cyan-500/15 animate-pulse delay-2000 blur-sm">
-          <div className="w-1 h-1 bg-green-400/90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse blur-sm"></div>
-        </div>
-        
-        {/* Signal Pulses - Natural Energy */}
-        <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-gradient-to-r from-cyan-400/30 to-transparent animate-signal-pulse-1 blur-sm"></div>
-        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-gradient-to-r from-purple-400/30 to-transparent animate-signal-pulse-2 blur-sm"></div>
-        <div className="absolute top-1/2 left-1/4 w-4 h-4 bg-gradient-to-r from-pink-400/30 to-transparent animate-signal-pulse-3 blur-sm"></div>
-        <div className="absolute top-2/3 right-1/4 w-2.5 h-2.5 bg-gradient-to-r from-green-400/30 to-transparent animate-signal-pulse-4 blur-sm"></div>
-        
-        {/* Atmospheric Energy Waves */}
-        <div className="absolute top-1/6 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent animate-atmospheric-wave-1 blur-sm"></div>
-        <div className="absolute top-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-400/15 to-transparent animate-atmospheric-wave-2 blur-sm"></div>
-        <div className="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-400/15 to-transparent animate-atmospheric-wave-3 blur-sm"></div>
-        
-        {/* Network Energy Fields */}
-        <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-gradient-to-r from-cyan-400/5 to-blue-500/5 animate-pulse blur-sm"></div>
-        <div className="absolute top-1/2 right-1/4 w-12 h-12 bg-gradient-to-r from-purple-400/5 to-pink-500/5 animate-pulse delay-500 blur-sm"></div>
-        <div className="absolute top-2/3 left-1/3 w-20 h-20 bg-gradient-to-r from-pink-400/5 to-cyan-500/5 animate-pulse delay-1000 blur-sm"></div>
-        
-        {/* Status Indicators - Subtle */}
-        <div className="absolute top-5 left-1/2 -translate-x-1/2 flex space-x-4">
-          <div className="w-1 h-1 bg-green-400/60 rounded-full animate-pulse blur-sm"></div>
-          <div className="w-1 h-1 bg-blue-400/60 rounded-full animate-pulse delay-300 blur-sm"></div>
-          <div className="w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-600 blur-sm"></div>
-          <div className="w-1 h-1 bg-cyan-400/60 rounded-full animate-pulse delay-900 blur-sm"></div>
-          <div className="w-1 h-1 bg-pink-400/60 rounded-full animate-pulse delay-1200 blur-sm"></div>
-        </div>
+        {/* Moving train lights effect */}
+        <div className="absolute top-1/2 left-0 w-4 h-4 bg-cyan-400/40 rounded-full animate-pulse transform -translate-y-1/2 -translate-x-1/2"></div>
+        <div className="absolute top-1/2 right-0 w-4 h-4 bg-purple-400/40 rounded-full animate-pulse transform -translate-y-1/2 translate-x-1/2"></div>
       </div>
       
-      <h2 className="text-3xl font-bold text-cyan-400 text-center mb-2 relative z-10">What Our Clients Say</h2>
-      {/* Cool animated gradient bar for visual flair */}
-      <div className="mx-auto mb-6 flex justify-center">
-        <div className="h-1 w-32 rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 animate-pulse animate-gradient-x shadow-lg" style={{ animationDuration: '2.5s' }} />
-      </div>
-      <div className="text-center text-gray-400 mb-10 text-lg max-w-2xl mx-auto">Real results. Real partnerships. Here's what our clients love about JarvysAI.</div>
-      {/* Floating robot icon background */}
-      <FaRobot className="hidden md:block absolute bottom-8 right-8 text-[120px] text-cyan-900/20 blur-sm animate-float pointer-events-none z-0" />
-      <Swiper
-        spaceBetween={32}
-        slidesPerView={1}
-        loop={true}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
-        speed={800}
-        effect="slide"
-        grabCursor={true}
-        slidesPerGroup={1}
-        centeredSlides={false}
-        watchSlidesProgress={true}
-        watchOverflow={true}
-        breakpoints={{
-          640: { slidesPerView: 1, spaceBetween: 24 },
-          768: { slidesPerView: 2, spaceBetween: 32 },
-          1024: { slidesPerView: 3, spaceBetween: 40 },
-        }}
-        className="max-w-6xl mx-auto relative z-10"
-        modules={[Autoplay, EffectFade, Navigation, Pagination]}
-        navigation={{
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        }}
-        pagination={{
-          clickable: true,
-          el: '.swiper-pagination',
-          bulletClass: 'swiper-pagination-bullet',
-          bulletActiveClass: 'swiper-pagination-bullet-active',
-        }}
-      >
-        {/* Custom Navigation Arrows */}
-        <div className="swiper-button-prev absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm rounded-full border border-cyan-400/30 hover:border-cyan-300/60 transition-all duration-300 group cursor-pointer">
-          <div className="w-full h-full flex items-center justify-center">
-            <FaChevronLeft className="text-cyan-400 group-hover:text-white transition-colors duration-300" />
-          </div>
-        </div>
-        <div className="swiper-button-next absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 backdrop-blur-sm rounded-full border border-purple-400/30 hover:border-purple-300/60 transition-all duration-300 group cursor-pointer">
-          <div className="w-full h-full flex items-center justify-center">
-            <FaChevronRight className="text-purple-400 group-hover:text-white transition-colors duration-300" />
-          </div>
-        </div>
-        
-        {/* Custom Pagination */}
-        <div className="swiper-pagination absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          <style jsx>{`
-            .swiper-pagination-bullet {
-              width: 12px;
-              height: 12px;
-              background: rgba(0, 230, 254, 0.3);
-              border: 1px solid rgba(0, 230, 254, 0.5);
-              border-radius: 50%;
-              transition: all 0.3s ease;
-              cursor: pointer;
-            }
-            .swiper-pagination-bullet-active {
-              background: linear-gradient(45deg, #00e6fe, #7f5af0);
-              border-color: #00e6fe;
-              transform: scale(1.2);
-              box-shadow: 0 0 10px rgba(0, 230, 254, 0.5);
-            }
-          `}</style>
-        </div>
-        {testimonials.map((t, i) => (
-          <SwiperSlide key={i}>
-            <div className="relative bg-gradient-to-br from-[#181f2a] via-[#1a2332] to-[#151e2e] rounded-3xl p-8 shadow-2xl border border-cyan-900/50 flex flex-col items-center text-center mx-2 transition-all duration-500 hover:scale-105 group overflow-hidden animate-fadein backdrop-blur-xl" style={{ animationDelay: `${i * 80}ms` }}>
-              {/* Animated border/glow on hover */}
-              <div className="absolute inset-0 z-0 pointer-events-none rounded-2xl group-hover:animate-border-glow group-hover:shadow-[0_0_32px_0_rgba(0,255,255,0.18)] group-hover:border-2 group-hover:border-cyan-400/60 transition-all duration-300" />
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-cyan-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-2xl font-bold mb-6 shadow-2xl overflow-hidden ring-4 ring-cyan-400/40 group-hover:ring-cyan-300/60 transition-all duration-300">
-                  {t.avatar}
+      <div className="max-w-7xl mx-auto relative z-10">
+        <h2 className="text-3xl font-bold text-cyan-400 text-center mb-4">What Our Clients Say</h2>
+        <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mx-auto mb-8 rounded-full"></div>
+        <p className="text-center text-gray-400 mb-12 text-lg max-w-2xl mx-auto">
+          Real results. Real partnerships. Here's what our clients love about JarvysAI.
+        </p>
+
+        {/* Train-style horizontal scrolling testimonials */}
+        <div className="relative">
+          {/* Left gradient fade */}
+          <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+          
+          {/* Right gradient fade */}
+          <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+          
+          {/* Scrolling testimonials container */}
+          <div 
+            id="testimonials-scroll"
+            className="flex space-x-6 overflow-x-auto scrollbar-hide pb-4 scroll-smooth testimonials-container" 
+            style={{ scrollBehavior: 'smooth' }}
+          >
+            {testimonials.map((t, i) => (
+              <div key={i} className="flex-shrink-0 w-80 bg-gradient-to-br from-[#181f2a] via-[#1a2332] to-[#151e2e] rounded-2xl p-6 shadow-xl border border-cyan-900/30 hover:border-cyan-400/50 transition-all duration-300 hover:scale-105 group">
+                {/* Tag */}
+                <div className="flex justify-between items-start mb-4">
+                  <span className="bg-gradient-to-r from-cyan-600 to-purple-600 text-white text-xs px-3 py-1 rounded-full font-medium">
+                    {t.tag}
+                  </span>
+                  {/* Star rating */}
+                  <div className="flex space-x-1">
+                    {[...Array(t.rating)].map((_, star) => (
+                      <FaStar key={star} className="text-yellow-400 text-sm" />
+                    ))}
+                  </div>
                 </div>
-                <span className="absolute top-6 right-6 bg-gradient-to-r from-cyan-600 to-purple-600 text-white text-xs px-4 py-2 rounded-full font-semibold shadow-lg border border-cyan-400/30 group-hover:border-cyan-300/50 transition-all duration-300">
-                  {t.tag}
-                </span>
-                <p className="text-gray-300 italic mb-4">"{t.feedback}"</p>
-                <div className="text-cyan-300 font-semibold">{t.name}</div>
+                
+                {/* Client photo and info */}
+                <div className="flex items-center mb-4">
+                  <div className="w-16 h-16 rounded-full overflow-hidden mr-4 ring-2 ring-cyan-400/30 group-hover:ring-cyan-400/60 transition-all duration-300">
+                    <img 
+                      src={t.avatar} 
+                      alt={t.name}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div>
+                    <div className="text-cyan-300 font-semibold text-sm">{t.name}</div>
+                    <div className="text-gray-400 text-xs">{t.position}</div>
+                  </div>
+                </div>
+                
+                {/* Feedback */}
+                <p className="text-gray-300 text-sm leading-relaxed italic">
+                  "{t.feedback}"
+                </p>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <div className="text-center text-gray-300 mt-12 text-lg max-w-3xl mx-auto relative z-10">
-        <span className="text-cyan-400 font-bold">We love building long-term partnerships.</span> 
-        <span className="text-gray-400"> Your success is our success!</span>
-        <div className="mt-4 flex items-center justify-center gap-2">
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-          <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+            ))}
+          </div>
+          
+          {/* Scroll indicators */}
+          <div className="flex justify-center mt-6 space-x-2">
+            <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+            <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+          </div>
+        </div>
+
+        {/* Bottom message */}
+        <div className="text-center text-gray-300 mt-8 text-base">
+          <span className="text-cyan-400 font-semibold">We love building long-term partnerships.</span>
+          <span className="text-gray-400"> Your success is our success!</span>
         </div>
       </div>
     </section>
@@ -2414,34 +2501,53 @@ function Footer() {
 }
 
 export default function Home() {
+  const { isLowEnd, userPrefersReducedMotion } = useDeviceCapabilities();
+  
+  // Performance optimization: Reduce particle count for low-end devices
+  const particleCount = isLowEnd ? 20 : (userPrefersReducedMotion ? 50 : 150);
+  const enableAnimations = !isLowEnd && !userPrefersReducedMotion;
+  
+  // Performance optimization: Conditional rendering of heavy components
+  const shouldRenderParticles = !isLowEnd && !userPrefersReducedMotion;
+  const shouldRenderComplexAnimations = !isLowEnd && !userPrefersReducedMotion;
+  
+  // Performance optimization: Debounced scroll for better performance
+  const [scrollY, setScrollY] = useState(0);
+  useDebouncedScroll(() => {
+    setScrollY(window.scrollY);
+  }, 16); // 60fps scroll handling
+
+  // Particles initialization
+  const particlesInit = useCallback(async (engine: any) => {
+    await loadFull(engine);
+  }, []);
+
+  const particlesLoaded = useCallback(async (container: any) => {
+    // Particles are loaded and ready
+    console.log('Particles loaded successfully');
+  }, []);
+
   return (
     <main className="w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#000000] relative overflow-hidden">
-      {/* Global animated particles background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <Particles 
-          id="global-particles" 
-          options={{
-            fullScreen: false,
-            background: { color: "transparent" },
-            fpsLimit: 60,
-            particles: {
-              color: { value: ["#00e6fe", "#7f5af0", "#ff6b6b", "#4ecdc4"] },
-              number: { value: 20, density: { enable: true, value_area: 1000 } },
-              size: { value: { min: 1, max: 2 } },
-              opacity: { value: { min: 0.05, max: 0.2 } },
-              move: { enable: true, speed: 0.2, direction: "none" as const, random: true, straight: false, outModes: { default: "bounce" as const } },
-              shape: { type: ["circle", "star"], stroke: { width: 0 } },
-              links: { enable: true, color: "#00e6fe", distance: 150, opacity: 0.04, width: 1 },
-              twinkle: { particles: { enable: true, color: "#fff", frequency: 0.08, opacity: 0.4 } },
-            },
-            detectRetina: true,
-          }} 
-          className="w-full h-full" 
-        />
-      </div>
+      {/* Performance Monitor */}
+      <PerformanceMonitor />
       
-      {/* Global animated gradient border at the top */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 via-purple-500 via-pink-500 to-transparent animate-gradient-x opacity-40"></div>
+      {/* Global animated particles background - Conditional rendering for performance */}
+      {shouldRenderParticles && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <Particles 
+            id="global-particles" 
+            init={particlesInit}
+            options={getParticlesOptions(userPrefersReducedMotion)}
+            particlesLoaded={particlesLoaded}
+          />
+        </div>
+      )}
+      
+      {/* Global animated gradient border at the top - Conditional rendering for performance */}
+      {shouldRenderComplexAnimations && (
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 via-purple-500 via-pink-500 to-transparent animate-gradient-x opacity-40"></div>
+      )}
       
       <div className="relative z-10">
         <Header />
