@@ -6,16 +6,15 @@ import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 import { initParticlesEngine } from "@tsparticles/react";
 
-import { FaRobot, FaHandPaper, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaNetworkWired, FaDatabase, FaMobileAlt, FaLaptopCode, FaUserShield, FaRocket, FaSatelliteDish, FaSearchLocation, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronLeft, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb } from "react-icons/fa";
-import { SiReact, SiPython, SiAmazon, SiNodedotjs, SiNextdotjs, SiDjango, SiLaravel, SiFlutter, SiTwilio, SiAmazons3, SiDocker, SiKubernetes, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiGithub, SiGooglecloud, SiTypescript } from "react-icons/si";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade, Navigation, Pagination } from "swiper/modules";
+
+import { FaRobot, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb } from "react-icons/fa";
+import { SiReact, SiPython, SiAmazon, SiNodedotjs, SiNextdotjs, SiDjango, SiLaravel, SiFlutter, SiTwilio, SiDocker, SiKubernetes, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiGooglecloud, SiTypescript } from "react-icons/si";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
 import PerformanceMonitor from "./PerformanceMonitor";
-import { prefersReducedMotion, isLowEndDevice, supportsModernFeatures } from "../utils/performance";
+import { prefersReducedMotion } from "../utils/performance";
 
 // Performance optimization: Check device capabilities
 const useDeviceCapabilities = () => {
