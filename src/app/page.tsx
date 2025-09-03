@@ -294,6 +294,7 @@ interface TechnologyCardProps {
     icon: React.ReactNode;
     category: string;
     level: string;
+    color?: string;
   };
   index: number;
   onHover: (id: number | null) => void;
@@ -317,7 +318,7 @@ const TechnologyCard = memo(({ tech, index, onHover, isHovered }: TechnologyCard
 
     {/* Icon */}
     <div className="relative z-10 flex flex-col items-center text-center mb-4">
-      <div className={`w-16 h-16 flex items-center justify-center rounded-2xl mb-3 bg-gradient-to-tr ${tech.color} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
+      <div className={`w-16 h-16 flex items-center justify-center rounded-2xl mb-3 bg-gradient-to-tr ${tech.color || 'from-cyan-400 to-purple-500'} shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110`}>
         {tech.icon}
       </div>
       
