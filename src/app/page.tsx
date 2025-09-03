@@ -295,6 +295,7 @@ interface TechnologyCardProps {
     category: string;
     level: string;
     color?: string;
+    expertise?: string;
   };
   index: number;
   onHover: (id: number | null) => void;
@@ -342,7 +343,7 @@ const TechnologyCard = memo(({ tech, index, onHover, isHovered }: TechnologyCard
             ? 'bg-gradient-to-r from-green-400/20 to-emerald-400/20 text-green-300 border border-green-400/30'
             : 'bg-gradient-to-r from-blue-400/20 to-indigo-400/20 text-blue-300 border border-blue-400/30'
         }`}>
-          {tech.expertise}
+          {tech.expertise || 'Intermediate'}
         </span>
       </div>
     </div>
