@@ -1,13 +1,13 @@
 'use client';
 
 import Image from "next/image";
-import { useCallback, useEffect, useState, lazy, memo } from "react";
+import { useCallback, useEffect, useState, memo } from "react";
 import Particles from "@tsparticles/react";
 import { loadFull } from "tsparticles";
 import { initParticlesEngine } from "@tsparticles/react";
 
 
-import { FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb, FaMobileAlt, FaSatelliteDish } from "react-icons/fa";
+import { FaRobot, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb, FaMobileAlt, FaSatelliteDish } from "react-icons/fa";
 import { SiReact, SiPython, SiAmazon, SiNodedotjs, SiNextdotjs, SiDjango, SiLaravel, SiFlutter, SiTwilio, SiDocker, SiKubernetes, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiGooglecloud, SiTypescript } from "react-icons/si";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -388,7 +388,7 @@ TechnologyCard.displayName = 'TechnologyCard';
 
 // HEADER
 function Header() {
-  const [reducedMotion] = useState(prefersReducedMotion());
+  // const [reducedMotion] = useState(prefersReducedMotion());
   
   // Performance optimization: Debounced scroll handler
   useDebouncedScroll(() => {
