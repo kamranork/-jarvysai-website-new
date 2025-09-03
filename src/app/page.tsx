@@ -7,7 +7,7 @@ import { loadFull } from "tsparticles";
 import { initParticlesEngine } from "@tsparticles/react";
 
 
-import { FaRobot, FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb, FaMobileAlt, FaSatelliteDish, FaShoppingCart } from "react-icons/fa";
+import { FaComments, FaCogs, FaChartLine, FaCloud, FaPhoneAlt, FaUser, FaEnvelope, FaCommentDots, FaMapMarkerAlt, FaBrain, FaChevronRight, FaStar, FaCheck, FaCode, FaMicrophone, FaHeadset, FaCog, FaChartBar, FaServer, FaWifi, FaPhoneVolume, FaGlobe, FaUserTie, FaTabletAlt, FaDesktop, FaShieldAlt, FaSearch, FaLightbulb, FaMobileAlt, FaSatelliteDish } from "react-icons/fa";
 import { SiReact, SiPython, SiAmazon, SiNodedotjs, SiNextdotjs, SiDjango, SiLaravel, SiFlutter, SiTwilio, SiDocker, SiKubernetes, SiMongodb, SiPostgresql, SiMysql, SiRedis, SiGooglecloud, SiTypescript } from "react-icons/si";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -43,9 +43,9 @@ const useDeviceCapabilities = () => {
   return { isLowEnd, userPrefersReducedMotion };
 };
 
-// Performance optimization: Lazy load heavy components
-const LazySwiper = lazy(() => import('swiper/react').then(module => ({ default: module.Swiper })));
-const LazySwiperSlide = lazy(() => import('swiper/react').then(module => ({ default: module.SwiperSlide })));
+// Performance optimization: Lazy load heavy components (commented out for now)
+// const LazySwiper = lazy(() => import('swiper/react').then(module => ({ default: module.Swiper })));
+// const LazySwiperSlide = lazy(() => import('swiper/react').then(module => ({ default: module.SwiperSlide })));
 
 // Performance optimization: Debounced scroll handler
 const useDebouncedScroll = (callback: () => void, delay: number) => {
@@ -159,26 +159,26 @@ const getParticlesOptions = (reducedMotion: boolean) => ({
 });
 
 // Performance optimization: Intersection Observer for animations
-const useIntersectionObserver = (options = {}) => {
-  const [isIntersecting, setIsIntersecting] = useState(false);
-  const [ref, setRef] = useState<HTMLElement | null>(null);
+// const useIntersectionObserver = (options = {}) => {
+//   const [isIntersecting, setIsIntersecting] = useState(false);
+//   const [ref, setRef] = useState<HTMLElement | null>(null);
 
-  useEffect(() => {
-    if (!ref) return;
+//   useEffect(() => {
+//     if (!ref) return;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsIntersecting(entry.isIntersecting);
-    }, {
-      threshold: 0.1,
-      ...options
-    });
+//     const observer = new IntersectionObserver(([entry]) => {
+//       setIsIntersecting(entry.isIntersecting);
+//     }, {
+//       threshold: 0.1,
+//       ...options
+//     });
 
-    observer.observe(ref);
-    return () => observer.disconnect();
-  }, [ref, options]);
+//     observer.observe(ref);
+//     return () => observer.disconnect();
+//   }, [ref, options]);
 
-  return [setRef, isIntersecting];
-};
+//   return [setRef, isIntersecting];
+// };
 
 // Performance optimization: Memoized service card
 interface ServiceCardProps {
@@ -1643,7 +1643,7 @@ function Technologies() {
 // PORTFOLIO SECTION
 function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  // const [hoveredProject, setHoveredProject] = useState<number | null>(null);
 
   const categories = [
     { id: 'all', name: 'All Projects', count: 13 },
@@ -2170,7 +2170,7 @@ function Testimonials() {
         <h2 className="text-3xl font-bold text-cyan-400 text-center mb-4">What Our Clients Say</h2>
         <div className="h-1 w-24 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mx-auto mb-8 rounded-full"></div>
         <p className="text-center text-gray-400 mb-12 text-lg max-w-2xl mx-auto">
-          Real results. Real partnerships. Here's what our clients love about JarvysAI.
+          Real results. Real partnerships. Here&apos;s what our clients love about JarvysAI.
         </p>
 
         {/* Train-style horizontal scrolling testimonials */}
@@ -2725,7 +2725,7 @@ export default function Home() {
     await loadFull(engine);
   }, []);
   
-  const particlesLoaded = useCallback(async (container: unknown) => {
+  const particlesLoaded = useCallback(async () => {
     // Particles are loaded and ready
     console.log('Particles loaded successfully');
   }, []);

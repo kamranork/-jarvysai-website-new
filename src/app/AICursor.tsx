@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { FaRobot } from "react-icons/fa";
+// import { FaRobot } from "react-icons/fa";
 
 const cursorId = "ai-cursor";
 
