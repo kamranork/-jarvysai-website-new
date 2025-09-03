@@ -14,7 +14,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaLinkedin, FaTwitter, FaFacebook } from "react-icons/fa";
 import PerformanceMonitor from "./PerformanceMonitor";
-import { prefersReducedMotion } from "../utils/performance";
+// import { prefersReducedMotion } from "../utils/performance";
 
 // Performance optimization: Check device capabilities
 const useDeviceCapabilities = () => {

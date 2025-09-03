@@ -47,8 +47,8 @@ const PerformanceMonitor = () => {
       // Measure First Input Delay
       const fidObserver = new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        const fid = entries[entries.length - 1];
-        if (fid) {
+        const fid = entries[entries.length - 1] as PerformanceEventTiming;
+        if (fid && 'processingStart' in fid) {
           setMetrics(prev => prev ? { ...prev, fid: fid.processingStart - fid.startTime } : { fid: fid.processingStart - fid.startTime } as PerformanceMetrics);
         }
       });
