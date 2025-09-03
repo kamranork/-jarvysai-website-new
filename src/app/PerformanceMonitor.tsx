@@ -58,8 +58,9 @@ const PerformanceMonitor = () => {
       const clsObserver = new PerformanceObserver((list) => {
         let clsValue = 0;
         for (const entry of list.getEntries()) {
-          if (!entry.hadRecentInput) {
-            clsValue += (entry as PerformanceEntry & { value?: number }).value || 0;
+          const layoutShiftEntry = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number };
+          if (!layoutShiftEntry.hadRecentInput) {
+            clsValue += layoutShiftEntry.value || 0;
           }
         }
         setMetrics(prev => prev ? { ...prev, cls: clsValue } : { cls: clsValue } as PerformanceMetrics);
